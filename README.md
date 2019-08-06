@@ -1,1 +1,1 @@
-# Cluedo-Gui
+# CluedoGame-Gui
