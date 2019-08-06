@@ -4,6 +4,7 @@ import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.*;
 
+
 public abstract class GUI {
     protected abstract void redraw(Graphics g);
 
@@ -18,6 +19,10 @@ public abstract class GUI {
     private JTextArea console;
 
     public GUI() { initialise(); }
+
+    public Dimension getDrawingAreaDimension() {
+        return canvas.getSize();
+    }
 
     private void initialise() {
         JButton quit = new JButton("Quit");
