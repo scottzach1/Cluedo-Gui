@@ -1,30 +1,19 @@
 package GUIComponenets;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.event.MouseWheelEvent;
+import java.awt.geom.Rectangle2D;
 
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JTextArea;
-import javax.swing.border.Border;
-import javax.swing.text.DefaultCaret;
+import javax.swing.border.AbstractBorder;
 
 public class GUI extends JFrame {
 	// Nothing important
@@ -33,38 +22,38 @@ public class GUI extends JFrame {
 	protected void redraw(Graphics g) {
 	}
 
-	static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	private static final int DEFAULT_WINDOW_HEIGHT = (int) (screenSize.getHeight() * 0.7);
-	private static final int DEFAULT_WINDOW_WIDTH = (int) (screenSize.getWidth() * 0.7);
+	private static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	public static final int CANVAS_HEIGHT = screenSize.height * 2 / 3;
+	public static final int CONTROLS_HEIGHT = screenSize.height / 3;
+	public static final int SCREEN_WIDTH = screenSize.width;
 	private static final int TEXT_OUTPUT_ROWS = 5;
 
 	private JFrame frame;
-	private JPanel controls;
-	private JComponent canvas;
-	private JTextArea console;
+	private Canvas canvas;
+	private Controls controls;
+	private JMenuBar menuBar;
 
 	public GUI() {
 		initialise();
 	}
 
-	public Dimension getDrawingAreaDimension() {
-		return canvas.getSize();
-	}
-
 	private void initialise() {
-		// Create the new frame
-		frame = new JFrame();
-		frame.setPreferredSize(screenSize);
-		
-		// Add the menu
-		JMenuBar menuBar = new JMenuBar();
-		
-		
-		frame.setVisible(true);
-	}
+		// Create the frame
+		frame = new JFrame("CLUDEO GAME");
+		frame.setSize(screenSize.getSize());
+		frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-	private void redraw() {
-		frame.repaint();
+		// Create the layout
+		canvas = new Canvas();
+		controls = new Controls();
+
+		// Add panels to frame
+		frame.add(canvas, BorderLayout.CENTER);
+		frame.add(controls, BorderLayout.SOUTH);
+
+		// Set to visible and resizable
+		frame.setResizable(true);
+		frame.setVisible(true);
 	}
 
 	public void display(JPanel jp) {
