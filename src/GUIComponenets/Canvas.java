@@ -17,6 +17,7 @@ public class Canvas extends JPanel {
 		// Set the Size of the canvas panel
 		Dimension size = getPreferredSize();
 		size.height = GUI.CANVAS_HEIGHT;
+		size.width = GUI.SCREEN_WIDTH;
 		setPreferredSize(size);
 		
 		// Create the boarder
