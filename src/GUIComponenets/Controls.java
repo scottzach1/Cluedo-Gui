@@ -22,6 +22,7 @@ public class Controls extends JPanel {
 		// Set the Size of the Control panel
 		Dimension size = getPreferredSize();
 		size.height = GUI.CONTROLS_HEIGHT;
+		size.width = GUI.SCREEN_WIDTH;
 		setPreferredSize(size);		
 		
 		// Create the boarder
