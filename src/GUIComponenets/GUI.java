@@ -56,8 +56,8 @@ public class GUI extends JFrame {
 		frame.setVisible(true);
 	}
 
-	public void display(JPanel jp) {
-
+	public void redraw(JPanel jp) {
+		frame.repaint();
 	}
 
 	// Testing

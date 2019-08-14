@@ -22,7 +22,7 @@ public class Canvas extends JPanel {
 		// Create the boarder
 		Color accentCol = Color.BLACK;
 		Color baseCol = Color.WHITE;
-		Border b = BorderFactory.createTitledBorder( BorderFactory.createEmptyBorder(), borderTitle, TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, new Font("Serif", Font.BOLD, 18), accentCol);
+		Border b = BorderFactory.createTitledBorder( BorderFactory.createMatteBorder(2,0,0,0, accentCol), borderTitle, TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, new Font("Serif", Font.BOLD, 18), accentCol);
 		setBorder(b);
 		setBackground(baseCol);
 	}

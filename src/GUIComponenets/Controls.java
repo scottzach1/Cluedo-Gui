@@ -15,6 +15,8 @@ import javax.swing.border.TitledBorder;
 public class Controls extends JPanel {
 	
 	private String borderTitle = "CONTROLS";
+	private Console c;
+	private UserInterface ui;
 	
 	public Controls() {		
 		// Set the Size of the Control panel
@@ -25,13 +27,13 @@ public class Controls extends JPanel {
 		// Create the boarder
 		Color accentCol = Color.WHITE;
 		Color baseCol = Color.DARK_GRAY;
-		Border b = BorderFactory.createTitledBorder( BorderFactory.createEmptyBorder(), borderTitle, TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, new Font("Serif", Font.BOLD, 18), accentCol);
+		Border b = BorderFactory.createTitledBorder( BorderFactory.createMatteBorder(2, 0, 0, 0, accentCol), borderTitle, TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, new Font("Serif", Font.BOLD, 18), accentCol);
 		setBorder(b);
 		setBackground(baseCol);
 		
 		// Create and Add the two panels
-		Console c = new Console();
-		UserInterface ui = new UserInterface();
+		c = new Console();
+		ui = new UserInterface();
 		
 		// Set layout
 		setLayout(new GridBagLayout());
@@ -48,10 +50,8 @@ public class Controls extends JPanel {
 		gc.weighty = 1;		
 		gc.gridx = 1;	
 		add(ui, gc);
-		
-		
-		
-		
 	}
+	
+	
 
 }
