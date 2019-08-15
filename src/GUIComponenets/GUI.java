@@ -34,8 +34,10 @@ public class GUI extends JFrame {
 
 	public GUI() {
 		initialise();
+		mainMenu();
 	}
 
+	// Creates the base of all the components
 	private void initialise() {
 		// Create the frame
 		frame = new JFrame("CLUDEO GAME");
@@ -57,22 +59,57 @@ public class GUI extends JFrame {
 		frame.setVisible(true);
 		frame.pack();
 	}
+	
+	// Displays the main menu for each panel
+	private void mainMenu() {
+		canvas.mainMenu();
+		controls.mainMenu();
+		
+		redraw();
+	}
+	
+	
+	
+	
+	// ----------------------------
+	// HELPFUL: Getters, Setters, Other
+	// ----------------------------
 
-	public void redraw(JPanel jp) {
+
+	public JFrame getFrame() {
+		return frame;
+	}
+
+	public void setFrame(JFrame frame) {
+		this.frame = frame;
+	}
+
+	public Canvas getCanvas() {
+		return canvas;
+	}
+
+	public void setCanvas(Canvas canvas) {
+		this.canvas = canvas;
+	}
+
+	public Controls getControls() {
+		return controls;
+	}
+
+	public void setControls(Controls controls) {
+		this.controls = controls;
+	}
+	
+	public final JFrame getGui() {
+		return this;
+	}
+
+	public void redraw() {
+		frame.revalidate();
 		frame.repaint();
 	}
 	
-	public void windowClosing(WindowEvent e) {
-		// Ask the user to confirm they wanted to do this
-		int r = JOptionPane.showConfirmDialog(this, 
-				new JLabel("Exit Cluedo Game?"), "Confirm Exit",
-									JOptionPane.YES_NO_OPTION, 
-									JOptionPane.QUESTION_MESSAGE);
-		
-		if (r == JOptionPane.YES_OPTION) 
-			System.exit(0);
-		
-	}
+
 
 	// Testing
 	public static void main(String[] args) {
