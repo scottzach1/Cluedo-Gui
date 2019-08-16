@@ -98,8 +98,6 @@ public class Board {
 						}
 					} else if (type == Cell.Type.ROOM) {
 
-						if (c == 'X') continue; // This is a door, ignore for now.
-
 						Room room = rooms.get(Room.parseAliasFromChar(c));
 						room.addCell(cell);
 						cell.setRoom(room);

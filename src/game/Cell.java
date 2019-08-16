@@ -13,7 +13,7 @@ public class Cell {
 	/**
 	 * An Enum defining the different kinds of Cells in the Game.
 	 */
-	public enum Type {ROOM, WALL, HALL, START_PAD, VOID}
+	public enum Type {ROOM, WALL, HALL, START_PAD, VOID, CELLAR}
 
 	// ------------------------
 	// MEMBER VARIABLES
@@ -113,6 +113,7 @@ public class Cell {
 	 * @return Type of Game.Cell.
 	 */
 	static Type getType(char c) {
+		if (c == 'M') return Type.CELLAR;
 		if (c == ' ') return Type.VOID;
 		if (c == 'X') return Type.ROOM;
 		if (c == 'Y') return Type.HALL;
