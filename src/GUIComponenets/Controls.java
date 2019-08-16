@@ -1,16 +1,14 @@
 package GUIComponenets;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
@@ -23,13 +21,12 @@ public class Controls extends JPanel {
 	private String borderTitle;
 	private Console c;
 	private UserInterface ui;
-	private GridBagConstraints gc;
-	private ArrayList<Component> components;
 	private Dimension size;
+	
+	public static final int inset = 10;
 	
 	public Controls() {
 		borderTitle = "CONTROLS";
-		components = new ArrayList<>();
 		
 		// Set the Size of the Control panel
 		size = getPreferredSize();
@@ -47,22 +44,9 @@ public class Controls extends JPanel {
 		ui = new UserInterface();
 		
 		// Set layout
-		setLayout(new GridBagLayout());
-		gc = new GridBagConstraints();
-		
-		gc.insets = new Insets(0,5,5,5);
-		gc.ipady = GUI.CONTROLS_HEIGHT;
-		
-		gc.ipadx = c.getPreferredSize().width;
-		gc.weightx = 1;
-		gc.weighty = 1;		
-		gc.gridx = 0;	
-		add(c, gc);
-
-		gc.weightx = 2;
-		gc.weighty = 2;		
-		gc.gridx = 1;	
-		add(ui, gc);
+		setLayout(new BorderLayout());
+		add(c, BorderLayout.WEST);
+		add(ui, BorderLayout.EAST);
 		
 		
 	}

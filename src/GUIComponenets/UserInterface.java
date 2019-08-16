@@ -27,8 +27,8 @@ public class UserInterface extends JPanel {
 		components = new ArrayList<>();
 		// Set the Size of the Control panel
 		size = getPreferredSize();
-		size.width = GUI.SCREEN_WIDTH * 2 / 3;
-		size.height = GUI.CONTROLS_HEIGHT;
+		size.width = (GUI.SCREEN_WIDTH * 2 / 3) - Controls.inset;
+		size.height = GUI.CONTROLS_HEIGHT - Controls.inset ;
 		setPreferredSize(size);		
 		
 		// Create the boarder

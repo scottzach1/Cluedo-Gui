@@ -5,7 +5,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -31,8 +31,8 @@ public class Console extends JPanel {
 
 		// Set the Size of the Control panel
 		size = getPreferredSize();
-		size.width = GUI.SCREEN_WIDTH / 3;
-		size.height = GUI.CONTROLS_HEIGHT;
+		size.width = (GUI.SCREEN_WIDTH / 3) - Controls.inset;
+		size.height = GUI.CONTROLS_HEIGHT - Controls.inset;
 		setPreferredSize(size);
 
 		// Create the boarder
@@ -43,16 +43,18 @@ public class Console extends JPanel {
 		setBackground(baseCol);
 
 		// Set layout
-		setLayout(new GridBagLayout());
-		gc = new GridBagConstraints();
+		setLayout(new GridLayout());
 	}
 
 	protected void mainMenu() {
 		JTextArea instr = new JTextArea();
 		
 		// Set up the settings
-		instr.setFont(new Font("Arial", Font.BOLD, 20));
+		instr.setFont(new Font("Arial", Font.BOLD, 30));
 		instr.setBackground(null);		
+		instr.setLineWrap(true);
+		instr.setWrapStyleWord(true);
+		instr.setEditable(false);
 		
 		// Add the text
 		instr.append("Select an option here ->");
