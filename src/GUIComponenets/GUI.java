@@ -1,10 +1,13 @@
 package GUIComponenets;
 
+import Game.*;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -23,13 +26,14 @@ public class GUI extends JFrame {
 	public static final int CONTROLS_HEIGHT = screenSize.height / 3;
 	public static final int SCREEN_HEIGHT = screenSize.height;
 	public static final int SCREEN_WIDTH = screenSize.width;
-	private static final int TEXT_OUTPUT_ROWS = 5;
-
+	
 	// Fields: All the contents of this container
 	private JFrame frame;
 	private Canvas canvas;
 	private Controls controls;
 	private JMenuBar menuBar;
+	private int playerAmount;
+	private List<User> users;
 
 	// Constructor
 	public GUI() {
@@ -98,17 +102,15 @@ public class GUI extends JFrame {
 	public void setControls(Controls controls) {
 		this.controls = controls;
 	}
-	
-	public final JFrame getGui() {
-		return this;
+
+	public void setPlayerAmount(int playerAmount) {
+		this.playerAmount = playerAmount;
 	}
 
 	public void redraw() {
 		frame.revalidate();
 		frame.repaint();
 	}
-	
-
 
 	// Testing
 	public static void main(String[] args) {
