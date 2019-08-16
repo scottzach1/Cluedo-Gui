@@ -74,4 +74,8 @@ public class UserInterface extends JPanel {
 		add(submit, gc);
 		
 	}
+	
+	public void clear() {
+		removeAll();
+	}
 }

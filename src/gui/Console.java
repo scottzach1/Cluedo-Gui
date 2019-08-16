@@ -59,5 +59,10 @@ public class Console extends JPanel {
 		
 		add(instr);
 	}
+	
+	
+	public void clear() {
+		removeAll();
+	}
 
 }

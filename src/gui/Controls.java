@@ -4,8 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
@@ -33,18 +38,48 @@ public class Controls extends JPanel {
 		// Create the boarder
 		Border b = BorderFactory.createTitledBorder( BorderFactory.createMatteBorder(2, 0, 0, 0, accentCol), borderTitle, TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, new Font("Serif", Font.BOLD, 18), accentCol);
 		setBorder(b);
-		setBackground(baseCol);
+		setBackground(baseCol);		
+	}
+	
+	
+	public void mainMenu() {
+		// Set layout
+		setLayout(new GridBagLayout());
+		GridBagConstraints gc = new GridBagConstraints();
+		
+		gc.gridx = 0;
+		gc.gridy = 0;
+		
+		JButton play = new JButton("PLAY");
+		play.setPreferredSize(new Dimension(size.width / 10, size.height / 5));
+		play.setFont(new Font("Arial", Font.BOLD, 20));
+		
+		play.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				GUI g = (GUI) GUI.getFrames()[0];
+				g.next();
+			}
+			
+		});
+		
+		add(play, gc);		
+	}
+	
+	
+	// Adds the Console and UserInterface panels
+	public void addContainers() {	
 		
 		// Create and Add the two panels
 		c = new Console();
 		ui = new UserInterface();
 		
-		// Set layout and add the components
+		
+		// add the components and Set the layout
 		setLayout(new BorderLayout());
 		add(c, BorderLayout.WEST);
 		add(ui, BorderLayout.EAST);
-		
-		
 	}
 	
 	public void howManyPlayers() {
@@ -57,6 +92,10 @@ public class Controls extends JPanel {
 
 	public void setBorderTitle(String borderTitle) {
 		this.borderTitle = borderTitle;
+	}
+	
+	public void clear() {
+		removeAll();
 	}
 	
 

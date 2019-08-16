@@ -14,14 +14,17 @@ import javax.swing.WindowConstants;
 public class GUI extends JFrame {
 	// Nothing important
 	private static final long serialVersionUID = 1L;
-	
+
 	// Dimension of the frame, based on screen size
 	private static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	public static final int CANVAS_HEIGHT = screenSize.height * 2 / 3;
 	public static final int CONTROLS_HEIGHT = screenSize.height / 3;
 	public static final int SCREEN_HEIGHT = screenSize.height;
 	public static final int SCREEN_WIDTH = screenSize.width;
-	
+
+	// Allows for states
+	private static int state;
+
 	// Fields: All the contents of this container
 	private JFrame frame;
 	private Canvas canvas;
@@ -32,12 +35,8 @@ public class GUI extends JFrame {
 
 	// Constructor
 	public GUI() {
-		initialise();
-		howManyPlayers();
-	}
+		state = 0;
 
-	// Creates the base of all the components
-	private void initialise() {
 		// Create the frame
 		frame = new JFrame("CLUEDO GAME");
 		frame.setSize(screenSize.getSize());
@@ -58,21 +57,38 @@ public class GUI extends JFrame {
 		frame.setVisible(true);
 		frame.pack();
 	}
-	
+
+	public void runGUI() {
+		if (state == 0) {
+			clear();
+			mainMenu();
+			System.out.println(state);
+		} else if (state == 1) {
+			clear();
+			controls.addContainers();
+			howManyPlayers();
+			System.out.println(state);
+		}
+
+	}
+
+	// Display the main menu
+	private void mainMenu() {
+		canvas.mainMenu();
+		controls.mainMenu();
+		redraw();
+	}
+
 	// Displays the main menu for each panel
 	private void howManyPlayers() {
 		canvas.howManyPlayers();
-		controls.howManyPlayers();		
+		controls.howManyPlayers();
 		redraw();
 	}
-	
-	
-	
-	
+
 	// ----------------------------
 	// HELPFUL: Getters, Setters, Other
 	// ----------------------------
-
 
 	public JFrame getFrame() {
 		return frame;
@@ -107,9 +123,20 @@ public class GUI extends JFrame {
 		frame.repaint();
 	}
 
+	public void clear() {
+		canvas.clear();
+		controls.clear();
+	}
+
+	public void next() {
+		state++;
+		runGUI();
+	}
+
 	// Testing
 	public static void main(String[] args) {
 		GUI g = new GUI();
+		g.runGUI();
 	}
 
 }

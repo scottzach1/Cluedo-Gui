@@ -6,9 +6,12 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.Border;
@@ -26,7 +29,7 @@ public class Canvas extends JPanel {
 	private Dimension size;
 
 	public Canvas() {
-		borderTitle = "MAIN MENU";
+		borderTitle = " - - ";
 		components = new ArrayList<>();
 
 		// Set the Size of the canvas panel
@@ -45,6 +48,16 @@ public class Canvas extends JPanel {
 		setLayout(new GridBagLayout());
 		gc = new GridBagConstraints();
 		gc.fill = GridBagConstraints.BOTH;
+	}
+	
+	
+	public void mainMenu() {
+		Image image = (new ImageIcon("assets/title.png")).getImage();
+		image = image.getScaledInstance(size.width, size.height,  java.awt.Image.SCALE_SMOOTH);
+		JLabel titleImg = new JLabel(new ImageIcon(image));
+		
+		components.add(titleImg);
+		revalidateComponents(1);
 	}
 	
 	
@@ -93,6 +106,11 @@ public class Canvas extends JPanel {
 
 	public void setBorderTitle(String borderTitle) {
 		this.borderTitle = borderTitle;
+	}
+	
+	public void clear() {
+		components.clear();
+		removeAll();
 	}
 
 
