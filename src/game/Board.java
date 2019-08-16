@@ -1,6 +1,5 @@
-package Game;
+package game;
 
-import java.awt.*;
 import java.io.File;
 import java.security.InvalidParameterException;
 import java.util.*;
@@ -176,7 +175,7 @@ public class Board {
 				if (col > 0 && linkCells(cell, other = cells[row][col - 1]))
 					cell.setNeighbor(Cell.Direction.WEST, other);
 				// West
-				if (col < cols + 1 && linkCells(cell, other = cells[row][col + 1]))
+				if (col < cols - 1 && linkCells(cell, other = cells[row][col + 1]))
 					cell.setNeighbor(Cell.Direction.WEST, other);
 
 			}

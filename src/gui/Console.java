@@ -1,17 +1,14 @@
-package GUIComponenets;
+package gui;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 
 public class Console extends JPanel {

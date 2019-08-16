@@ -1,4 +1,4 @@
-package Game;
+package game;
 
 class Position {
     final int x, y;

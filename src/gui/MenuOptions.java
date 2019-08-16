@@ -1,4 +1,4 @@
-package GUIComponenets;
+package gui;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.WindowConstants;
 
 public class MenuOptions extends JMenuBar {
 

@@ -1,4 +1,4 @@
-package GUIComponenets;
+package gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -7,15 +7,10 @@ import java.awt.GridBagLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
-import javax.swing.DefaultCellEditor;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
-import javax.swing.JTable;
 import javax.swing.border.Border;
-import javax.swing.table.TableCellRenderer;
 
 public class UserInterface extends JPanel {
 	

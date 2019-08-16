@@ -1,19 +1,14 @@
-package GUIComponenets;
+package gui;
 
-import Game.*;
+import game.*;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Toolkit;
-import java.awt.event.WindowEvent;
 import java.util.List;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenuBar;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 public class GUI extends JFrame {

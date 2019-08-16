@@ -1,6 +1,6 @@
-package Tests;
+package test;
 
-import Game.*;
+import game.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;

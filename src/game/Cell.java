@@ -1,4 +1,4 @@
-package Game;
+package game;
 
 import java.util.HashMap;
 import java.util.regex.Pattern;
