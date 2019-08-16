@@ -15,6 +15,10 @@ public class GUI extends JFrame {
 	// Nothing important
 	private static final long serialVersionUID = 1L;
 
+	// --------------------------------------------------
+	// FIELDS
+	// --------------------------------------------------
+
 	// Dimension of the frame, based on screen size
 	private static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	public static final int CANVAS_HEIGHT = screenSize.height * 2 / 3;
@@ -33,7 +37,10 @@ public class GUI extends JFrame {
 	private int playerAmount;
 	private List<User> users;
 
-	// Constructor
+	// --------------------------------------------------
+	// CONSTRUCTOR
+	// --------------------------------------------------
+
 	public GUI() {
 		state = 0;
 
@@ -58,18 +65,21 @@ public class GUI extends JFrame {
 		frame.pack();
 	}
 
+	// --------------------------------------------------
+	// PUBLIC METHODS
+	// --------------------------------------------------
+
 	public void runGUI() {
 		if (state == 0) {
 			clear();
 			mainMenu();
-			System.out.println(state);
 		} else if (state == 1) {
 			clear();
-			controls.addContainers();
 			howManyPlayers();
-			System.out.println(state);
+		} else if (state == 2) {
+			clear();
+			createUsers();
 		}
-
 	}
 
 	// Display the main menu
@@ -85,11 +95,15 @@ public class GUI extends JFrame {
 		controls.howManyPlayers();
 		redraw();
 	}
+	
+	private void createUsers() {
+		
+		
+	}
 
-	// ----------------------------
-	// HELPFUL: Getters, Setters, Other
-	// ----------------------------
-
+	// --------------------------------------------------
+	// HELPFUL METHODS
+	// --------------------------------------------------
 	public JFrame getFrame() {
 		return frame;
 	}

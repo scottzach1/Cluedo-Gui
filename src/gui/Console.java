@@ -13,12 +13,21 @@ import javax.swing.border.Border;
 
 public class Console extends JPanel {
 	
+	// --------------------------------------------------
+	// FIELDS
+	// --------------------------------------------------
 
 	private final Color baseCol = new Color(100, 0, 30);
 
 	private GridBagConstraints gc;
 	private Dimension size;
 
+	
+	
+	// --------------------------------------------------
+	// CONSTRUCTOR
+	// --------------------------------------------------
+	
 	public Console() {
 
 		// Set the Size of the Control panel
@@ -42,23 +51,11 @@ public class Console extends JPanel {
 		gc.gridheight = size.height;
 		gc.gridwidth = size.width;
 	}
+	
+	// --------------------------------------------------
+	// PUBLIC METHODS
+	// --------------------------------------------------
 
-	protected void howManyPlayers() {
-		JTextArea instr = new JTextArea();
-		
-		// Set up the settings
-		Font font = new Font("Arial", Font.BOLD, 30);		
-		instr.setFont(font);
-		instr.setBackground(null);	
-		instr.setForeground(Color.WHITE);
-		instr.setEditable(false);
-		
-		// Add the text
-		instr.append("Select an option here ->");
-		
-		
-		add(instr);
-	}
 	
 	
 	public void clear() {

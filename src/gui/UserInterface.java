@@ -14,11 +14,20 @@ import javax.swing.border.Border;
 
 public class UserInterface extends JPanel {
 	
+	// --------------------------------------------------
+	// FIELDS
+	// --------------------------------------------------
+	
 	private final Color baseCol = new Color(76, 74, 75);
 	
 	private String borderTitle = "UI";
 	private GridBagConstraints gc;
 	private Dimension size;
+	
+	
+	// --------------------------------------------------
+	// CONSTRUCTOR
+	// --------------------------------------------------
 	
 	public UserInterface() {
 		// Set the Size of the Control panel
@@ -41,39 +50,9 @@ public class UserInterface extends JPanel {
 	}
 	
 	
-	protected void howManyPlayers() {
-		
-		// Set up the button group and placement
-		ButtonGroup group = new ButtonGroup();
-		gc.weightx = 2;
-		gc.weighty = 2;		
-		gc.gridy = 0;		
-		
-		for (int i = 0; i < 6; i++) {
-//			 ImageIcon normal = new ImageIcon("Assets/normal_check_box.png");
-//			 ImageIcon selected = new ImageIcon("Assets/selected_check_box.png");
-			 
-			 JCheckBox b = new JCheckBox();
-//			 b.setIcon(normal);
-//			 b.setSelectedIcon(selected);
-			 
-			 group.add(b);
-			 
-			 gc.gridx = i;
-			 add(b, gc);
-		}		
-		
-		// Create the submit button
-		gc.weighty = 0.5;		
-		gc.gridx = 0;
-		gc.gridy = 1;
-		gc.gridwidth = 6;
-		
-		JButton submit = new JButton("SUBMIT");
-		
-		add(submit, gc);
-		
-	}
+	// --------------------------------------------------
+	// PUBLIC METHODS
+	// --------------------------------------------------
 	
 	public void clear() {
 		removeAll();

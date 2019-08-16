@@ -10,7 +10,10 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 public class MenuOptions extends JMenuBar {
-
+	
+	// --------------------------------------------------
+	// CONSTRUCTOR
+	// --------------------------------------------------
 	public MenuOptions() {		
 		// Set the Size of the Control panel
 		Dimension size = getPreferredSize();
