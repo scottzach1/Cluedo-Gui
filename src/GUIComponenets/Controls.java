@@ -43,7 +43,9 @@ public class Controls extends JPanel {
 		c = new Console();
 		ui = new UserInterface();
 		
-		// Set layout
+		// Create and setup the layout
+		
+		// Set layout and add the components
 		setLayout(new BorderLayout());
 		add(c, BorderLayout.WEST);
 		add(ui, BorderLayout.EAST);

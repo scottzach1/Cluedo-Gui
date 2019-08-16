@@ -9,14 +9,12 @@ import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import javax.swing.border.BevelBorder;
+import javax.swing.JRadioButton;
 import javax.swing.border.Border;
 
 public class UserInterface extends JPanel {
-
-	private final Color shadow = new Color(185, 160, 115);
-	private final Color highlight = new Color(255, 255, 215);
-	private final Color baseCol = new Color(235, 210, 165);
+	
+	private final Color baseCol = new Color(0, 100, 15);
 	
 	private String borderTitle = "UI";
 	private GridBagConstraints gc;
@@ -27,13 +25,13 @@ public class UserInterface extends JPanel {
 		components = new ArrayList<>();
 		// Set the Size of the Control panel
 		size = getPreferredSize();
-		size.width = (GUI.SCREEN_WIDTH * 2 / 3) - Controls.inset;
-		size.height = GUI.CONTROLS_HEIGHT - Controls.inset ;
+		size.width = (GUI.SCREEN_WIDTH * 2 / 3) - (Controls.inset / 2);
+		size.height = GUI.CONTROLS_HEIGHT - Controls.inset;
 		setPreferredSize(size);		
 		
 		// Create the boarder
-		Border b1 = BorderFactory.createBevelBorder(BevelBorder.RAISED, highlight, shadow);
-		Border b2 = BorderFactory.createBevelBorder(BevelBorder.RAISED, highlight, shadow);
+		Border b1 = BorderFactory.createRaisedBevelBorder();
+		Border b2 = BorderFactory.createLoweredBevelBorder();
 		Border b3 = BorderFactory.createCompoundBorder(b1, b2);
 		setBorder(b3);
 		setBackground(baseCol);
@@ -41,10 +39,37 @@ public class UserInterface extends JPanel {
 		// Set layout
 		setLayout(new GridBagLayout());
 		gc = new GridBagConstraints();
+		gc.fill = GridBagConstraints.BOTH;
 	}
 	
 	
 	protected void mainMenu() {
+		// Create the buttons
+		JRadioButton b1 = new JRadioButton("1");
+		JRadioButton b2 = new JRadioButton("2");
+		JRadioButton b3 = new JRadioButton("3");
+		JRadioButton b4 = new JRadioButton("4");
+		JRadioButton b5 = new JRadioButton("5");
+		JRadioButton b6 = new JRadioButton("6");
+		
+		//Setup the buttons ---
+		//Backgrounds
+		b1.setBackground(null);
+		b2.setBackground(null);
+		b3.setBackground(null);
+		b4.setBackground(null);
+		b5.setBackground(null);
+		b6.setBackground(null);
+		
+		// Add to the panel
+		components.add(b1);
+		components.add(b2);
+		components.add(b3);
+		components.add(b4);
+		components.add(b5);
+		components.add(b6);
+		
+		revalidateComponents(6);
 		
 	}
 	
