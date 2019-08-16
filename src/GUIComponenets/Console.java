@@ -19,13 +19,10 @@ public class Console extends JPanel {
 
 	private final Color baseCol = new Color(100, 0, 30);
 
-	private String borderTitle = "";
 	private GridBagConstraints gc;
-	private ArrayList<Component> components;
 	private Dimension size;
 
 	public Console() {
-		components = new ArrayList<>();
 
 		// Set the Size of the Control panel
 		size = getPreferredSize();
@@ -63,38 +60,7 @@ public class Console extends JPanel {
 		instr.append("Select an option here ->");
 		
 		
-		components.add(instr);
-		revalidateComponents(1);
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-	// -------------------------------
-	// Control components
-	// -------------------------------
-
-	private void revalidateComponents(int cols) {
-		if (components.size() >= 0) {
-			gc.gridy = 0;
-			for (int i = 0; i < components.size(); i++) {
-				gc.gridx = i % cols;
-				gc.gridy = i / cols;
-				if (components.get(i) != null)
-					add(components.get(i), gc);
-			}
-		} else { this.removeAll(); }
+		add(instr);
 	}
 
 }
