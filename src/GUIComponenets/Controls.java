@@ -53,9 +53,9 @@ public class Controls extends JPanel {
 		
 	}
 	
-	public void mainMenu() {
-		c.mainMenu();
-		ui.mainMenu();
+	public void howManyPlayers() {
+		c.howManyPlayers();
+		ui.howManyPlayers();
 	}
 	
 	

@@ -8,6 +8,7 @@ import java.awt.GridBagLayout;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.border.Border;
@@ -39,11 +40,15 @@ public class UserInterface extends JPanel {
 		// Set layout
 		setLayout(new GridBagLayout());
 		gc = new GridBagConstraints();
-		gc.fill = GridBagConstraints.BOTH;
+		gc.weightx = 1;
+		gc.weighty = 1;
 	}
 	
 	
-	protected void mainMenu() {
+	protected void howManyPlayers() {
+		
+		ButtonGroup group = new ButtonGroup();
+		
 		// Create the buttons
 		JRadioButton b1 = new JRadioButton("1");
 		JRadioButton b2 = new JRadioButton("2");
@@ -53,6 +58,7 @@ public class UserInterface extends JPanel {
 		JRadioButton b6 = new JRadioButton("6");
 		
 		//Setup the buttons ---
+		
 		//Backgrounds
 		b1.setBackground(null);
 		b2.setBackground(null);
@@ -60,8 +66,26 @@ public class UserInterface extends JPanel {
 		b4.setBackground(null);
 		b5.setBackground(null);
 		b6.setBackground(null);
+		//Foregrounds
+		b1.setForeground(Color.WHITE);
+		b2.setForeground(Color.WHITE);
+		b3.setForeground(Color.WHITE);
+		b4.setForeground(Color.WHITE);
+		b5.setForeground(Color.WHITE);
+		b6.setForeground(Color.WHITE);
 		
-		// Add to the panel
+		
+		
+		// Add to the group
+		group.add(b1);
+		group.add(b2);
+		group.add(b3);
+		group.add(b4);
+		group.add(b5);
+		group.add(b6);
+		
+		
+		// Add to the components list
 		components.add(b1);
 		components.add(b2);
 		components.add(b3);

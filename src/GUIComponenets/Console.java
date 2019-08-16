@@ -49,7 +49,7 @@ public class Console extends JPanel {
 		gc.gridwidth = size.width;
 	}
 
-	protected void mainMenu() {
+	protected void howManyPlayers() {
 		JTextArea instr = new JTextArea();
 		
 		// Set up the settings

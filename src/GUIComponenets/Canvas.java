@@ -48,7 +48,7 @@ public class Canvas extends JPanel {
 	}
 	
 	
-	public void mainMenu() {
+	public void howManyPlayers() {
 		// Create a text instructions for the user to follow
 		JTextArea instructions = new JTextArea();
 		

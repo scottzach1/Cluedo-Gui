@@ -34,7 +34,7 @@ public class GUI extends JFrame {
 
 	public GUI() {
 		initialise();
-		mainMenu();
+		howManyPlayers();
 	}
 
 	// Creates the base of all the components
@@ -61,10 +61,9 @@ public class GUI extends JFrame {
 	}
 	
 	// Displays the main menu for each panel
-	private void mainMenu() {
-		canvas.mainMenu();
-		controls.mainMenu();
-		
+	private void howManyPlayers() {
+		canvas.howManyPlayers();
+		controls.howManyPlayers();		
 		redraw();
 	}
 	
