@@ -1,6 +1,7 @@
+package Game;
+
 import java.security.InvalidParameterException;
 import java.util.*;
-import java.util.regex.Pattern;
 
 public class Board {
 
@@ -8,7 +9,7 @@ public class Board {
 	// MEMBER VARIABLES
 	// ------------------------
 
-	// Board Attributes
+	// Game.Board Attributes
 	private Map<Room.RoomAlias, Room> rooms;
 	private Map<Sprite.SpriteAlias, Sprite> sprites;
 	private Map<Weapon.WeaponAlias, Weapon> weapons;
@@ -21,7 +22,7 @@ public class Board {
 	// ------------------------
 
 	/**
-	 * Board: The constructor for Board.
+	 * Game.Board: The constructor for Game.Board.
 	 * - Creates a new 2d array and populates with Cells.
 	 * - Generates sprites and places at corresponding starting positions.
 	 * - Generates Weapons and randomly allocates them to Rooms.
@@ -44,7 +45,7 @@ public class Board {
 		List<Room> roomList = new ArrayList<>(rooms.values());
 		Collections.shuffle(roomList);
 
-		// Generate Weapon cards
+		// Generate Game.Weapon cards
 		weapons = new HashMap<>();
 		for (Weapon.WeaponAlias alias : Weapon.WeaponAlias.values()) {
 			Weapon weapon = new Weapon(alias);
@@ -150,30 +151,30 @@ public class Board {
 	// ------------------------
 
 	/**
-	 * getSprites: Return a map of all the Characters on the Board.
+	 * getSprites: Return a map of all the Characters on the Game.Board.
 	 * (Where keys are their corresponding SpriteAlias).
 	 *
-	 * @return map of Characters on the Board.
+	 * @return map of Characters on the Game.Board.
 	 */
 	public Map<Sprite.SpriteAlias, Sprite> getSprites() {
 		return sprites;
 	}
 
 	/**
-	 * getRooms: Return a map of all the Rooms on the Board.
+	 * getRooms: Return a map of all the Rooms on the Game.Board.
 	 * (Where keys are their corresponding RoomAlias).
 	 *
-	 * @return map of Rooms on the Board.
+	 * @return map of Rooms on the Game.Board.
 	 */
 	public Map<Room.RoomAlias, Room> getRooms() {
 		return rooms;
 	}
 
 	/**
-	 * getWeapons: Return a map of all the Weapons in the Board.
+	 * getWeapons: Return a map of all the Weapons in the Game.Board.
 	 * (Where keys are their corresponding WeaponAlias).
 	 *
-	 * @return map of Weapons on the Board.
+	 * @return map of Weapons on the Game.Board.
 	 */
 	public Map<Weapon.WeaponAlias, Weapon> getWeapons() {
 		return weapons;
@@ -181,16 +182,16 @@ public class Board {
 
 
 	/**
-	 * moveUser: Move a User to another Cell.
-	 * @param user User to move.
-	 * @param target Cell to move to.
+	 * moveUser: Move a Game.User to another Game.Cell.
+	 * @param user Game.User to move.
+	 * @param target Game.Cell to move to.
 	 */
 	public void moveUser(User user, Cell target) {
 		if (target == null || user == null)
 			throw new InvalidParameterException("Cannot pass a null parameter!");
 
 		if (target.getSprite() != null)
-			throw new RuntimeException("Position is already taken!");
+			throw new RuntimeException("Game.Position is already taken!");
 
 		Cell from = user.getSprite().getPosition();
 
@@ -202,10 +203,10 @@ public class Board {
 	}
 
 	/**
-	 * getCell: Return the Cell stored at the given row/col.
+	 * getCell: Return the Game.Cell stored at the given row/col.
 	 * @param row Row of the cell to return.
 	 * @param col Col of the cell to return.
-	 * @return Cell at the provided row/col.
+	 * @return Game.Cell at the provided row/col.
 	 */
 	public Cell getCell(int row, int col) {
 		if ((row < 0 || row >= rows - 1) || (col < 0 || col >= cols - 1))
@@ -215,10 +216,10 @@ public class Board {
 	}
 
 	/**
-	 * getCell: Return the Cell stored at the given row/col.
+	 * getCell: Return the Game.Cell stored at the given row/col.
 	 * Throws InvalidParameterException.
 	 * @param cord String of coordinate. Ie, H13
-	 * @return Cell at cord.
+	 * @return Game.Cell at cord.
 	 */
 	public Cell getCell(String cord) {
 

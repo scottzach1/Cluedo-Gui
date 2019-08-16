@@ -1,1 +1,1 @@
-# CluedoGame-Gui
+# Game.CluedoGame-Gui

@@ -1,3 +1,5 @@
+package Game;
+
 import java.util.*;
 
 /* Created by Harrison Cook and Zac Scott - 2019 */
@@ -18,7 +20,6 @@ public class CluedoGame {
 	private List<User> users;
 	private List<User> losers;
 	private Card[] solution;
-	private GUI lui;
 	private String status;
 
 	// ------------------------
@@ -26,7 +27,7 @@ public class CluedoGame {
 	// ------------------------
 
 	/**
-	 * CluedoGame: Constructor
+	 * Game.CluedoGame: Constructor
 	 */
 	private CluedoGame() {
 	}
@@ -66,9 +67,9 @@ public class CluedoGame {
 	}
 
 	/**
-	 * tryMove: Uses the PathFinder test is a suggested path is feasible
+	 * tryMove: Uses the Game.PathFinder test is a suggested path is feasible
 	 *
-	 * @param end      - Target Cell
+	 * @param end      - Target Game.Cell
 	 * @param diceRoll - Moves player can make
 	 * @param user     - Who is attempting the move
 	 * @return String - "8" allowing for the next player to take their turn if
@@ -79,7 +80,7 @@ public class CluedoGame {
 	}
 
 	/**
-	 * generateSolution: Randomly selects 3 cards, 1 Player, 1 Weapon, 1 Room, and
+	 * generateSolution: Randomly selects 3 cards, 1 Player, 1 Game.Weapon, 1 Game.Room, and
 	 * places in the field array 'solution'
 	 */
 	private void generateSolution() {

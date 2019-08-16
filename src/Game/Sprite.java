@@ -1,3 +1,4 @@
+package Game;
 
 public class Sprite extends Card {
 
@@ -21,8 +22,8 @@ public class Sprite extends Card {
 	// ------------------------
 
 	/**
-	 * Sprite: The Constructor for Sprite.
-	 * @param spriteAlias SpriteAlias for Sprite to take up.
+	 * Game.Sprite: The Constructor for Game.Sprite.
+	 * @param spriteAlias SpriteAlias for Game.Sprite to take up.
 	 */
 	public Sprite(SpriteAlias spriteAlias) {
 		super(spriteAlias.toString());
@@ -34,16 +35,16 @@ public class Sprite extends Card {
 	// ------------------------
 
 	/**
-	 * getUser: Return the User playing this Sprite, if any.
-	 * @return User playing Sprite.
+	 * getUser: Return the Game.User playing this Game.Sprite, if any.
+	 * @return Game.User playing Game.Sprite.
 	 */
 	public User getUser() { return user; }
 
 
 	/**
-	 * setUser: Sets a User to play this Sprite.
-	 * NOTE: This also Sets the Users Sprite to this!
-	 * @param user User to play this Sprite.
+	 * setUser: Sets a Game.User to play this Game.Sprite.
+	 * NOTE: This also Sets the Users Game.Sprite to this!
+	 * @param user Game.User to play this Game.Sprite.
 	 */
 	public void setUser(User user) {
 		this.user = user;
@@ -52,19 +53,19 @@ public class Sprite extends Card {
 	}
 
 	/**
-	 * getSpriteAlias: Gets the SpriteAlias of the Sprite.
-	 * @return SpriteAlias of the Sprite.
+	 * getSpriteAlias: Gets the SpriteAlias of the Game.Sprite.
+	 * @return SpriteAlias of the Game.Sprite.
 	 */
 	public SpriteAlias getSpriteAlias() {
 		return spriteAlias;
 	}
 
 	/**
-	 * setPosition: Set a new position for the Sprite.
-	 * Note: This also sets the new Cells Sprite to this,
+	 * setPosition: Set a new position for the Game.Sprite.
+	 * Note: This also sets the new Cells Game.Sprite to this,
 	 * and old to null.
 	 *
-	 * @param position Cell of new position.
+	 * @param position Game.Cell of new position.
 	 */
 	public void setPosition(Cell position) {
 		position.setSprite(null);
@@ -76,8 +77,8 @@ public class Sprite extends Card {
 	}
 
 	/**
-	 * getPosition: Gets the Cell the Sprite is positioned on.
-	 * @return Cell of position.
+	 * getPosition: Gets the Game.Cell the Game.Sprite is positioned on.
+	 * @return Game.Cell of position.
 	 */
 	public Cell getPosition() {
 		return positionCell;
@@ -126,7 +127,7 @@ public class Sprite extends Card {
 			case COLONEL_MUSTARD:
 				return "M";
 		}
-		throw new RuntimeException("Sprite alias not found.");
+		throw new RuntimeException("Game.Sprite alias not found.");
 	}
 
 }

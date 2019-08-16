@@ -1,3 +1,5 @@
+package Game;
+
 import java.util.*;
 
 public class User {
@@ -33,7 +35,7 @@ public class User {
 
 
 	/**
-	 * User: The Constructor for a new User.
+	 * Game.User: The Constructor for a new Game.User.
 	 * Auto increment USERS.
 	 */
 	public User() {
@@ -48,7 +50,7 @@ public class User {
 	// ------------------------
 
 	/**
-	 * getUserNo: Returns the UserNo of the User.
+	 * getUserNo: Returns the UserNo of the Game.User.
 	 * @return UserNo of user.
 	 */
 	public userNo getUserNo() {
@@ -56,7 +58,7 @@ public class User {
 	}
 
 	/**
-	 * getUserName: Returns the UserName of the User.
+	 * getUserName: Returns the UserName of the Game.User.
 	 * @return String userName
 	 */
 	public String getUserName() {
@@ -80,15 +82,15 @@ public class User {
 	}
 
 	/**
-	 * addToHand: Adds a Card to the Users hand.
-	 * @param card Card to add to hand.
+	 * addToHand: Adds a Game.Card to the Users hand.
+	 * @param card Game.Card to add to hand.
 	 */
 	public void addToHand(Card card) {
 		this.hand.add(card);
 	}
 
 	/**
-	 * getObservedCards: Returns a Set of all the Cards observed by the User in the Game.
+	 * getObservedCards: Returns a Set of all the Cards observed by the Game.User in the Game.
 	 * @return Set of observed Cards.
 	 */
 	public Set<Card> getObservedCards() {
@@ -96,16 +98,16 @@ public class User {
 	}
 
 	/**
-	 * addToObservedCards: Adds a card to the Set of all the Cards observed by the User in the Game.
-	 * @param knownCard Card to add to observed Cards.
+	 * addToObservedCards: Adds a card to the Set of all the Cards observed by the Game.User in the Game.
+	 * @param knownCard Game.Card to add to observed Cards.
 	 */
 	public void addToObservedCards(Card knownCard) {
 		this.observedCards.add(knownCard);
 	}
 
 	/**
-	 * getSprite: Return the Users Sprite on the Board.
-	 * @return Sprite of User on Board.
+	 * getSprite: Return the Users Game.Sprite on the Game.Board.
+	 * @return Game.Sprite of Game.User on Game.Board.
 	 */
 	public Sprite getSprite() {
 		return sprite;
@@ -113,9 +115,9 @@ public class User {
 
 
 	/**
-	 * setSprite: Sets the Users Sprite on the Board.
-	 * NOTE: This also sets the Sprites User to User.
-	 * @param sprite Sprite to set for User.
+	 * setSprite: Sets the Users Game.Sprite on the Game.Board.
+	 * NOTE: This also sets the Sprites Game.User to Game.User.
+	 * @param sprite Game.Sprite to set for Game.User.
 	 */
 	public void setSprite(Sprite sprite) {
 		this.sprite = sprite;
@@ -124,8 +126,8 @@ public class User {
 	}
 
 	/**
-	 * observedContainsAlias: Checks whether the User
-	 * has observed a Card based off its Alias toString.
+	 * observedContainsAlias: Checks whether the Game.User
+	 * has observed a Game.Card based off its Alias toString.
 	 * @param s String of card to check.
 	 * @return true seen, false otherwise.
 	 */

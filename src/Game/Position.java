@@ -1,3 +1,5 @@
+package Game;
+
 class Position {
     final int x, y;
 

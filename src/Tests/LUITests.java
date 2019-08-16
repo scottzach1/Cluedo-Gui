@@ -1,15 +1,16 @@
+package Tests;
 
-
+import Game.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class Tests {
+public class LUITests {
 
     /**
-     * Tests edge case distance for path finding.
+     * Tests.Tests edge case distance for path finding.
      *
      * @param b          board
      * @param startSting string cord of start cell
@@ -179,7 +180,7 @@ public class Tests {
         user1.setSprite(b.getSprites().get(Sprite.SpriteAlias.MRS_WHITE));
         user2.setSprite(b.getSprites().get(Sprite.SpriteAlias.COLONEL_MUSTARD));
 
-        // Testing Moving User.
+        // Testing Moving Game.User.
         b.moveUser(user1, b.getCell("B24"));
         b.moveUser(user2, b.getCell("E20"));
 
@@ -189,7 +190,7 @@ public class Tests {
         assertEquals(expectedSprites.size(), recordedSprites.size());
         assertTrue(recordedSprites.containsAll(expectedSprites));
 
-        // Checking Room sizes.
+        // Checking Game.Room sizes.
         assertEquals(17, b.getRooms().get(Room.RoomAlias.KITCHEN).getCells().size());
         assertEquals(30, b.getRooms().get(Room.RoomAlias.BALLROOM).getCells().size());
         assertEquals(15, b.getRooms().get(Room.RoomAlias.CONSERVATORY).getCells().size());

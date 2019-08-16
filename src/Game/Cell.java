@@ -1,3 +1,4 @@
+package Game;
 
 import java.util.HashMap;
 import java.util.regex.Pattern;
@@ -5,7 +6,7 @@ import java.util.regex.Pattern;
 public class Cell {
 
 	/**
-	 * An Enum defining the different possible directions of neighbours of a Cell.
+	 * An Enum defining the different possible directions of neighbours of a Game.Cell.
 			*/
 	public enum Direction {NORTH, SOUTH, EAST, WEST}
 
@@ -18,7 +19,7 @@ public class Cell {
 	// MEMBER VARIABLES
 	// ------------------------
 
-	// Cell Attributes
+	// Game.Cell Attributes
 	private Sprite sprite;
 	private Room room;
 	private int col;
@@ -31,10 +32,10 @@ public class Cell {
 	// ------------------------
 
 	/**
-	 * Cell: The Constructor for a new Cell.
-	 * @param row Row of the Cell.
-	 * @param col Column of the Cell.
-	 * @param type The type of Cell. Ie, Type.Wall
+	 * Game.Cell: The Constructor for a new Game.Cell.
+	 * @param row Row of the Game.Cell.
+	 * @param col Column of the Game.Cell.
+	 * @param type The type of Game.Cell. Ie, Type.Wall
 	 */
 	public Cell(int row, int col, Cell.Type type) {
 		this.row = row;
@@ -48,32 +49,32 @@ public class Cell {
 	// ------------------------
 
 	/**
-	 * getType: Get the Type of the Cell.
-	 * @return the Type of the Cell.
+	 * getType: Get the Type of the Game.Cell.
+	 * @return the Type of the Game.Cell.
 	 */
 	public Type getType() {return type;}
 
 	/**
-	 * Get the Sprite on the Cell, if any.
-	 * @return Get any Sprite on the Cell currently.
+	 * Get the Game.Sprite on the Game.Cell, if any.
+	 * @return Get any Game.Sprite on the Game.Cell currently.
 	 */
 	public Sprite getSprite() {return sprite;}
 
 	/**
-	 * setSprite: Place a sprite on the Cell.
-	 * @param sprite Sprite to place on Cell.
+	 * setSprite: Place a sprite on the Game.Cell.
+	 * @param sprite Game.Sprite to place on Game.Cell.
 	 */
 	void setSprite(Sprite sprite) {this.sprite = sprite;}
 
 	/**
-	 * getRoom: Get the Room a cell is in, if any.
-	 * @return The Room of the Cell.
+	 * getRoom: Get the Game.Room a cell is in, if any.
+	 * @return The Game.Room of the Game.Cell.
 	 */
 	public Room getRoom() {return room;}
 
 	/**
-	 * setRoom: Sets the Room of this Cell.
-	 * @param room The Room to set for this Cell.
+	 * setRoom: Sets the Game.Room of this Game.Cell.
+	 * @param room The Game.Room to set for this Game.Cell.
 	 */
 	void setRoom(Room room) {
 		this.room = room;
@@ -82,19 +83,19 @@ public class Cell {
 	}
 
 	/**
-	 * getCol: Get the Column of the Cell.
-	 * @return Col of Cell.
+	 * getCol: Get the Column of the Game.Cell.
+	 * @return Col of Game.Cell.
 	 */
 	int getCol() {return col;}
 
 	/**
-	 * getRow: Get the Row of the Cell.
-	 * @return Row of Cell.
+	 * getRow: Get the Row of the Game.Cell.
+	 * @return Row of Game.Cell.
 	 */
 	int getRow() {return row;}
 
 	/**
-	 * getNeighbours: Return a Map of all the neighbours of the Cell, with Direction as the Key.
+	 * getNeighbours: Return a Map of all the neighbours of the Game.Cell, with Direction as the Key.
 	 * @return Map of Neighbours.
 	 */
 	public HashMap<Direction, Cell> getNeighbors(){return neighbors;}
@@ -102,14 +103,14 @@ public class Cell {
 	/**
 	 * setNeighbour: Set a neighbour for a direction.
 	 * @param dir Direction to add neighbour.
-	 * @param cell Cell to add as neighbour.
+	 * @param cell Game.Cell to add as neighbour.
 	 */
 	void setNeighbor(Direction dir, Cell cell) {neighbors.put(dir, cell);}
 
 	/**
-	 * getType: Get the type of Cell based on the corresponding character on the raw data map. (MapBase.txt)
-	 * @param c char of Cell.
-	 * @return Type of Cell.
+	 * getType: Get the type of Game.Cell based on the corresponding character on the raw data map. (MapBase.txt)
+	 * @param c char of Game.Cell.
+	 * @return Type of Game.Cell.
 	 */
 	static Type getType(char c) {
 		if (c == '#') return Type.WALL;
@@ -119,8 +120,8 @@ public class Cell {
 	}
 
 	/**
-	 * getStringCoordinates: Return a String of the coordinates of a Cell. Ie, H15
-	 * @return String of Cell coordinates.
+	 * getStringCoordinates: Return a String of the coordinates of a Game.Cell. Ie, H15
+	 * @return String of Game.Cell coordinates.
 	 */
 	public String getStringCoordinates() { return "" + ((char) (col + 'A')) + (row + 1); }
 

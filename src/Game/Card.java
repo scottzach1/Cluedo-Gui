@@ -1,4 +1,4 @@
-
+package Game;
 
 public abstract class Card {
 
@@ -6,7 +6,7 @@ public abstract class Card {
 	// MEMBER VARIABLES
 	// ------------------------
 
-	// Card Attributes
+	// Game.Card Attributes
 	private String name;
 
 	// ------------------------
@@ -14,10 +14,10 @@ public abstract class Card {
 	// 
 
 	/**
-	 * Card: Constructor for Card.
-	 * Stores name of Card, this
+	 * Game.Card: Constructor for Game.Card.
+	 * Stores name of Game.Card, this
 	 * should be an Enum toString of a subclass.
-	 * @param name Name on Card.
+	 * @param name Name on Game.Card.
 	 */
 	public Card(String name) { this.name = name; }
 
@@ -26,8 +26,8 @@ public abstract class Card {
 	// ------------------------
 
 	/**
-	 * getName: Get name on Card.
-	 * @return Return name on Card.
+	 * getName: Get name on Game.Card.
+	 * @return Return name on Game.Card.
 	 */
 	public String getName() {return name;};
 

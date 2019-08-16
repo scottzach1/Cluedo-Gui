@@ -1,3 +1,5 @@
+package Game;
+
 public class Weapon extends Card {
 
 	/**
@@ -16,7 +18,7 @@ public class Weapon extends Card {
 	// MEMBER VARIABLES
 	// ------------------------
 
-	// Weapon Attributes
+	// Game.Weapon Attributes
 	private Room room;
 	private WeaponAlias weaponAlias;
 
@@ -25,8 +27,8 @@ public class Weapon extends Card {
 	// ------------------------
 
 	/**
-	 * Weapon: The Constructor for a new Weapon.
-	 * @param weaponAlias The WeaponAlias of the Weapon to create.
+	 * Game.Weapon: The Constructor for a new Game.Weapon.
+	 * @param weaponAlias The WeaponAlias of the Game.Weapon to create.
 	 */
 	public Weapon(WeaponAlias weaponAlias) {
 		super(weaponAlias.toString());
@@ -38,14 +40,14 @@ public class Weapon extends Card {
 	// ------------------------
 
 	/**
-	 * getRoom: Returns the Room containing this Weapon.
-	 * @return Return parent Room.
+	 * getRoom: Returns the Game.Room containing this Game.Weapon.
+	 * @return Return parent Game.Room.
 	 */
 	public Room getRoom() { return room; }
 
 	/**
-	 * setRoom: Replaces the current Room with a new one.
-	 * @param room The new Room this Weapon is stored in.
+	 * setRoom: Replaces the current Game.Room with a new one.
+	 * @param room The new Game.Room this Game.Weapon is stored in.
 	 */
 	public void setRoom(Room room) {
 		this.room = room;
@@ -54,8 +56,8 @@ public class Weapon extends Card {
 	}
 
 	/**
-	 * getWeaponAlias: Gets the WeaponAlias of the Weapon.
-	 * @return WeaponAlias of the Weapon.
+	 * getWeaponAlias: Gets the WeaponAlias of the Game.Weapon.
+	 * @return WeaponAlias of the Game.Weapon.
 	 */
 	public WeaponAlias getWeaponAlias() {
 		return weaponAlias;

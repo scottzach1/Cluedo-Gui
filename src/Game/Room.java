@@ -1,8 +1,8 @@
+package Game;
 
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Room extends Card {
@@ -26,7 +26,7 @@ public class Room extends Card {
 	// MEMBER VARIABLES
 	// ------------------------
 
-	// Room Attributes
+	// Game.Room Attributes
 	private Set<Cell> cells;
 	private Set<Cell> doors;
 	private Weapon weapon;
@@ -37,8 +37,8 @@ public class Room extends Card {
 	// ------------------------
 
 	/**
-	 * Room: The constructor for a Room.
-	 * @param roomAlias The RoomAlias of the Room to create.
+	 * Game.Room: The constructor for a Game.Room.
+	 * @param roomAlias The RoomAlias of the Game.Room to create.
 	 */
 	public Room(RoomAlias roomAlias) {
 		super(roomAlias.toString());
@@ -77,15 +77,15 @@ public class Room extends Card {
 	// ------------------------
 
 	/**
-	 * getCells: Returns a set of all the cells stored in a Room.
+	 * getCells: Returns a set of all the cells stored in a Game.Room.
 	 * @return Set containing all cells.
 	 */
 	public Set<Cell> getCells() { return cells; }
 
 	/**
-	 * addCell: Adds a Cell to a room.
-	 * Also sets the cells Room to this.
-	 * @param cell Cell to add to the room.
+	 * addCell: Adds a Game.Cell to a room.
+	 * Also sets the cells Game.Room to this.
+	 * @param cell Game.Cell to add to the room.
 	 */
 	public void addCell(Cell cell) {
 		this.cells.add(cell);
@@ -94,7 +94,7 @@ public class Room extends Card {
 	}
 
 	/**
-	 * getInThisRoom: Returns a Set of all the Sprites in the current Room.
+	 * getInThisRoom: Returns a Set of all the Sprites in the current Game.Room.
 	 * @return Set of users.
 	 */
 	public Set<Sprite> getInThisRoom() {
@@ -102,14 +102,14 @@ public class Room extends Card {
 	}
 
 	/**
-	 * getWeapon: Gets the Weapon stored in the Room.
-	 * @return Weapon that is stored in the current Room.
+	 * getWeapon: Gets the Game.Weapon stored in the Game.Room.
+	 * @return Game.Weapon that is stored in the current Game.Room.
 	 */
 	public Weapon getWeapon() { return weapon; }
 
 	/**
-	 * setWeapon: Sets the Weapon currently stored in the Room to a new one.
-	 * @param weapon The new Weapon to replace the old Weapon.
+	 * setWeapon: Sets the Game.Weapon currently stored in the Game.Room to a new one.
+	 * @param weapon The new Game.Weapon to replace the old Game.Weapon.
 	 */
 	public void setWeapon(Weapon weapon) {
 		this.weapon = weapon;
@@ -119,14 +119,14 @@ public class Room extends Card {
 
 
 	/**
-	 * getRoomAlias: Gets the RoomAlias of the current Room.
-	 * @return RoomAlias of the current Room.
+	 * getRoomAlias: Gets the RoomAlias of the current Game.Room.
+	 * @return RoomAlias of the current Game.Room.
 	 */
 	public RoomAlias getRoomAlias() { return roomAlias; }
 
 	/**
 	 * Given a char, find the matching RoomAlias according to our MapBase.txt file.
-	 * @param c The char corresponding to a Room on the MapFile.
+	 * @param c The char corresponding to a Game.Room on the MapFile.
 	 * @return The corresponding RoomAlias.
 	 */
 	public static RoomAlias parseAliasFromChar(char c) {
@@ -140,7 +140,7 @@ public class Room extends Card {
 			case 'E': return RoomAlias.LOUNGE;
 			case 'H': return RoomAlias.HALL;
 			case 'S': return RoomAlias.STUDY;
-			default: throw new IllegalStateException("Unexpected Sprite For Room: " + c);
+			default: throw new IllegalStateException("Unexpected Game.Sprite For Game.Room: " + c);
 		}
 	}
 
@@ -160,7 +160,7 @@ public class Room extends Card {
 			case 6: return RoomAlias.LOUNGE;
 			case 7: return RoomAlias.HALL;
 			case 8: return RoomAlias.STUDY;
-			default: throw new IllegalStateException("Unexpected Sprite For Room: " + i);
+			default: throw new IllegalStateException("Unexpected Game.Sprite For Game.Room: " + i);
 		}
 	}
 	

@@ -1,3 +1,5 @@
+package Game;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -9,7 +11,7 @@ public class PathFinder {
     private Set<Room> visitedRooms;
 
     /**
-     * PathFinder: The constructor for Path Finder
+     * Game.PathFinder: The constructor for Path Finder
      * @param board board
      */
     public PathFinder(Board board) {
@@ -19,7 +21,7 @@ public class PathFinder {
     }
 
     /**
-     * PathFinder: The constructor for Path Finder
+     * Game.PathFinder: The constructor for Path Finder
      * @param board board
      * @param visitedCells any cells already visited.
      * @param visitedRooms any rooms visited.
@@ -35,19 +37,19 @@ public class PathFinder {
      * given the provided number of steps.
      * Input Strings: "H3" or "G13"
      *
-     * @param start the starting Cell on the map.
+     * @param start the starting Game.Cell on the map.
      * @param end the desired cell on the map.
      * @return true valid, false otherwise.
      */
     public int findShortestPathFromString(String start, String end) {
-        if (board == null) throw new RuntimeException("PathFinder does not have a Board!");
+        if (board == null) throw new RuntimeException("Game.PathFinder does not have a Game.Board!");
         return findShortestPath(board.getCell(start), board.getCell(end));
     }
 
     /**
      * findShortestPath: Calculates the shortest number of steps to a given cell.
      *
-     * @param start the starting Cell on the map.
+     * @param start the starting Game.Cell on the map.
      * @param end the desired cell on the map.
      * @return int number of steps using shortest path,
      *  or Integer.MAX_VALUE if none can be found.
@@ -79,8 +81,8 @@ public class PathFinder {
 
                 AStarNode newStarNode = new AStarNode(cell, neigh, distanceTravelled, heuristic);
 
-                if (visitedRooms.contains(neigh.getRoom())) continue; // Room forbidden.
-                if (visitedCells.contains(neigh)) continue; // Cell forbidden.
+                if (visitedRooms.contains(neigh.getRoom())) continue; // Game.Room forbidden.
+                if (visitedCells.contains(neigh)) continue; // Game.Cell forbidden.
                 if (neigh.getSprite() != null) continue; // Character on cell.
 
                 if (previousNodes.containsKey(neigh)) { // Node is already visited.
@@ -124,7 +126,7 @@ public class PathFinder {
      *  - You cannot visit a cell more than once in a turn.
      *  - A turn is valid even with steps remaining if there is a path to the
      *  target room (if there is one) that is only shorter that 'steps'
-     * @param start the starting Cell on the map.
+     * @param start the starting Game.Cell on the map.
      * @param end the desired cell on the map.
      * @param steps the number of steps that have to be taken.
      * @return true path was found meeting parameters, false otherwise.
@@ -142,13 +144,13 @@ public class PathFinder {
      *  - A turn is valid even with steps remaining if there is a path to the
      *  target room (if there is one) that is only shorter that 'steps'
      *
-     * @param start the starting Cell on the map.
+     * @param start the starting Game.Cell on the map.
      * @param end the desired cell on the map.
      * @param steps the number of steps that have to be taken.
      * @return true path was found meeting parameters, false otherwise.
      */
     public boolean findExactPath(Cell start, Cell end, int steps) {
-        if (board == null) throw new RuntimeException("PathFinder does not have a Board!");
+        if (board == null) throw new RuntimeException("Game.PathFinder does not have a Game.Board!");
         visitedRooms = new HashSet<>(visitedRooms);
         visitedCells = new HashSet<>(visitedCells);
         return findExactPathHelper(new DFSNode(start, null), end, visitedRooms, visitedCells, steps);
@@ -158,7 +160,7 @@ public class PathFinder {
      * Helper method for path finding.
      *
      * @param node current DFS node
-     * @param end target Cell
+     * @param end target Game.Cell
      * @param visitedRooms the rooms forbidden as they are visited this turn.
      * @return true path was found meeting parameters, false otherwise.
      */
@@ -185,7 +187,7 @@ public class PathFinder {
 
         for (Cell neigh : neighbours) {
             if (node.visited.contains(neigh) || visitedRooms.contains(neigh.getRoom()) || visitedCells.contains(neigh)) continue;
-            if (neigh.getSprite() != null) continue; // Sprite on Cell.
+            if (neigh.getSprite() != null) continue; // Game.Sprite on Game.Cell.
 
             // Return success of child to parent.
             if (findExactPathHelper(new DFSNode(neigh, node), end, visitedRooms, visitedCells, steps)) {
@@ -195,7 +197,7 @@ public class PathFinder {
             }
         }
 
-        // Note we don't add to add all neighbours as visited as there is not path from this Cell.
+        // Note we don't add to add all neighbours as visited as there is not path from this Game.Cell.
 
         return false;
     }
@@ -213,7 +215,7 @@ public class PathFinder {
 
     /**
      * sameRoom: Checks whether both Cells share a non null room.
-     * @param cell first Cell to compare.
+     * @param cell first Game.Cell to compare.
      * @param target second cell to compare.
      * @return true if non null room shared, false other wise.
      */
@@ -222,10 +224,10 @@ public class PathFinder {
     }
 
     /**
-     * getDistance: Return the Euclidean distance of a Cell from another Cell.
+     * getDistance: Return the Euclidean distance of a Game.Cell from another Game.Cell.
      * (Based on Pythagorean Theorem using row and cols).
-     * @param a Cell to measure distance from.
-     * @param b Cell to measure distance to.
+     * @param a Game.Cell to measure distance from.
+     * @param b Game.Cell to measure distance to.
      * @return Distance between Cells.
      */
     public double getDistance(Cell a, Cell b) {
