@@ -16,10 +16,8 @@ import javax.swing.WindowConstants;
 public class GUI extends JFrame {
 	// Nothing important
 	private static final long serialVersionUID = 1L;
-
-	protected void redraw(Graphics g) {
-	}
-
+	
+	// Dimension of the frame, based on screen size
 	private static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	public static final int CANVAS_HEIGHT = screenSize.height * 2 / 3;
 	public static final int CONTROLS_HEIGHT = screenSize.height / 3;
@@ -27,11 +25,13 @@ public class GUI extends JFrame {
 	public static final int SCREEN_WIDTH = screenSize.width;
 	private static final int TEXT_OUTPUT_ROWS = 5;
 
+	// Fields: All the contents of this container
 	private JFrame frame;
 	private Canvas canvas;
 	private Controls controls;
 	private JMenuBar menuBar;
 
+	// Constructor
 	public GUI() {
 		initialise();
 		howManyPlayers();
@@ -40,7 +40,7 @@ public class GUI extends JFrame {
 	// Creates the base of all the components
 	private void initialise() {
 		// Create the frame
-		frame = new JFrame("CLUDEO GAME");
+		frame = new JFrame("CLUEDO GAME");
 		frame.setSize(screenSize.getSize());
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 

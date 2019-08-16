@@ -16,14 +16,13 @@ import javax.swing.border.TitledBorder;
 public class Controls extends JPanel {
 
 	private final Color accentCol = Color.WHITE;
-	private final Color baseCol = Color.DARK_GRAY;
+	private final Color baseCol = Color.DARK_GRAY;	
+	public static final int inset = 10;
 	
 	private String borderTitle;
 	private Console c;
 	private UserInterface ui;
 	private Dimension size;
-	
-	public static final int inset = 10;
 	
 	public Controls() {
 		borderTitle = "CONTROLS";
@@ -42,8 +41,6 @@ public class Controls extends JPanel {
 		// Create and Add the two panels
 		c = new Console();
 		ui = new UserInterface();
-		
-		// Create and setup the layout
 		
 		// Set layout and add the components
 		setLayout(new BorderLayout());

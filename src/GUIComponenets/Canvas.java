@@ -96,7 +96,7 @@ public class Canvas extends JPanel {
 	}
 
 
-	public void revalidateComponents(int cols) {
+	private void revalidateComponents(int cols) {
 
 		if (components.size() > 0) {
 			gc.gridy = 0;
