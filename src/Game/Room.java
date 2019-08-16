@@ -53,7 +53,7 @@ public class Room extends Card {
 	 * If any cell in room has a neighbour that is not in this room.
 	 * Then add that neighbour to the doors. (no door should be in the room).
 	 */
-	public void calculateDoors() {
+	public void calculateDoorSteps() {
 		doors = new HashSet<>();
 
 		for (Cell cell : cells) {
@@ -68,7 +68,7 @@ public class Room extends Card {
 	 * getDoors: Returns a set of all the doors of the room.
 	 * @return
 	 */
-	public Set<Cell> getDoors() {
+	public Set<Cell> getDoorSteps() {
 		return doors;
 	}
 

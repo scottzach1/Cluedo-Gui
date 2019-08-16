@@ -13,7 +13,7 @@ public class Cell {
 	/**
 	 * An Enum defining the different kinds of Cells in the Game.
 	 */
-	public enum Type {ROOM, WALL, BLANK, START_PAD}
+	public enum Type {ROOM, WALL, HALL, START_PAD, VOID}
 
 	// ------------------------
 	// MEMBER VARIABLES
@@ -113,10 +113,12 @@ public class Cell {
 	 * @return Type of Game.Cell.
 	 */
 	static Type getType(char c) {
-		if (c == '#') return Type.WALL;
+		if (c == ' ') return Type.VOID;
+		if (c == 'X') return Type.ROOM;
+		if (c == 'Y') return Type.HALL;
 		if (Pattern.matches("\\d", c + "")) return Type.START_PAD;
 		if (Pattern.matches("[A-Z]", c + "")) return Type.ROOM;		
-		return Type.BLANK;
+		return Type.HALL;
 	}
 
 	/**
@@ -128,9 +130,27 @@ public class Cell {
 	public String toString() {
 		if (sprite != null) return sprite.toString();
 		if (type == Type.ROOM) return "_";
-		if (type == Type.BLANK) return "_";
+		if (type == Type.HALL) return "_";
 		else if (type == Type.WALL) return "#";
 		else if (type == Type.START_PAD) return "$";		
 		return "ERROR ON TYPE";
+	}
+
+	/**
+	 * sameCell: Checks whether both cells are the same, or share the same non null room.
+	 * @param other second cell to compare.
+	 * @return boolean true if same, false otherwise.
+	 */
+	public boolean sameCell(Cell other) {
+		return sameRoom(other) || this == other;
+	}
+
+	/**
+	 * sameRoom: Checks whether both Cells share a non null room.
+	 * @param other second cell to compare.
+	 * @return true if non null room shared, false other wise.
+	 */
+	public boolean sameRoom(Cell other) {
+		return ((this.getRoom() != null) && this.getRoom() == other.getRoom());
 	}
 }

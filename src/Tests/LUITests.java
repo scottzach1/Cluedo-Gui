@@ -144,7 +144,7 @@ public class LUITests {
         cell = new Cell(5, 5, Cell.Type.WALL);
         assertEquals("#", cell.toString());
 
-        cell = new Cell(5, 5, Cell.Type.BLANK);
+        cell = new Cell(5, 5, Cell.Type.HALL);
         assertEquals("_", cell.toString());
 
         cell = new Cell(5, 5, Cell.Type.ROOM);
@@ -158,14 +158,14 @@ public class LUITests {
         // Checking doors generated.
         Board b = new Board();
 
-        assertEquals(1, b.getRooms().get(Room.RoomAlias.KITCHEN).getDoors().size());
-        assertEquals(4, b.getRooms().get(Room.RoomAlias.BALLROOM).getDoors().size());
-        assertEquals(1, b.getRooms().get(Room.RoomAlias.CONSERVATORY).getDoors().size());
-        assertEquals(2, b.getRooms().get(Room.RoomAlias.LIBRARY).getDoors().size());
-        assertEquals(1, b.getRooms().get(Room.RoomAlias.STUDY).getDoors().size());
-        assertEquals(4, b.getRooms().get(Room.RoomAlias.HALL).getDoors().size());
-        assertEquals(1, b.getRooms().get(Room.RoomAlias.LOUNGE).getDoors().size());
-        assertEquals(2, b.getRooms().get(Room.RoomAlias.DINING_ROOM).getDoors().size());
+        assertEquals(1, b.getRooms().get(Room.RoomAlias.KITCHEN).getDoorSteps().size());
+        assertEquals(4, b.getRooms().get(Room.RoomAlias.BALLROOM).getDoorSteps().size());
+        assertEquals(1, b.getRooms().get(Room.RoomAlias.CONSERVATORY).getDoorSteps().size());
+        assertEquals(2, b.getRooms().get(Room.RoomAlias.LIBRARY).getDoorSteps().size());
+        assertEquals(1, b.getRooms().get(Room.RoomAlias.STUDY).getDoorSteps().size());
+        assertEquals(4, b.getRooms().get(Room.RoomAlias.HALL).getDoorSteps().size());
+        assertEquals(1, b.getRooms().get(Room.RoomAlias.LOUNGE).getDoorSteps().size());
+        assertEquals(2, b.getRooms().get(Room.RoomAlias.DINING_ROOM).getDoorSteps().size());
 
         // Checking parsingEnum strings.
         Queue<String> roomAliasStrings = new ArrayDeque<>(Arrays.asList("KITCHEN", "BALLROOM", "CONSERVATORY", "BILLARD_ROOM", "DINING_ROOM", "LIBRARY", "LOUNGE", "HALL", "STUDY"));

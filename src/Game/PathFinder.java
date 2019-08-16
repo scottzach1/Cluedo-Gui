@@ -72,10 +72,10 @@ public class PathFinder {
             node = priorityQueue.poll();
             Cell cell = node.current;
 
-            if (sameCell(node.current, end)) break; // Breaks when path is found.
+            if (node.current.sameCell(end)) break; // Breaks when path is found.
 
             // If in a room, iterate over its doors, else its neighbours.
-            for (Cell neigh : ((cell.getRoom() != null) ? cell.getRoom().getDoors() : cell.getNeighbors().values())) {
+            for (Cell neigh : ((cell.getRoom() != null) ? cell.getRoom().getDoorSteps() : cell.getNeighbors().values())) {
                 double distanceTravelled = node.distanceTravelled + 1;
                 double heuristic = distanceTravelled + getDistance(neigh, end); // Euclidean distance.
 
@@ -100,7 +100,7 @@ public class PathFinder {
             }
         }
 
-        if (!sameCell(node.current, end)) return Integer.MAX_VALUE; // Path was unable to be found. End was unreachable.
+        if (!node.current.sameCell(end)) return Integer.MAX_VALUE; // Path was unable to be found. End was unreachable.
 
         Stack<Cell> path = new Stack<>(); // Stack of path. NOTE: I could just remember n steps. This was helpful for debugging too!
 
@@ -168,7 +168,7 @@ public class PathFinder {
         Cell current = node.current;
 
         // Success Termination.
-        if (sameRoom(current, end) || (sameCell(current, end) && node.depth == steps)) {
+        if (current.sameRoom(end) || (current.sameCell(end) && node.depth == steps)) {
             if (current.getRoom() != null) visitedRooms.add(current.getRoom());
             visitedCells.add(current);
             return true;
@@ -181,7 +181,7 @@ public class PathFinder {
 
         // Select the neighbours, or door ways if in a room.
         if (current.getRoom() != null) {
-            neighbours = current.getRoom().getDoors();
+            neighbours = current.getRoom().getDoorSteps();
             visitedRooms.add(current.getRoom());
         } else neighbours = new HashSet<>(current.getNeighbors().values());
 
@@ -200,27 +200,6 @@ public class PathFinder {
         // Note we don't add to add all neighbours as visited as there is not path from this Game.Cell.
 
         return false;
-    }
-
-
-    /**
-     * sameCell: Checks whether both cells are the same, or share the same non null room.
-     * @param cell first cell to compare
-     * @param target second cell to compare.
-     * @return boolean true if same, false otherwise.
-     */
-    private boolean sameCell(Cell cell, Cell target) {
-        return sameRoom(cell, target) || cell == target;
-    }
-
-    /**
-     * sameRoom: Checks whether both Cells share a non null room.
-     * @param cell first Game.Cell to compare.
-     * @param target second cell to compare.
-     * @return true if non null room shared, false other wise.
-     */
-    private boolean sameRoom(Cell cell, Cell target) {
-        return ((cell.getRoom() != null) && cell.getRoom() == target.getRoom());
     }
 
     /**

@@ -1,7 +1,10 @@
 package Game;
 
+import java.awt.*;
+import java.io.File;
 import java.security.InvalidParameterException;
 import java.util.*;
+import java.util.List;
 
 public class Board {
 
@@ -29,7 +32,6 @@ public class Board {
 	 */
 	public Board() {
 
-
 		// Generate room cards
 		rooms = new HashMap<>();
 		for (Room.RoomAlias alias : Room.RoomAlias.values()) {
@@ -50,12 +52,15 @@ public class Board {
 		for (Weapon.WeaponAlias alias : Weapon.WeaponAlias.values()) {
 			Weapon weapon = new Weapon(alias);
 			weapons.put(alias, weapon);
-			weapon.setRoom(roomList.remove(roomList.size()-1));
+			weapon.setRoom(roomList.remove(roomList.size() - 1));
 		}
+
+		// This are using for linking the door ways later.
+		Set<Cell> doorSteps = new HashSet<>();
 
 		// Load Map Based off file layout
 		try {
-			Scanner sc = new Scanner(getMapBase());
+			Scanner sc = new Scanner(new File("map.txt"));
 			if (!sc.next().equals("MAP"))
 				throw new Exception("Invalid File Type");
 
@@ -80,6 +85,9 @@ public class Board {
 					Cell cell = new Cell(row, col, type);
 					cells[row][col] = cell;
 
+					if (c == 'X') continue; // This is a door, ignore for now.
+					if (c == 'Y') doorSteps.add(cell); // This is a doorstep. Use later.
+
 					if (type == Cell.Type.START_PAD) {
 						try {
 							Sprite currentSprite = sprites.get(Sprite.parseAliasFromOrdinalChar(c));
@@ -90,6 +98,9 @@ public class Board {
 							// Continue as normal as if it were blank.
 						}
 					} else if (type == Cell.Type.ROOM) {
+
+						if (c == 'X') continue; // This is a door, ignore for now.
+
 						Room room = rooms.get(Room.parseAliasFromChar(c));
 						room.addCell(cell);
 						cell.setRoom(room);
@@ -101,49 +112,82 @@ public class Board {
 			System.out.println("File Exception: " + e);
 		}
 
-
-		// Set all the cells neighbors
-		for (int row = 0; row < rows; row++) {
-			for (int col = 0; col < cols; col++) {
+		for (int row = 0; row != rows; ++row) {
+			for (int col = 0; col != cols; ++col) {
 				Cell cell = cells[row][col];
+				Cell other;
 
-				// Neighbor can not be a wall, or out of bounds
-				// Walls have no neighbors
+				if (cell.getType() == Cell.Type.VOID) continue;
+				if (cell.getType() == Cell.Type.ROOM && cell.getRoom() == null) {
+					// This is a door, link with corresponding room and doorsteps.
 
-				if (cell.getType() == Cell.Type.WALL) continue;
+					// North
+					if (row > 0) {
+						other = cells[row - 1][col];
+						if (other.getType() == Cell.Type.ROOM && other.getRoom() != null)
+							cell.setRoom(other.getRoom());
+						else if (other.getType() == Cell.Type.HALL && doorSteps.contains(other)) {
+								cell.setNeighbor(Cell.Direction.NORTH, other);
+								other.setNeighbor(Cell.Direction.SOUTH, cell);
+						}
+					}
 
-				if (row > 0) {
-					Cell other = cells[row - 1][col];
-					if (other.getType() != Cell.Type.WALL) {
-						cell.setNeighbor(Cell.Direction.NORTH, other);
+					// South
+					if (row < rows - 1) {
+						other = cells[row + 1][col];
+						if (other.getType() == Cell.Type.ROOM && other.getRoom() != null)
+							cell.setRoom(other.getRoom());
+						else if (other.getType() == Cell.Type.HALL && doorSteps.contains(other)) {
+							cell.setNeighbor(Cell.Direction.SOUTH, other);
+							other.setNeighbor(Cell.Direction.NORTH, cell);
+						}
+					}
+
+					// East
+					if (col > 0) {
+						other = cells[row][col - 1];
+						if (other.getType() == Cell.Type.ROOM && other.getRoom() != null)
+							cell.setRoom(other.getRoom());
+						else if (other.getType() == Cell.Type.HALL && doorSteps.contains(other)) {
+							cell.setNeighbor(Cell.Direction.WEST, other);
+							other.setNeighbor(Cell.Direction.EAST, cell);
+						}
+					}
+
+					// West
+					if (col < cols + 1) {
+						other = cells [row][col + 1];
+						if (other.getType() == Cell.Type.ROOM && other.getRoom() != null)
+							cell.setRoom(other.getRoom());
+						else if (other.getType() == Cell.Type.HALL && doorSteps.contains(other)) {
+							cell.setNeighbor(Cell.Direction.EAST, other);
+							other.setNeighbor(Cell.Direction.WEST, cell);
+						}
 					}
 				}
 
-				if (row < (rows - 1)) {
-					Cell other = cells[row + 1][col];
-					if (other.getType() != Cell.Type.WALL) {
-						cell.setNeighbor(Cell.Direction.SOUTH, other);
-					}
-				}
+				// North
+				if (row > 0 && linkCells(cell, other = cells[row - 1][col]))
+					cell.setNeighbor(Cell.Direction.NORTH, other);
+				// South
+				if (row < rows - 1 && linkCells(cell, other = cells[row + 1][col]))
+					cell.setNeighbor(Cell.Direction.SOUTH, other);
+				// East
+				if (col > 0 && linkCells(cell, other = cells[row][col - 1]))
+					cell.setNeighbor(Cell.Direction.WEST, other);
+				// West
+				if (col < cols + 1 && linkCells(cell, other = cells[row][col + 1]))
+					cell.setNeighbor(Cell.Direction.WEST, other);
 
-				if (col > 0) {
-					Cell other = cells[row][col - 1];
-					if (other.getType() != Cell.Type.WALL) {
-						cell.setNeighbor(Cell.Direction.WEST, other);
-					}
-				}
-
-				if (col < (cols - 1)) {
-					Cell other = cells[row][col + 1];
-					if (other.getType() != Cell.Type.WALL) {
-						cell.setNeighbor(Cell.Direction.EAST, other);
-					}
-				}
 			}
 		}
 
 		// Calculate doors for each room.
-		rooms.values().forEach(Room::calculateDoors);
+		rooms.values().forEach(Room::calculateDoorSteps);
+	}
+
+	public boolean linkCells(Cell a, Cell b) {
+		return (a.getType() != Cell.Type.VOID || b.getType() != Cell.Type.VOID) && (a.sameRoom(b) || (a.getType() != Cell.Type.ROOM && a.getType() == b.getType()));
 	}
 
 	// ------------------------
@@ -260,33 +304,37 @@ public class Board {
 	 * @return String copy of map to load.
 	 */
 	private String getMapBase() {
-		return "MAP 25 24\r\n" + 
-				"   _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\r\n" + 
-				"01|#|#|#|#|#|#|#|0|#|#|#|#|#|#|#|#|1|#|#|#|#|#|#|#|\r\n" + 
-				"02|#|K|K|K|K|#|_|_|#|#|#|B|B|#|#|#|_|_|#|C|C|C|C|#|\r\n" + 
-				"03|#|K|K|K|K|#|_|_|#|B|B|B|B|B|B|#|_|_|#|C|C|C|C|#|\r\n" + 
-				"04|#|K|K|K|K|#|_|_|#|B|B|B|B|B|B|#|_|_|#|C|C|C|C|#|\r\n" + 
-				"05|#|K|K|K|K|#|_|_|#|B|B|B|B|B|B|#|_|_|#|C|#|C|C|#|\r\n" + 
-				"06|#|#|#|#|K|#|_|_|B|B|B|B|B|B|B|B|_|_|_|_|#|#|#|#|\r\n" + 
+		return "MAP 25 24\r\n" +
+				"   _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\r\n" +
+				"01|#|#|#|#|#|#|#|0|#|#|#|#|#|#|#|#|1|#|#|#|#|#|#|#|\r\n" +
+				"02|#|K|K|K|K|#|_|_|#|#|#|B|B|#|#|#|_|_|#|C|C|C|C|#|\r\n" +
+				"03|#|K|K|K|K|#|_|_|#|B|B|B|B|B|B|#|_|_|#|C|C|C|C|#|\r\n" +
+				"04|#|K|K|K|K|#|_|_|#|B|B|B|B|B|B|#|_|_|#|C|C|C|C|#|\r\n" +
+				"05|#|K|K|K|K|#|_|_|#|B|B|B|B|B|B|#|_|_|#|C|#|C|C|#|\r\n" +
+				"06|#|#|#|#|K|#|_|_|B|B|B|B|B|B|B|B|_|_|_|_|#|#|#|#|\r\n" +
 				"07|#|_|_|_|_|_|_|_|#|#|B|#|#|B|#|#|_|_|_|_|_|_|_|2|\r\n" +
-				"08|#|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|#|\r\n" + 
-				"09|#|#|#|#|_|_|_|_|_|_|_|_|_|_|_|_|_|_|#|#|#|#|#|#|\r\n" + 
-				"10|#|D|D|#|#|#|#|_|_|#|#|#|#|#|#|_|_|_|#|A|A|A|A|#|\r\n" + 
-				"11|#|D|D|D|D|D|#|_|_|#|#|#|#|#|#|_|_|_|A|A|A|A|A|#|\r\n" + 
-				"12|#|D|D|D|D|D|D|_|_|#|#|#|#|#|#|_|_|_|#|A|A|A|A|#|\r\n" + 
-				"13|#|D|D|D|D|D|#|_|_|#|#|#|#|#|#|_|_|_|#|#|#|#|A|#|\r\n" + 
-				"14|#|D|D|D|D|D|#|_|_|#|#|#|#|#|#|_|_|_|_|_|_|_|_|#|\r\n" + 
-				"15|#|D|D|D|D|D|#|_|_|#|#|#|#|#|#|_|_|_|#|#|L|#|#|#|\r\n" + 
-				"16|#|#|#|#|D|#|#|_|_|#|#|#|#|#|#|_|_|#|#|L|L|L|L|#|\r\n" + 
-				"17|#|_|_|_|_|_|_|_|_|#|#|#|#|#|#|_|_|L|L|L|L|L|L|#|\r\n" + 
-				"18|5|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|#|#|L|L|L|L|#|\r\n" + 
-				"19|#|_|_|_|_|_|_|_|#|#|H|H|H|#|#|_|_|_|#|#|#|#|#|#|\r\n" + 
-				"20|#|#|#|#|E|#|_|_|#|H|H|H|H|H|#|_|_|_|_|_|_|_|_|3|\r\n" + 
-				"21|#|E|E|E|E|#|_|_|#|H|H|H|H|H|H|_|_|_|_|_|_|_|_|#|\r\n" + 
-				"22|#|E|E|E|E|#|_|_|#|H|H|H|H|H|#|_|_|#|S|#|#|#|#|#|\r\n" + 
-				"23|#|E|E|E|E|#|_|_|#|H|H|H|H|H|#|_|_|#|S|S|S|S|S|#|\r\n" + 
-				"24|#|E|E|E|E|#|_|_|#|H|H|H|H|H|#|_|_|#|S|S|S|S|S|#|\r\n" + 
-				"25|#|#|#|#|#|#|4|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|\r\n" + 
+				"08|#|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|#|\r\n" +
+				"09|#|#|#|#|_|_|_|_|_|_|_|_|_|_|_|_|_|_|#|#|#|#|#|#|\r\n" +
+				"10|#|D|D|#|#|#|#|_|_|#|#|#|#|#|#|_|_|_|#|A|A|A|A|#|\r\n" +
+				"11|#|D|D|D|D|D|#|_|_|#|#|#|#|#|#|_|_|_|A|A|A|A|A|#|\r\n" +
+				"12|#|D|D|D|D|D|D|_|_|#|#|#|#|#|#|_|_|_|#|A|A|A|A|#|\r\n" +
+				"13|#|D|D|D|D|D|#|_|_|#|#|#|#|#|#|_|_|_|#|#|#|#|A|#|\r\n" +
+				"14|#|D|D|D|D|D|#|_|_|#|#|#|#|#|#|_|_|_|_|_|_|_|_|#|\r\n" +
+				"15|#|D|D|D|D|D|#|_|_|#|#|#|#|#|#|_|_|_|#|#|L|#|#|#|\r\n" +
+				"16|#|#|#|#|D|#|#|_|_|#|#|#|#|#|#|_|_|#|#|L|L|L|L|#|\r\n" +
+				"17|#|_|_|_|_|_|_|_|_|#|#|#|#|#|#|_|_|L|L|L|L|L|L|#|\r\n" +
+				"18|5|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|#|#|L|L|L|L|#|\r\n" +
+				"19|#|_|_|_|_|_|_|_|#|#|H|H|H|#|#|_|_|_|#|#|#|#|#|#|\r\n" +
+				"20|#|#|#|#|E|#|_|_|#|H|H|H|H|H|#|_|_|_|_|_|_|_|_|3|\r\n" +
+				"21|#|E|E|E|E|#|_|_|#|H|H|H|H|H|H|_|_|_|_|_|_|_|_|#|\r\n" +
+				"22|#|E|E|E|E|#|_|_|#|H|H|H|H|H|#|_|_|#|S|#|#|#|#|#|\r\n" +
+				"23|#|E|E|E|E|#|_|_|#|H|H|H|H|H|#|_|_|#|S|S|S|S|S|#|\r\n" +
+				"24|#|E|E|E|E|#|_|_|#|H|H|H|H|H|#|_|_|#|S|S|S|S|S|#|\r\n" +
+				"25|#|#|#|#|#|#|4|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|\r\n" +
 				"   A B C D E F G H I J K L M N O P Q R S T U V W X";
+	}
+
+	public static void main(String[] args) {
+		Board b = new Board();
 	}
 }
