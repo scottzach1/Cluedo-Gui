@@ -36,13 +36,15 @@ public class Controls extends JPanel {
 	private Console c;
 	private UserInterface ui;
 	private Dimension size;
+	private final GUI gui;
 
 	// --------------------------------------------------
 	// CONSTRUCTOR
 	// --------------------------------------------------
 
-	public Controls() {
+	public Controls(GUI parent) {
 		borderTitle = "CONTROLS";
+		gui = parent;
 
 		// Set the Size of the Control panel
 		size = getPreferredSize();
@@ -78,15 +80,14 @@ public class Controls extends JPanel {
 		JButton play = new JButton("PLAY");
 		play.setPreferredSize(new Dimension(size.width / 10, size.height / 5));
 		play.setFont(new Font("Arial", Font.BOLD, 20));
-
+		
 		play.addActionListener(new ActionListener() {
 
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				GUI g = (GUI) GUI.getFrames()[0];
-				g.next();
+			public void actionPerformed(ActionEvent e) {
+				gui.nextState();
 			}
-
+			
 		});
 
 		add(play, gc);
@@ -145,9 +146,8 @@ public class Controls extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					int players = Integer.parseInt(group.getSelection().getActionCommand());
-					GUI g = (GUI) GUI.getFrames()[0];
-					g.setPlayerAmount(players);
-					g.next();
+					gui.setPlayerAmount(players);
+					gui.nextState();
 				} catch (Exception e) {}
 			}
 
@@ -178,9 +178,8 @@ public class Controls extends JPanel {
 		nameField.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				GUI g = (GUI) GUI.getFrames()[0];
-				g.setTempUserName(nameField.getText());
-				g.selectCharacter();
+				gui.setTempUserName(nameField.getText());
+				gui.selectCharacter();
 			}			
 		});
 		

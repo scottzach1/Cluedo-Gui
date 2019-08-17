@@ -1,15 +1,20 @@
 package gui;
 
-import game.*;
-
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.WindowConstants;
+
+import game.Sprite;
+import game.User;
 
 public class GUI extends JFrame {
 	// Nothing important
@@ -27,7 +32,7 @@ public class GUI extends JFrame {
 	public static final int SCREEN_WIDTH = screenSize.width;
 
 	// Allows for states
-	private static int state;
+	private int state;
 
 	// Fields: All the contents of this container
 	private JFrame frame;
@@ -56,7 +61,7 @@ public class GUI extends JFrame {
 
 		// Create the layout
 		canvas = new Canvas();
-		controls = new Controls();
+		controls = new Controls(this);
 		menuBar = new MenuOptions();
 
 		// Add panels to frame
@@ -166,7 +171,7 @@ public class GUI extends JFrame {
 		controls.clear();
 	}
 
-	public void next() {
+	public void nextState() {
 		state++;
 		runGUI();
 	}
