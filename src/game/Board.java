@@ -84,7 +84,7 @@ public class Board {
 					char c = line.charAt(lineIndex);
 
 					Cell.Type type = Cell.getType(c);
-					Cell cell = new Cell(row, col, type);
+					Cell cell = new Cell(row, col, (type!= Cell.Type.START_PAD) ? type : Cell.Type.HALL);
 					cells[row][col] = cell;
 
 					if (c == 'X') continue; // This is a door, ignore for now.
@@ -117,7 +117,7 @@ public class Board {
 				Cell cell = cells[row][col];
 				Cell other;
 
-				if (cell.getType() == Cell.Type.VOID) continue;
+//				if (cell.getType() == Cell.Type.VOID) continue;
 				if (cell.getType() == Cell.Type.ROOM && cell.getRoom() == null) {
 					// This is a door, link with corresponding room and doorsteps.
 
@@ -167,18 +167,28 @@ public class Board {
 				}
 
 				// North
-				if (row > 0 && linkCells(cell, other = cells[row - 1][col]))
-					cell.setNeighbor(Cell.Direction.NORTH, other);
-				// South
-				if (row < rows - 1 && linkCells(cell, other = cells[row + 1][col]))
-					cell.setNeighbor(Cell.Direction.SOUTH, other);
-				// East
-				if (col > 0 && linkCells(cell, other = cells[row][col - 1]))
-					cell.setNeighbor(Cell.Direction.WEST, other);
-				// West
-				if (col < cols - 1 && linkCells(cell, other = cells[row][col + 1]))
-					cell.setNeighbor(Cell.Direction.WEST, other);
+				if (row > 0) {
+					if (linkCells(cell, other = cells[row - 1][col]))
+						cell.setNeighbor(Cell.Direction.NORTH, other);
+				} else if (cell.getType() != Cell.Type.HALL) cell.setNeighbor(Cell.Direction.NORTH, new Cell(-1, col, Cell.Type.UNKNOWN));
 
+				// South
+				if (row < rows - 1) {
+					if (linkCells(cell, other = cells[row + 1][col]))
+						cell.setNeighbor(Cell.Direction.SOUTH, other);
+				} else if (cell.getType() != Cell.Type.HALL) cell.setNeighbor(Cell.Direction.SOUTH, new Cell(row + 1, col, Cell.Type.UNKNOWN));
+
+				// East
+				if (col > 0) {
+					if (linkCells(cell, other = cells[row][col - 1]))
+						cell.setNeighbor(Cell.Direction.WEST, other);
+				} else if (cell.getType() != Cell.Type.HALL) cell.setNeighbor(Cell.Direction.WEST, new Cell(row, -1, Cell.Type.UNKNOWN));
+
+				// West
+				if (col < cols - 1) {
+					if (linkCells(cell, other = cells[row][col + 1]))
+						cell.setNeighbor(Cell.Direction.EAST, other);
+				} else if (cell.getType() != Cell.Type.HALL) cell.setNeighbor(Cell.Direction.EAST, new Cell(row, row + 1, Cell.Type.UNKNOWN));
 			}
 		}
 
@@ -187,7 +197,7 @@ public class Board {
 	}
 
 	public boolean linkCells(Cell a, Cell b) {
-		return (a.getType() != Cell.Type.VOID || b.getType() != Cell.Type.VOID) && (a.sameRoom(b) || (a.getType() != Cell.Type.ROOM && a.getType() == b.getType()));
+		return (a.getType() == b.getType());
 	}
 
 	// ------------------------

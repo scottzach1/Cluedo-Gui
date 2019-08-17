@@ -1,10 +1,11 @@
 package game;
 
 import extra.CombinedImageIcon;
-import extra.CompoundIcon;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class Cell {
@@ -62,9 +63,23 @@ public class Cell {
 	}
 
     public ImageIcon getIcon() {
-		if (sprite == null) return icon;
-		return new CombinedImageIcon(icon, Sprite.parseIcon(sprite.getSpriteAlias()));
+		List<ImageIcon> layers = new ArrayList<>();
+		for (Direction dir : Direction.values()) {
+			if (neighbors.get(dir) == null) layers.add(parseWallIcon(dir));
+		}
+		if (sprite != null) layers.add(sprite.getIcon());
+		return new CombinedImageIcon(icon, layers);
     }
+
+    static ImageIcon parseWallIcon(Direction dir) {
+		switch (dir) {
+			case WEST:		return new ImageIcon("wall_left.png");
+			case EAST:		return new ImageIcon("wall_right.png");
+			case NORTH:		return new ImageIcon("wall_top.png");
+			case SOUTH:		return new ImageIcon("wall_bot.png");
+			default:		return new ImageIcon("cell_void.png");
+		}
+	}
 
     // ------------------------
 	// INTERFACE

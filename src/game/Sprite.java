@@ -42,6 +42,8 @@ public class Sprite extends Card {
 	 */
 	public User getUser() { return user; }
 
+	public ImageIcon getIcon() { return parseIcon(spriteAlias); }
+
 	public static ImageIcon parseIcon(SpriteAlias spriteAlias) {
 		switch (spriteAlias) {
 			case MRS_WHITE:			return new ImageIcon("mrs_white_marker.png");
