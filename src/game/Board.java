@@ -21,6 +21,8 @@ public class Board {
 
 	private Cell[][] cells;
 	private int rows, cols;
+
+	public static Set<Cell> HIGHLIGHTED_CELLS = new HashSet<>();
 	public static Sprite.SpriteAlias ACTIVE_SPRITE = Sprite.SpriteAlias.MR_GREEN;
 
 	// ------------------------

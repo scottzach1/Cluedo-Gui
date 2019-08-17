@@ -62,6 +62,15 @@ public class Cell {
 		}
 	}
 
+	static ImageIcon parseHighLightedImageIcon(Cell.Type type) {
+		switch (type) {
+			case HALL:		return new ImageIcon("cell_grey_highlighted.png");
+			case START_PAD:	return new ImageIcon("cell_grey_highlighted.png");
+			case ROOM:		return new ImageIcon("cell_red_highlighted.png");
+			default:		return parseImageIcon(type);
+		}
+	}
+
     public ImageIcon getIcon() {
 		List<ImageIcon> layers = new ArrayList<>();
 		for (Direction dir : Direction.values()) {
@@ -69,7 +78,8 @@ public class Cell {
 		}
 		if (sprite != null) layers.add(sprite.getIcon());
 		if (sprite != null && sprite.getSpriteAlias() == Board.ACTIVE_SPRITE) return new CombinedImageIcon(sprite.getCellIcon(), layers);
-		return new CombinedImageIcon(icon, layers);
+		if (Board.HIGHLIGHTED_CELLS.contains(this)) return new CombinedImageIcon(parseHighLightedImageIcon(type), layers);
+		else return new CombinedImageIcon(icon, layers);
     }
 
     static ImageIcon parseWallIcon(Direction dir) {

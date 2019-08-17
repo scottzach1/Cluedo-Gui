@@ -1,6 +1,7 @@
 package gui;
 
 import game.Board;
+import game.Room;
 
 import java.awt.*;
 import java.awt.event.ComponentEvent;
@@ -190,6 +191,19 @@ public class Canvas extends JPanel implements ComponentListener {
 
 	public static void main(String[] args) {
 		Board b = new Board();
+
+		// Highlight some cells to test
+		Board.HIGHLIGHTED_CELLS.add(b.getCell("O2"));
+		Board.HIGHLIGHTED_CELLS.add(b.getCell("P2"));
+		Board.HIGHLIGHTED_CELLS.add(b.getCell("Q2"));
+		Board.HIGHLIGHTED_CELLS.add(b.getCell("Q3"));
+		Board.HIGHLIGHTED_CELLS.add(b.getCell("R3"));
+		Board.HIGHLIGHTED_CELLS.add(b.getCell("R4"));
+		Board.HIGHLIGHTED_CELLS.add(b.getCell("R5"));
+		Board.HIGHLIGHTED_CELLS.add(b.getCell("R6"));
+		Board.HIGHLIGHTED_CELLS.add(b.getCell("S6"));
+		Board.HIGHLIGHTED_CELLS.addAll(b.getRooms().get(Room.RoomAlias.CONSERVATORY).getCells());
+
 		Canvas c = new Canvas(null, b);
 
 		JFrame frame = new JFrame("FrameDemo");
