@@ -37,6 +37,7 @@ public class GUI extends JFrame {
 	private int playerAmount;
 	private List<User> users;
 	private String tempUserName;
+	private Sprite.SpriteAlias tempCharacterChoice;
 	private int tempUserNum;
 
 	// --------------------------------------------------
@@ -74,20 +75,17 @@ public class GUI extends JFrame {
 	// --------------------------------------------------
 
 	public void runGUI() {
-		if (state == 0) {
-			clear();
+		if (state == 0)
 			mainMenu();
-		} else if (state == 1) {
-			clear();
+		else if (state == 1)
 			howManyPlayers();
-		} else if (state == 2) {
-			clear();
+		else if (state == 2)
 			createUser();
-		}
 	}
 
 	// Display the main menu
 	private void mainMenu() {
+		clear();
 		canvas.mainMenu();
 		controls.mainMenu();
 		redraw();
@@ -95,20 +93,24 @@ public class GUI extends JFrame {
 
 	// Displays the main menu for each panel
 	private void howManyPlayers() {
+		clear();
 		canvas.howManyPlayers();
 		controls.howManyPlayers();
 		redraw();
 	}
-	
+
 	private void createUser() {
+		clear();
 		canvas.createUser(tempUserNum);
 		controls.createUser(tempUserNum);
 		redraw();
 	}
-	
-	private void selectCharacter() {
+
+	public void selectCharacter() {
+		clear();
 		canvas.selectCharacter(tempUserName);
 		controls.selectCharacter(tempUserName);
+		redraw();
 	}
 
 	// --------------------------------------------------
@@ -140,13 +142,17 @@ public class GUI extends JFrame {
 
 	public void setPlayerAmount(int playerAmount) {
 		this.playerAmount = playerAmount;
-	}	
+	}
 
 	public void setTempUserName(String un) {
 		this.tempUserName = un;
 	}
-	
-	public void nextUser() {
+
+	public void setTempCharacter(Sprite.SpriteAlias sa) {
+		tempCharacterChoice = sa;
+	}
+
+	public void nextTempUserNum() {
 		tempUserNum++;
 	}
 

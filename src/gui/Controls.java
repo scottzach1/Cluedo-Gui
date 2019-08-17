@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -35,7 +36,6 @@ public class Controls extends JPanel {
 	private Console c;
 	private UserInterface ui;
 	private Dimension size;
-	private GridBagConstraints gc;
 
 	// --------------------------------------------------
 	// CONSTRUCTOR
@@ -58,8 +58,6 @@ public class Controls extends JPanel {
 
 		// Set the layout
 		setLayout(new GridBagLayout());
-		gc = new GridBagConstraints();
-		gc.fill = GridBagConstraints.BOTH;
 	}
 
 	// --------------------------------------------------
@@ -98,6 +96,8 @@ public class Controls extends JPanel {
 	 * howManyPlayers:
 	 */
 	protected void howManyPlayers() {
+		
+		GridBagConstraints gc = new GridBagConstraints();
 
 		// Set up the button group and placement
 		ButtonGroup group = new ButtonGroup();
@@ -108,11 +108,11 @@ public class Controls extends JPanel {
 		for (int i = 0; i < 4; i++) {
 			// NORMAL IMAGE
 			Image image = (new ImageIcon("assets/normal_check_box.png")).getImage();
-			image = image.getScaledInstance(size.width / 12, size.height / 2, java.awt.Image.SCALE_SMOOTH);
+			image = image.getScaledInstance(size.width / 8, size.height / 2, java.awt.Image.SCALE_SMOOTH);
 			ImageIcon normal = new ImageIcon(image);
 			// SELECTED IMAGE
 			Image image2 = (new ImageIcon("assets/selected_check_box.png")).getImage();
-			image2 = image2.getScaledInstance(size.width / 12, size.height / 2, java.awt.Image.SCALE_SMOOTH);
+			image2 = image2.getScaledInstance(size.width / 8, size.height / 2, java.awt.Image.SCALE_SMOOTH);
 			ImageIcon selected = new ImageIcon(image2);
 
 			JCheckBox b = new JCheckBox((i + 3) + "");
@@ -126,10 +126,12 @@ public class Controls extends JPanel {
 			group.add(b);
 
 			gc.gridx = i;
+			gc.anchor = GridBagConstraints.CENTER;
 			add(b, gc);
 		}
 
 		// Create the submit button
+		gc.fill = GridBagConstraints.BOTH;
 		gc.weighty = 1;
 		gc.gridx = 0;
 		gc.gridy = 1;
@@ -156,17 +158,46 @@ public class Controls extends JPanel {
 	}
 	
 	public void createUser(int playerNum) {
+		GridBagConstraints gc = new GridBagConstraints();
+		
+		// Create label and text field
 		JLabel name = new JLabel("NAME: ");	
-		JTextField nameField = new JTextField();
+		JTextField nameField = new JTextField(20);
+		
+		// Setup the components
+		name.setFont(new Font("Arial", Font.BOLD, 30));
+		name.setForeground(accentCol);
+		nameField.setBackground(null);
+		
+		nameField.setFont(new Font("Arial", Font.BOLD, 30));
+		nameField.setForeground(accentCol);
+		nameField.setCaretColor(accentCol);
+		nameField.setBackground(baseCol);
+		
+		// Add the nameField 
+		nameField.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				GUI g = (GUI) GUI.getFrames()[0];
+				g.setTempUserName(nameField.getText());
+				g.selectCharacter();
+			}			
+		});
+		
+		// Add the name
+		gc.anchor = GridBagConstraints.LINE_END;
+		gc.weightx = 0.5;
+		gc.weighty = 0.5;
 		
 		gc.gridx = 0;
 		gc.gridy = 0;
-
-		name.setFont(new Font("Arial", Font.BOLD, 30));
-		name.setForeground(Color.WHITE);
-		
-		gc.anchor = GridBagConstraints.WEST;
 		add(name, gc);
+
+		// add the field
+		gc.anchor = GridBagConstraints.LINE_START;
+		gc.gridx = 1;
+		add(nameField, gc);
+		
 	}
 	
 	public void selectCharacter(String userName) {
