@@ -8,7 +8,7 @@ public class Sprite extends Card {
 	 * An Enum defining the different Sprites in the Game.
 	 */
 	public enum SpriteAlias {
-		MRS_WHITE, MR_GREEN, MRS_PEACOCK, PROFESSOR_PLUM, MISS_SCARLETT, COLONEL_MUSTARD;
+		MRS_WHITE, MR_GREEN, MRS_PEACOCK, PROFESSOR_PLUM, MISS_SCARLETT, COLONEL_MUSTARD
 	}
 
 	// ------------------------
@@ -42,11 +42,11 @@ public class Sprite extends Card {
 	 */
 	public User getUser() { return user; }
 
-	public static Icon parseIcon(SpriteAlias spriteAlias) {
+	public static ImageIcon parseIcon(SpriteAlias spriteAlias) {
 		switch (spriteAlias) {
 			case MRS_WHITE:			return new ImageIcon("mrs_white_marker.png");
 			case COLONEL_MUSTARD:	return new ImageIcon("colonel_mustard_marker.png");
-			case MR_GREEN:			return new ImageIcon("mrs_green_marker.png");
+			case MR_GREEN:			return new ImageIcon("mr_green_marker.png");
 			case MRS_PEACOCK:		return new ImageIcon("mrs_peacock_marker.png");
 			case MISS_SCARLETT:		return new ImageIcon("miss_scarlett_marker.png");
 			case PROFESSOR_PLUM:	return new ImageIcon("professor_plum_marker.png");

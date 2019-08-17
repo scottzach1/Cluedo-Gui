@@ -2,20 +2,16 @@ package gui;
 
 import game.Board;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Image;
+import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
-public class Canvas extends JPanel {
+public class Canvas extends JPanel implements ComponentListener {
 	
 	// --------------------------------------------------
 	// FIELDS
@@ -29,17 +25,19 @@ public class Canvas extends JPanel {
 	private ArrayList<Component> components;
 	private Dimension size;
 	private final GUI gui;
-	
+	private int cellSize;
+	private Board board;
 	
 	
 	// --------------------------------------------------
 	// CONSTRUCTOR
 	// --------------------------------------------------
 
-	public Canvas(GUI parent) {
+	public Canvas(GUI parent, Board board) {
 		borderTitle = " - - ";
 		components = new ArrayList<>();
 		gui = parent;
+		this.board = board;
 
 		// Set the Size of the canvas panel
 		size = getPreferredSize();
@@ -53,13 +51,15 @@ public class Canvas extends JPanel {
 		setBorder(b);
 		setBackground(baseCol);
 
+		addComponentListener(this);
+
 		// Set layout
 		setLayout(new GridBagLayout());
 		gc = new GridBagConstraints();
 		gc.fill = GridBagConstraints.BOTH;
 	}
-	
-	
+
+
 	// --------------------------------------------------
 	// PUBLIC METHODS
 	// --------------------------------------------------
@@ -153,14 +153,19 @@ public class Canvas extends JPanel {
 		removeAll();
 	}
 
-	public void drawBoard(Board board) {
-		int cellWidth = Math.min(getWidth() / board.getCols(), getHeight() / board.getRows());
-		Icon icon = new ImageIcon("");
-
+	public void renderBoard() {
+		int cellSize = -1 + (Math.min(size.width / board.getCols(), size.height / board.getRows()));
+		clear();
+		board.getStream().forEach(cell -> {
+			Image image = cell.getIcon().getImage();
+			Image newImage = image.getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
+			components.add(new JLabel(new ImageIcon(newImage)));
+		});
+		revalidateComponents(board.getCols());
+		repaint();
 	}
 
 	private void revalidateComponents(int cols) {
-
 		if (components.size() > 0) {
 			gc.gridy = 0;
 			for (int i = 0; i < components.size(); i++) {
@@ -172,5 +177,29 @@ public class Canvas extends JPanel {
 		} else {
 			this.removeAll();
 		}
+	}
+
+	@Override public void componentResized(ComponentEvent e) {
+		if (e.getComponent().getSize().equals(size)) return;
+		size = e.getComponent().getSize();
+		renderBoard();
+	}
+	@Override public void componentMoved(ComponentEvent e) {}
+	@Override public void componentShown(ComponentEvent e) {}
+	@Override public void componentHidden(ComponentEvent e) {}
+
+	public static void main(String[] args) {
+		Board b = new Board();
+		Canvas c = new Canvas(null, b);
+
+		JFrame frame = new JFrame("FrameDemo");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().add(c, BorderLayout.CENTER);
+
+		frame.setResizable(true);
+		frame.setVisible(true);
+		frame.pack();
+
+		c.renderBoard();
 	}
 }

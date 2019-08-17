@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.WindowConstants;
 
+import game.Board;
 import game.Sprite;
 import game.User;
 
@@ -44,6 +45,7 @@ public class GUI extends JFrame {
 	private String tempUserName;
 	private Sprite.SpriteAlias tempCharacterChoice;
 	private int tempUserNum;
+	private Board board;
 
 	// --------------------------------------------------
 	// CONSTRUCTOR
@@ -53,6 +55,7 @@ public class GUI extends JFrame {
 		state = 0;
 		tempUserNum = 0;
 		tempUserName = "";
+		board = new Board();
 
 		// Create the frame
 		frame = new JFrame("CLUEDO GAME");
@@ -60,7 +63,7 @@ public class GUI extends JFrame {
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		// Create the layout
-		canvas = new Canvas(this);
+		canvas = new Canvas(this, board);
 		controls = new Controls(this);
 		menuBar = new MenuOptions();
 

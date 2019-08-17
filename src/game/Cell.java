@@ -1,5 +1,6 @@
 package game;
 
+import extra.CombinedImageIcon;
 import extra.CompoundIcon;
 
 import javax.swing.*;
@@ -16,14 +17,14 @@ public class Cell {
 	/**
 	 * An Enum defining the different kinds of Cells in the Game.
 	 */
-	public enum Type {ROOM, HALL, START_PAD, VOID, CELLAR, WALL}
+	public enum Type {ROOM, HALL, START_PAD, VOID, CELLAR, WALL, UNKNOWN}
 
 	// ------------------------
 	// MEMBER VARIABLES
 	// ------------------------
 
 	// Game.Cell Attributes
-	private Icon icon;
+	private ImageIcon icon;
 	private Sprite sprite;
 	private Room room;
 	private int col;
@@ -49,7 +50,7 @@ public class Cell {
 		this.icon = parseImageIcon(type);
 	}
 
-	static Icon parseImageIcon(Cell.Type type) {
+	static ImageIcon parseImageIcon(Cell.Type type) {
 		switch (type) {
 			case CELLAR: 	return new ImageIcon("cell_green.png");
             case HALL:		return new ImageIcon("cell_grey.png");
@@ -60,10 +61,9 @@ public class Cell {
 		}
 	}
 
-    public Icon getIcon() {
+    public ImageIcon getIcon() {
 		if (sprite == null) return icon;
-
-		return new CompoundIcon(icon, sprite.parseIcon(sprite.getSpriteAlias()));
+		return new CombinedImageIcon(icon, Sprite.parseIcon(sprite.getSpriteAlias()));
     }
 
     // ------------------------
@@ -139,9 +139,10 @@ public class Cell {
 		if (c == ' ') return Type.VOID;
 		if (c == 'X') return Type.ROOM;
 		if (c == 'Y') return Type.HALL;
+		if (c == '_') return Type.HALL;
 		if (Pattern.matches("\\d", c + "")) return Type.START_PAD;
-		if (Pattern.matches("[A-Z]", c + "")) return Type.ROOM;		
-		return Type.HALL;
+		if (Pattern.matches("[A-Z]", c + "")) return Type.ROOM;
+		return Type.UNKNOWN;
 	}
 
 	/**

@@ -1,9 +1,12 @@
 package game;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.security.InvalidParameterException;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class Board {
 
@@ -334,7 +337,13 @@ public class Board {
 				"   A B C D E F G H I J K L M N O P Q R S T U V W X";
 	}
 
-	public static void main(String[] args) {
-		Board b = new Board();
+	public Stream<Cell> getStream() {
+		List<Cell> cellList = new ArrayList<>();
+		for (int r=0; r!=rows; ++r) {
+			for (int  c=0; c!=cols; ++c) {
+				cellList.add(cells[r][c]);
+			}
+		}
+		return cellList.stream();
 	}
 }
