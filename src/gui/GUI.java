@@ -36,6 +36,8 @@ public class GUI extends JFrame {
 	private JMenuBar menuBar;
 	private int playerAmount;
 	private List<User> users;
+	private String tempUserName;
+	private int tempUserNum;
 
 	// --------------------------------------------------
 	// CONSTRUCTOR
@@ -43,6 +45,8 @@ public class GUI extends JFrame {
 
 	public GUI() {
 		state = 0;
+		tempUserNum = 0;
+		tempUserName = "";
 
 		// Create the frame
 		frame = new JFrame("CLUEDO GAME");
@@ -78,7 +82,7 @@ public class GUI extends JFrame {
 			howManyPlayers();
 		} else if (state == 2) {
 			clear();
-			createUsers();
+			createUser();
 		}
 	}
 
@@ -96,9 +100,15 @@ public class GUI extends JFrame {
 		redraw();
 	}
 	
-	private void createUsers() {
-		
-		
+	private void createUser() {
+		canvas.createUser(tempUserNum);
+		controls.createUser(tempUserNum);
+		redraw();
+	}
+	
+	private void selectCharacter() {
+		canvas.selectCharacter(tempUserName);
+		controls.selectCharacter(tempUserName);
 	}
 
 	// --------------------------------------------------
@@ -130,6 +140,14 @@ public class GUI extends JFrame {
 
 	public void setPlayerAmount(int playerAmount) {
 		this.playerAmount = playerAmount;
+	}	
+
+	public void setTempUserName(String un) {
+		this.tempUserName = un;
+	}
+	
+	public void nextUser() {
+		tempUserNum++;
 	}
 
 	public void redraw() {

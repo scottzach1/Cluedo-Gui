@@ -94,7 +94,8 @@ public class Canvas extends JPanel {
 		revalidateComponents(1);		
 	}
 	
-	public void username(int playerNum) {
+	
+	public void createUser(int playerNum) {
 		// Create a text instructions for the user to follow
 		JTextArea instructions = new JTextArea();
 		
@@ -104,6 +105,28 @@ public class Canvas extends JPanel {
 		
 		// Add the text to the instructions
 		instructions.append("Player " + playerNum + ", what is your preferred name?");
+		
+		// Set the preferred size such that 40pt text can fit
+		// (Only thing on screen means that it can take up everything
+		instructions.setBackground(null);
+		instructions.setEditable(false);
+		
+		components.add(instructions);
+		revalidateComponents(1);		
+	}	
+	
+	
+	
+	public void selectCharacter(String userName) {
+		// Create a text instructions for the user to follow
+		JTextArea instructions = new JTextArea();
+		
+		// Create the font for the text
+		Font font = new Font("Arial", Font.BOLD, 40);
+		instructions.setFont(font);
+		
+		// Add the text to the instructions
+		instructions.append(userName + ", who are you playing as?");
 		
 		// Set the preferred size such that 40pt text can fit
 		// (Only thing on screen means that it can take up everything
