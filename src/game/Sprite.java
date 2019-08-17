@@ -1,5 +1,7 @@
 package game;
 
+import javax.swing.*;
+
 public class Sprite extends Card {
 
 	/**
@@ -39,6 +41,18 @@ public class Sprite extends Card {
 	 * @return Game.User playing Game.Sprite.
 	 */
 	public User getUser() { return user; }
+
+	public static Icon parseIcon(SpriteAlias spriteAlias) {
+		switch (spriteAlias) {
+			case MRS_WHITE:			return new ImageIcon("mrs_white_marker.png");
+			case COLONEL_MUSTARD:	return new ImageIcon("colonel_mustard_marker.png");
+			case MR_GREEN:			return new ImageIcon("mrs_green_marker.png");
+			case MRS_PEACOCK:		return new ImageIcon("mrs_peacock_marker.png");
+			case MISS_SCARLETT:		return new ImageIcon("miss_scarlett_marker.png");
+			case PROFESSOR_PLUM:	return new ImageIcon("professor_plum_marker.png");
+			default:				return new ImageIcon("unknown_marker.png");
+		}
+	}
 
 
 	/**
