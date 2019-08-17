@@ -2,12 +2,12 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -188,6 +188,7 @@ public class Controls extends JPanel {
 		gc.anchor = GridBagConstraints.LINE_END;
 		gc.weightx = 0.5;
 		gc.weighty = 0.5;
+		gc.insets = new Insets(0,0,0,5);
 		
 		gc.gridx = 0;
 		gc.gridy = 0;
@@ -195,6 +196,7 @@ public class Controls extends JPanel {
 
 		// add the field
 		gc.anchor = GridBagConstraints.LINE_START;
+		gc.insets = new Insets(0,5,0,0);
 		gc.gridx = 1;
 		add(nameField, gc);
 		
