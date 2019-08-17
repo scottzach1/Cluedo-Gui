@@ -221,6 +221,9 @@ public class Board {
 		return weapons;
 	}
 
+	public int getRows() { return rows; }
+	public int getCols() { return cols; }
+
 
 	/**
 	 * moveUser: Move a Game.User to another Game.Cell.

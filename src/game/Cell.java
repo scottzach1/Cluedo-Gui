@@ -1,5 +1,8 @@
 package game;
 
+import extra.CompoundIcon;
+
+import javax.swing.*;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
@@ -13,13 +16,14 @@ public class Cell {
 	/**
 	 * An Enum defining the different kinds of Cells in the Game.
 	 */
-	public enum Type {ROOM, WALL, HALL, START_PAD, VOID, CELLAR}
+	public enum Type {ROOM, HALL, START_PAD, VOID, CELLAR, WALL}
 
 	// ------------------------
 	// MEMBER VARIABLES
 	// ------------------------
 
 	// Game.Cell Attributes
+	private Icon icon;
 	private Sprite sprite;
 	private Room room;
 	private int col;
@@ -42,9 +46,27 @@ public class Cell {
 		this.col = col;
 		this.type = type;
 		neighbors = new HashMap<>();
+		this.icon = parseImageIcon(type);
 	}
 
-	// ------------------------
+	static Icon parseImageIcon(Cell.Type type) {
+		switch (type) {
+			case CELLAR: 	return new ImageIcon("cell_green.png");
+            case HALL:		return new ImageIcon("cell_grey.png");
+            case START_PAD: return new ImageIcon("cell_grey.png");
+            case ROOM:      return new ImageIcon("cell_red.png");
+            case VOID:      return new ImageIcon("cell_void.png");
+			default:		return new ImageIcon("cell_unknown.png");
+		}
+	}
+
+    public Icon getIcon() {
+		if (sprite == null) return icon;
+
+		return new CompoundIcon(icon, sprite.parseIcon(sprite.getSpriteAlias()));
+    }
+
+    // ------------------------
 	// INTERFACE
 	// ------------------------
 
@@ -132,8 +154,7 @@ public class Cell {
 		if (sprite != null) return sprite.toString();
 		if (type == Type.ROOM) return "_";
 		if (type == Type.HALL) return "_";
-		else if (type == Type.WALL) return "#";
-		else if (type == Type.START_PAD) return "$";		
+		else if (type == Type.START_PAD) return "$";
 		return "ERROR ON TYPE";
 	}
 

@@ -1,5 +1,7 @@
 package gui;
 
+import game.Board;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -9,11 +11,7 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
+import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
@@ -153,6 +151,11 @@ public class Canvas extends JPanel {
 		removeAll();
 	}
 
+	public void drawBoard(Board board) {
+		int cellWidth = Math.min(getWidth() / board.getCols(), getHeight() / board.getRows());
+		Icon icon = new ImageIcon("");
+
+	}
 
 	private void revalidateComponents(int cols) {
 
