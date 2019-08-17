@@ -68,6 +68,7 @@ public class Cell {
 			if (neighbors.get(dir) == null) layers.add(parseWallIcon(dir));
 		}
 		if (sprite != null) layers.add(sprite.getIcon());
+		if (sprite != null && sprite.getSpriteAlias() == Board.ACTIVE_SPRITE) return new CombinedImageIcon(sprite.getCellIcon(), layers);
 		return new CombinedImageIcon(icon, layers);
     }
 

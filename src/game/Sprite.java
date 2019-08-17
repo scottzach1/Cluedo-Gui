@@ -46,13 +46,26 @@ public class Sprite extends Card {
 
 	public static ImageIcon parseIcon(SpriteAlias spriteAlias) {
 		switch (spriteAlias) {
-			case MRS_WHITE:			return new ImageIcon("mrs_white_marker.png");
-			case COLONEL_MUSTARD:	return new ImageIcon("colonel_mustard_marker.png");
-			case MR_GREEN:			return new ImageIcon("mr_green_marker.png");
-			case MRS_PEACOCK:		return new ImageIcon("mrs_peacock_marker.png");
-			case MISS_SCARLETT:		return new ImageIcon("miss_scarlett_marker.png");
-			case PROFESSOR_PLUM:	return new ImageIcon("professor_plum_marker.png");
-			default:				return new ImageIcon("unknown_marker.png");
+			case MRS_WHITE:			return new ImageIcon("marker_mrs_white.png");
+			case COLONEL_MUSTARD:	return new ImageIcon("marker_colonel_mustard.png");
+			case MR_GREEN:			return new ImageIcon("marker_mr_green.png");
+			case MRS_PEACOCK:		return new ImageIcon("marker_mrs_peacock.png");
+			case MISS_SCARLETT:		return new ImageIcon("marker_miss_scarlett.png");
+			case PROFESSOR_PLUM:	return new ImageIcon("marker_professor_plum.png");
+			default:				return new ImageIcon("marker_unknown.png");
+		}
+	}
+
+	public ImageIcon getCellIcon() { return parseCellIcon(spriteAlias); }
+	public static ImageIcon parseCellIcon(SpriteAlias spriteAlias) {
+		switch (spriteAlias) {
+			case PROFESSOR_PLUM:	return new ImageIcon("cell_professor_plum.png");
+			case MISS_SCARLETT:		return new ImageIcon("cell_miss_scarlett.png");
+			case MRS_PEACOCK:		return new ImageIcon("cell_mrs_peacock.png");
+			case MR_GREEN:			return new ImageIcon("cell_mr_green.png");
+			case COLONEL_MUSTARD:	return new ImageIcon("cell_colonel_mustard.png");
+			case MRS_WHITE:			return new ImageIcon("cell_mrs_white.png");
+			default:				return new ImageIcon("cell_unknown.png");
 		}
 	}
 

@@ -21,6 +21,7 @@ public class Board {
 
 	private Cell[][] cells;
 	private int rows, cols;
+	public static Sprite.SpriteAlias ACTIVE_SPRITE = Sprite.SpriteAlias.MR_GREEN;
 
 	// ------------------------
 	// CONSTRUCTOR

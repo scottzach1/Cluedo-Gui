@@ -197,8 +197,8 @@ public class Canvas extends JPanel implements ComponentListener {
 		frame.getContentPane().add(c, BorderLayout.CENTER);
 
 		frame.setResizable(true);
-		frame.setVisible(true);
 		frame.pack();
+		frame.setVisible(true);
 
 		c.renderBoard();
 	}
