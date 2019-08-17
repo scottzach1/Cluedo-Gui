@@ -63,7 +63,7 @@ public class Canvas extends JPanel {
 	// --------------------------------------------------
 	
 	public void mainMenu() {
-		Image image = (new ImageIcon("assets/title.png")).getImage();
+		Image image = (new ImageIcon("title.png")).getImage();
 		image = image.getScaledInstance(size.width, size.height,  java.awt.Image.SCALE_SMOOTH);
 		JLabel titleImg = new JLabel(new ImageIcon(image));
 		

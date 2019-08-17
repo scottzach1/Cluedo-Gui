@@ -107,11 +107,11 @@ public class Controls extends JPanel {
 
 		for (int i = 0; i < 4; i++) {
 			// NORMAL IMAGE
-			Image image = (new ImageIcon("assets/normal_check_box.png")).getImage();
+			Image image = (new ImageIcon("normal_check_box.png")).getImage();
 			image = image.getScaledInstance(size.width / 8, size.height / 2, java.awt.Image.SCALE_SMOOTH);
 			ImageIcon normal = new ImageIcon(image);
 			// SELECTED IMAGE
-			Image image2 = (new ImageIcon("assets/selected_check_box.png")).getImage();
+			Image image2 = (new ImageIcon("selected_check_box.png")).getImage();
 			image2 = image2.getScaledInstance(size.width / 8, size.height / 2, java.awt.Image.SCALE_SMOOTH);
 			ImageIcon selected = new ImageIcon(image2);
 
