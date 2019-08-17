@@ -21,6 +21,7 @@ public class Console extends JPanel {
 
 	private GridBagConstraints gc;
 	private Dimension size;
+	private final GUI gui;
 
 	
 	
@@ -28,7 +29,8 @@ public class Console extends JPanel {
 	// CONSTRUCTOR
 	// --------------------------------------------------
 	
-	public Console() {
+	public Console(GUI parent) {
+		gui = parent;
 
 		// Set the Size of the Control panel
 		size = getPreferredSize();

@@ -60,7 +60,7 @@ public class GUI extends JFrame {
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		// Create the layout
-		canvas = new Canvas();
+		canvas = new Canvas(this);
 		controls = new Controls(this);
 		menuBar = new MenuOptions();
 

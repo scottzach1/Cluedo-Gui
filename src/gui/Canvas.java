@@ -28,6 +28,7 @@ public class Canvas extends JPanel {
 	private GridBagConstraints gc;
 	private ArrayList<Component> components;
 	private Dimension size;
+	private final GUI gui;
 	
 	
 	
@@ -35,9 +36,10 @@ public class Canvas extends JPanel {
 	// CONSTRUCTOR
 	// --------------------------------------------------
 
-	public Canvas() {
+	public Canvas(GUI parent) {
 		borderTitle = " - - ";
 		components = new ArrayList<>();
+		gui = parent;
 
 		// Set the Size of the canvas panel
 		size = getPreferredSize();

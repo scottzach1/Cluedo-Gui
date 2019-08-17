@@ -211,8 +211,8 @@ public class Controls extends JPanel {
 	public void addContainers() {
 
 		// Create and Add the two panels
-		c = new Console();
-		ui = new UserInterface();
+		c = new Console(gui);
+		ui = new UserInterface(gui);
 
 		add(c, BorderLayout.WEST);
 		add(ui, BorderLayout.EAST);

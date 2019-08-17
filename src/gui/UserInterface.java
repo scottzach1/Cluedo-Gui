@@ -23,13 +23,15 @@ public class UserInterface extends JPanel {
 	private String borderTitle = "UI";
 	private GridBagConstraints gc;
 	private Dimension size;
+	private final GUI gui;
 	
 	
 	// --------------------------------------------------
 	// CONSTRUCTOR
 	// --------------------------------------------------
 	
-	public UserInterface() {
+	public UserInterface(GUI parent) {
+		gui = parent;
 		// Set the Size of the Control panel
 		size = getPreferredSize();
 		size.width = (GUI.SCREEN_WIDTH * 2 / 3) - (Controls.inset / 2);
