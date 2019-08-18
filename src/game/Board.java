@@ -20,6 +20,7 @@ public class Board {
 	private Map<Weapon.WeaponAlias, Weapon> weapons;
 	private Map<String, ImageIcon> baseImageIcons;
 	private Map<String, ImageIcon> scaledImageIcons;
+	public CluedoGame cluedoGame;
 	public PathFinder pathFinder;
 	private int prevCellSize;
 
@@ -40,7 +41,8 @@ public class Board {
 	 * - Generates sprites and places at corresponding starting positions.
 	 * - Generates Weapons and randomly allocates them to Rooms.
 	 */
-	public Board() {
+	public Board(CluedoGame cluedoGame) {
+		this.cluedoGame = cluedoGame;
 		pathFinder = new PathFinder(this, highlightedCells, null);
 		setupImageIcons();
 		generateComponents();
