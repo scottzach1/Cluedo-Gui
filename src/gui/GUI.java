@@ -112,12 +112,20 @@ public class GUI extends JFrame implements ComponentListener {
 		redraw();
 	}
 
+	public void newPlayer(){
+		// Clear everything in the canvas and controls
+		clearComponents();
+		// Redraw everything
+		controls.nextPlayer();
+		canvas.renderBoard();
+		redraw();
+	}
+
 	public void gameMenu(){
 		// Clear everything in the canvas and controls
 		clearComponents();
-
 		// Redraw everything
-		controls.nextPlayer();
+		controls.gameMenu();
 		canvas.renderBoard();
 		redraw();
 	}
@@ -126,12 +134,14 @@ public class GUI extends JFrame implements ComponentListener {
 		clearComponents();
 		canvas.showHand(cludeoGame.getCurrentUser());
 		controls.backOption();
+		redraw();
 	}
 
 	public void showDetectiveCards(){
 		clearComponents();
 		canvas.showDetectiveCards(cludeoGame.getCurrentUser());
 		controls.backOption();
+		redraw();
 	}
 
 	// --------------------------------------------------

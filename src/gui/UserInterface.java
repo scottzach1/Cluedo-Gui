@@ -4,6 +4,8 @@ import game.CluedoGame;
 import game.User;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -45,10 +47,7 @@ public class UserInterface extends JPanel {
 		gc = new GridBagConstraints();
 
 		// Set Controls title
-		User currentUser = cluedoGame.getCurrentUser();
-		parent.setBorderTitle(currentUser.getUserName() + "'s turn");
-		parent.setBaseCol(currentUser.getSprite().getSpriteColor());
-		parent.setAccentCol(currentUser.getSprite().getOpposingColor());
+		setParentTitle();
 
 		// Create all the possible buttons
 		JButton showHand = new JButton("Show Hand");
@@ -58,7 +57,18 @@ public class UserInterface extends JPanel {
 		JButton skipTurn = new JButton("Skip Turn");
 
 		// Add button functionality
-
+		showHand.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				cluedoGame.getGui().showHand();
+			}
+		});
+		detectivesNotes.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				cluedoGame.getGui().showDetectiveCards();
+			}
+		});
 
 		// Add the player name
 		gc.fill = GridBagConstraints.BOTH;
@@ -92,7 +102,21 @@ public class UserInterface extends JPanel {
 
 	public void backOption(){
 		gc = new GridBagConstraints();
+
+		setParentTitle();
+
+
 		JButton back = new JButton("Back");
+
+		back.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				cluedoGame.getGui().gameMenu();
+			}
+		});
+
+		add(back, gc);
+
 
 	}
 
@@ -102,6 +126,13 @@ public class UserInterface extends JPanel {
 		Border b3 = BorderFactory.createCompoundBorder(b1, b2);
 		setBorder(b3);
 		setBackground(baseCol);
+	}
+
+	private void setParentTitle(){
+		User currentUser = cluedoGame.getCurrentUser();
+		parent.setBorderTitle(currentUser.getUserName() + "'s turn");
+		parent.setBaseCol(currentUser.getSprite().getSpriteColor());
+		parent.setAccentCol(currentUser.getSprite().getOpposingColor());
 	}
 	
 	// --------------------------------------------------

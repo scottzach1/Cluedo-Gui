@@ -157,6 +157,7 @@ public class Canvas extends JPanel {
     }
 
     public void clear() {
+        components.clear();
         removeAll();
     }
 

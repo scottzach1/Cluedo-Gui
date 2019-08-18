@@ -13,7 +13,7 @@ import java.util.*;
 public class CluedoGame {
 
 	public static enum STATE{
-		MAIN_MENU, PLAYER_COUNT, USER_CREATION, SETUP_GAME_DESIGN, START_GAME;
+		MAIN_MENU, PLAYER_COUNT, USER_CREATION, SETUP_GAME_DESIGN, NEXT_PLAYER;
 	}
 
 	// ------------------------
@@ -84,9 +84,8 @@ public class CluedoGame {
 				generateHands();
 				nextState();
 			}
-			else if (state == STATE.START_GAME){
-				System.out.println("RUN");
-				gui.runGame();
+			else if (state == STATE.NEXT_PLAYER){
+				gui.newPlayer();
 			}
 	}
 
@@ -227,7 +226,10 @@ public class CluedoGame {
 	}
 
 	public void nextState() {
-		state = STATE.values()[state.ordinal() + 1];
+		if (state != STATE.NEXT_PLAYER)
+			state = STATE.values()[state.ordinal() + 1];
+		else
+			userNum = (userNum + 1) % playerAmount;
 		gameController();
 	}
 

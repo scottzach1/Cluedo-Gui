@@ -25,6 +25,7 @@ public class Controls extends JPanel {
     private UserInterface userInterface;
     private GridBagConstraints gc;
     private final CluedoGame cluedoGame;
+    private int dieOne = 0, dieTwo = 0;
 
     // --------------------------------------------------
     // CONSTRUCTOR
@@ -256,23 +257,24 @@ public class Controls extends JPanel {
      *
      */
     public void nextPlayer() {
-        int dieOne = cluedoGame.rollDie();
-        int dieTwo = cluedoGame.rollDie();
+        dieOne = cluedoGame.rollDie();
+        dieTwo = cluedoGame.rollDie();
         cluedoGame.setMovesThisTurn(dieOne + dieTwo);
+        console.drawDice(dieOne, dieTwo);
+        userInterface.mainPlayerMenu();
+        drawBorder();
 
+    }
+
+    public void gameMenu() {
         console.drawDice(dieOne, dieTwo);
         userInterface.mainPlayerMenu();
         drawBorder();
     }
 
-    public void gameMenu() {
-        drawBorder();
-        userInterface.mainPlayerMenu();
-    }
-
     public void backOption(){
-        drawBorder();
         userInterface.backOption();
+        drawBorder();
     }
 
     // --------------------------------------------------
