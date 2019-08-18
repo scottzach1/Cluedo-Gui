@@ -351,4 +351,13 @@ public class Controls extends JPanel {
             userInterface.clear();
     }
 
+    protected void redraw(){
+        if (console != null)
+            console.clear();
+        if (userInterface != null)
+            userInterface.clear();
+        revalidate();
+        repaint();
+    }
+
 }

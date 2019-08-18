@@ -269,6 +269,15 @@ public class Canvas extends JPanel {
 
     }
 
+    protected void redraw(){
+        for(Component c : getComponents()){
+            c.revalidate();
+            c.repaint();
+        }
+        revalidate();
+        repaint();
+    }
+
     public static void main(String[] args) {
         CluedoGame cluedoGame = new CluedoGame();
         Board b = cluedoGame.getBoard();
