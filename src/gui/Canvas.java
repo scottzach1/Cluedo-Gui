@@ -23,6 +23,7 @@ public class Canvas extends JPanel {
     private String borderTitle;
     private GridBagConstraints gc;
     private ArrayList<Component> components;
+    private final CluedoGame cluedoGame;
     private final GUI gui;
     private Board board;
 
@@ -34,6 +35,7 @@ public class Canvas extends JPanel {
     public Canvas(CluedoGame parent) {
         borderTitle = "CLUEDO GAME";
         components = new ArrayList<>();
+        cluedoGame = parent;
         gui = parent.getGui();
         this.board = parent.getBoard();
 
@@ -132,6 +134,86 @@ public class Canvas extends JPanel {
 
     public void showDetectiveCards(User user){
 
+    }
+
+    public void confirmShowHiddenContent(User user){
+        // Create a text instructions for the user to follow
+        JTextArea instructions = new JTextArea();
+
+        // Create the font for the text
+        Font font = new Font("Arial", Font.BOLD, 40);
+        instructions.setFont(font);
+
+        // Add the text to the instructions
+        instructions.append(user.getUserName() + ", you must refute the suggestion");
+
+        // Set the preferred size such that 40pt text can fit
+        // (Only thing on screen means that it can take up everything
+        instructions.setBackground(null);
+        instructions.setEditable(false);
+
+        components.add(instructions);
+        revalidateComponents(1);
+    }
+
+    public void chooseHiddenPlayerCard(User user){
+        // Create a text instructions for the user to follow
+        JTextArea instructions = new JTextArea();
+
+        // Create the font for the text
+        Font font = new Font("Arial", Font.BOLD, 40);
+        instructions.setFont(font);
+
+        // Add the text to the instructions
+        instructions.append(user.getUserName() + ", pick a card to show");
+
+        // Set the preferred size such that 40pt text can fit
+        // (Only thing on screen means that it can take up everything
+        instructions.setBackground(null);
+        instructions.setEditable(false);
+
+        components.add(instructions);
+        revalidateComponents(1);
+    }
+
+    public void confirmShowOtherPlayerCard(){
+        // Create a text instructions for the user to follow
+        JTextArea instructions = new JTextArea();
+
+        // Create the font for the text
+        Font font = new Font("Arial", Font.BOLD, 40);
+        instructions.setFont(font);
+
+        // Add the text to the instructions
+        instructions.append(cluedoGame.getCurrentUser().getUserName() + ", are you ready to have your suggestion debunked?");
+
+        // Set the preferred size such that 40pt text can fit
+        // (Only thing on screen means that it can take up everything
+        instructions.setBackground(null);
+        instructions.setEditable(false);
+
+        components.add(instructions);
+        revalidateComponents(1);
+    }
+
+    public void showUserOtherPlayerCard(){
+        // Create a text instructions for the user to follow
+        JTextArea instructions = new JTextArea();
+
+        // Create the font for the text
+        Font font = new Font("Arial", Font.BOLD, 40);
+        instructions.setFont(font);
+
+        // Add the text to the instructions
+        instructions.append(cluedoGame.getOtherPlayer().getUserName() + " has shown you " + cluedoGame.getShowOtherPlayerCard().getName());
+
+        // Set the preferred size such that 40pt text can fit
+        // (Only thing on screen means that it can take up everything
+        instructions.setBackground(null);
+        instructions.setEditable(false);
+
+        components.add(instructions);
+        revalidateComponents(1);
     }
 
     private void drawBorder(){

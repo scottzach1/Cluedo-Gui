@@ -270,9 +270,8 @@ public class CluedoGame {
 			state = State.values()[state.ordinal() + 1];
 		else {
 			currentUserNo = User.UserNo.values()[(currentUserNo.ordinal() + 1) % playerAmount];
-			for (User u : losers){
-				if (u.getUserNo() == currentUserNo)
-					gui.skipUser(losers.get(currentUserNo.ordinal()));
+			if (losers.contains(users.get(currentUserNo.ordinal()))){
+				gui.skipUser(losers.get(currentUserNo.ordinal()));
 			}
 		}
 		gameController();
@@ -306,6 +305,10 @@ public class CluedoGame {
 
 	public void setShowOtherPlayerCard(Card c){
 		showOtherPlayerCard = c;
+	}
+
+	public User getOtherPlayer(){
+		return otherPlayer;
 	}
 
 	public Card getShowOtherPlayerCard(){
