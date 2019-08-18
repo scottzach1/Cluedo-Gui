@@ -34,11 +34,11 @@ public class CluedoGame {
 	private List<User> users;
 	private List<User> losers;
 	private Card[] solution;
-	private String status;
 	private GUI gui;
 	private STATE state;
 	private int movesThisTurn;
 	private int movesLeft;
+	private int userNum ;
 
 	// ------------------------
 	// CONSTRUCTOR
@@ -57,6 +57,11 @@ public class CluedoGame {
 
 		// Set up start menu options
 		availableSprites = new HashSet<>(board.getSprites().keySet());
+		users = new ArrayList<>();
+		losers = new ArrayList<>();
+		movesThisTurn = 0;
+		movesLeft = 0;
+		userNum = 0;
 	}
 
 	// ------------------------
@@ -67,7 +72,6 @@ public class CluedoGame {
 	 * gameController: Maintains the order of the game
 	 */
 	private void gameController() {
-		System.out.println(state);
 			if (state == STATE.MAIN_MENU)
 				gui.mainMenu();
 			else if (state == STATE.PLAYER_COUNT)
@@ -76,9 +80,12 @@ public class CluedoGame {
 				gui.createUser(tempUserNum);
 			else if (state == STATE.SETUP_GAME_DESIGN){
 				gui.gameSetup();
+				generateSolution();
+				generateHands();
 				nextState();
 			}
 			else if (state == STATE.START_GAME){
+				System.out.println("RUN");
 				gui.runGame();
 			}
 	}
@@ -248,6 +255,11 @@ public class CluedoGame {
 		return false;
 	}
 
+	public User getCurrentUser(){
+		System.out.println(userNum + " " + users.size());
+		return users.get(userNum);
+	}
+
 
 
 	// Setup getters, and setters
@@ -272,13 +284,12 @@ public class CluedoGame {
 	}
 
 	public void nextTempUserNum() {
+		addNewUser();
 		tempUserNum++;
 		if (tempUserNum < playerAmount) {
-			System.out.println("YO");
 			gameController();
 		}
 		else {
-			System.out.println("YO");
 			nextState();
 		}
 	}

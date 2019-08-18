@@ -1,6 +1,7 @@
 package game;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class Sprite extends Card {
 
@@ -18,6 +19,8 @@ public class Sprite extends Card {
 	private User user;
 	private SpriteAlias spriteAlias;
 	private Cell positionCell;
+	private Color spriteColor;
+	private Color opposingColor;
 
 	// ------------------------
 	// CONSTRUCTOR
@@ -30,6 +33,7 @@ public class Sprite extends Card {
 	public Sprite(SpriteAlias spriteAlias) {
 		super(spriteAlias.toString());
 		this.spriteAlias = spriteAlias;
+		setColors(spriteAlias);
 	}
 
 	// ------------------------
@@ -139,6 +143,34 @@ public class Sprite extends Card {
 		if (i >= 0 && i < sizeOfCharacterValues)
 			return SpriteAlias.values()[i];
 		throw new IllegalStateException("Error parsing " + i + " as an ordinal for SpriteAlias.");
+	}
+
+
+	public Color getSpriteColor(){
+		return spriteColor;
+	}
+
+	public Color getOpposingColor(){
+		return opposingColor;
+	}
+
+	private void setColors(SpriteAlias s){
+		switch (s) {
+		case MRS_WHITE:			spriteColor = new Color(184, 184, 184);
+								opposingColor = Color.BLACK;
+		case COLONEL_MUSTARD:	spriteColor = new Color(190, 157, 0);
+								opposingColor = Color.BLACK;
+		case MR_GREEN:			spriteColor = new Color(67, 133, 1);
+								opposingColor = Color.WHITE;
+		case MRS_PEACOCK:		spriteColor = new Color(42, 85, 120);
+								opposingColor = Color.WHITE;
+		case MISS_SCARLETT: 	spriteColor = new Color(139, 5, 4);
+								opposingColor = Color.WHITE;
+		case PROFESSOR_PLUM:	spriteColor = new Color(125, 15, 205);
+								opposingColor = Color.WHITE;
+		default:
+	}
+
 	}
 
 	public String toString() {
