@@ -27,8 +27,8 @@ public class Board {
 	private Cell[][] cells;
 	private int rows, cols;
 
-	public Set<Cell> highlightedCells = new HashSet<>();
-	public Set<Room> highlightedRooms = new HashSet<>();
+	public Set<Cell> visitedCells, highlightedCells;
+	public Set<Room> visitedRooms, highlightedRooms;
 	public Sprite.SpriteAlias activeSprite = Sprite.SpriteAlias.MR_GREEN;
 
 	// ------------------------
@@ -43,6 +43,12 @@ public class Board {
 	 */
 	public Board(CluedoGame cluedoGame) {
 		this.cluedoGame = cluedoGame;
+
+		visitedCells = new HashSet<>();
+		visitedRooms = new HashSet<>();
+		highlightedCells = new HashSet<>();
+		highlightedRooms = new HashSet<>();
+
 		pathFinder = new PathFinder(this, highlightedCells, null);
 		setupImageIcons();
 		generateComponents();
@@ -187,6 +193,7 @@ public class Board {
 		for (Cell.Direction dir : Cell.Direction.values()) {
 			baseImageIcons.put(Cell.parseWallIcon(dir), null);
 		}
+		baseImageIcons.put("cell_invalid.png", null);
 		for (String fname : baseImageIcons.keySet()) {
 			baseImageIcons.put(fname, new ImageIcon(fname));
 			scaledImageIcons.put(fname, new ImageIcon(fname));

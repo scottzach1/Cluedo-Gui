@@ -161,16 +161,20 @@ public class PathFinder {
      *
      * @param node current DFS node
      * @param end target Game.Cell
-     * @param visitedRooms the rooms forbidden as they are visited this turn.
+     * @param parentVisitedRooms the rooms forbidden as they are visited this turn.
      * @return true path was found meeting parameters, false otherwise.
      */
-    private boolean findExactPathHelper(DFSNode node, Cell end, Set<Room> visitedRooms, Set<Cell> visitedCells, int steps) {
+    private boolean findExactPathHelper(DFSNode node, Cell end, Set<Room> parentVisitedRooms, Set<Cell> parentVisitedCells, int steps) {
+        Set<Room> visitedRooms = new HashSet<>(parentVisitedRooms);
+        Set<Cell> visitedCells = new HashSet<>(parentVisitedCells);
+
         Cell current = node.current;
 
         // Success Termination.
         if (current.sameRoom(end) || (current.sameCell(end) && node.depth == steps)) {
             if (current.getRoom() != null) visitedRooms.add(current.getRoom());
             visitedCells.add(current);
+            parentVisitedCells.addAll(visitedCells);
             return true;
         }
 
@@ -190,9 +194,10 @@ public class PathFinder {
             if (neigh.getSprite() != null) continue; // Game.Sprite on Game.Cell.
 
             // Return success of child to parent.
-            if (findExactPathHelper(new DFSNode(neigh, node), end, visitedRooms, visitedCells, steps)) {
+            if (findExactPathHelper(new DFSNode(neigh, node), end, new HashSet<>(visitedRooms), new HashSet<>(visitedCells), steps)) {
                 if (current.getRoom() != null) visitedRooms.add(current.getRoom());
                 visitedCells.add(current);
+                parentVisitedCells.addAll(visitedCells);
                 return true;
             }
         }

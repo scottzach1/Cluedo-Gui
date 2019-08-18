@@ -47,6 +47,7 @@ public class Cell extends JLabel implements MouseListener {
 	// Game.Cell Attributes
 	private Board board;
 	private Map<String, ImageIcon> icons;
+	private ImageIcon prevIcon;
 	private Sprite sprite;
 	private Room room;
 	private int col;
@@ -90,8 +91,7 @@ public class Cell extends JLabel implements MouseListener {
 					base = icons.get(sprite.getCell());
 			else 	layers.add(icons.get(sprite.getMarker()));
 		}
-
-		setIcon(new CombinedImageIcon(base, layers));
+		setIcon(prevIcon = new CombinedImageIcon(base, layers));
 		return this;
 	}
 
@@ -156,8 +156,13 @@ public class Cell extends JLabel implements MouseListener {
 		if (!success) {
 			board.highlightedCells.clear();
 			board.highlightedRooms.clear();
-		}  else board.highlightedRooms.forEach(room -> board.highlightedCells.addAll(room.getCells()));
+		}  else {
+			board.highlightedRooms.forEach(room -> board.highlightedCells.addAll(room.getCells()));
+		}
 		board.getStream().forEach(Cell::render);
+		if (!success) setIcon(new CombinedImageIcon(prevIcon, icons.get("cell_red.png")));
+		render();
+
 		System.out.println(board.highlightedCells.size());
 	}
 

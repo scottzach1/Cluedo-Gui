@@ -21,7 +21,7 @@ public class CluedoGame {
 	// ------------------------
 
 	// Setup attributes
-    public static boolean shortestPath = false;
+    public static boolean shortestPath = true;
     private int playerAmount;
     private String tempUserName;
 	private Sprite.SpriteAlias tempSpriteChoice;
