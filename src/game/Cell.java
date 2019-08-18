@@ -127,7 +127,11 @@ public class Cell extends JLabel implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		System.out.println("You clicked on a cell");
+		if (!board.highlightedCells.isEmpty()) {
+			board.cluedoGame.removeMovesLeft(board.highlightedCells.size() - 1);
+			board.moveUser(board.cluedoGame.getCurrentUser(), this);
+			board.cluedoGame.getGui().redraw();
+		}
 	}
 
 	@Override
@@ -146,7 +150,7 @@ public class Cell extends JLabel implements MouseListener {
 		board.highlightedCells.clear();
 		board.highlightedRooms.clear();
 
-		PathFinder pathFinder = (board.pathFinder = new PathFinder(board));
+		PathFinder pathFinder = board.pathFinder;
 
 		boolean success;
 		if (CluedoGame.shortestPath)
