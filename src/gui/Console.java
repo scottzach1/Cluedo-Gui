@@ -75,6 +75,7 @@ public class Console extends JPanel {
         movesLeft.setBackground(baseCol);
         movesLeft.setForeground(Color.WHITE);
         movesLeft.setBorder(null);
+        movesLeft.setEditable(false);
 
         // Add the components
         gc.weightx = 1;
@@ -116,8 +117,10 @@ public class Console extends JPanel {
         error.setBorder(null);
 		error.setLineWrap(true);
 		error.setWrapStyleWord(true);
-        error.setFont(new Font("Arial", Font.PLAIN, 20));
+        error.setFont(new Font("Arial", Font.BOLD, 30));
         error.setText(errorMsg);
+        error.setEditable(false);
+        error.setPreferredSize(new Dimension(getWidth() / 2, getHeight() / 2));
 
         gc.gridx = 0;
         gc.gridy = 0;
@@ -141,5 +144,6 @@ public class Console extends JPanel {
     public void clear() {
         removeAll();
     }
+
 
 }

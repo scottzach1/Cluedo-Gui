@@ -3,7 +3,6 @@ package gui;
 import game.Card;
 import game.CluedoGame;
 import game.Sprite;
-import game.User;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -276,7 +275,27 @@ public class Controls extends JPanel {
     }
 
     protected void backOption() {
-        userInterface.backOption();
+        if (userInterface != null)
+            userInterface.backOption();
+        else {
+            // Clear all previous settings
+            gc = new GridBagConstraints();
+
+            // Clear all previous settings
+            JButton back = new JButton("Back");
+            back.setPreferredSize(new Dimension(getWidth() / 10, getHeight() / 5));
+            back.setFont(new Font("Arial", Font.BOLD, Math.min(Math.min(getWidth() / 2, getHeight() / 2), 20)));
+
+            back.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    cluedoGame.getGui().mainMenu();
+                    MenuOptions.setExitRulesFalse();
+                }
+            });
+
+            add(back, gc);
+        }
         drawBorder();
     }
 
@@ -285,22 +304,22 @@ public class Controls extends JPanel {
         drawBorder();
     }
 
-    protected void confirmShowHiddenContent(){
+    protected void confirmShowHiddenContent() {
         userInterface.confirmShowHiddenContent();
         drawBorder();
     }
 
-    protected void chooseHiddenPlayerCard(ArrayList<Card> cards){
+    protected void chooseHiddenPlayerCard(ArrayList<Card> cards) {
         userInterface.chooseHiddenPlayerCard(cards);
         drawBorder();
     }
 
-    protected void confirmShowOtherPlayerCard(){
+    protected void confirmShowOtherPlayerCard() {
         userInterface.confirmShowOtherPlayerCard();
         drawBorder();
     }
 
-    protected  void showUserOtherPlayerCard(){
+    protected void showUserOtherPlayerCard() {
         userInterface.showUserOtherPlayerCard();
         drawBorder();
     }
@@ -308,6 +327,11 @@ public class Controls extends JPanel {
     protected void printError(String errorMsg) {
         console.printError(errorMsg);
         userInterface.backOption();
+    }
+
+    protected void redrawDice() {
+        console.clear();
+        console.drawDice(dieOne, dieTwo);
     }
 
     // --------------------------------------------------
@@ -340,15 +364,13 @@ public class Controls extends JPanel {
     /**
      * clear:
      */
-    public void clear() {
-        removeAll();
-    }
-
     public void clearComponents() {
         if (console != null)
             console.clear();
         if (userInterface != null)
             userInterface.clear();
+        if (console == null && userInterface == null)
+            removeAll();
     }
 
 }

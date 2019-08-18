@@ -73,7 +73,7 @@ public class GUI extends JFrame implements ComponentListener {
 
     // Display the main menu
     public void mainMenu() {
-        clear();
+        clearComponents();
         canvas.mainMenu();
         controls.mainMenu();
         redraw();
@@ -81,28 +81,28 @@ public class GUI extends JFrame implements ComponentListener {
 
     // Displays the main menu for each panel
     public void howManyPlayers() {
-        clear();
+        clearComponents();
         canvas.howManyPlayers();
         controls.howManyPlayers();
         redraw();
     }
 
     public void createUser(int tempUserNum) {
-        clear();
+        clearComponents();
         canvas.createUser(tempUserNum);
         controls.createUser(tempUserNum);
         redraw();
     }
 
     public void selectCharacter(String tempUserName) {
-        clear();
+        clearComponents();
         canvas.selectCharacter(tempUserName);
         controls.selectCharacter(tempUserName);
         redraw();
     }
 
     public void gameSetup() {
-        clear();
+        clearComponents();
         controls.addContainers();
         redraw();
     }
@@ -153,6 +153,11 @@ public class GUI extends JFrame implements ComponentListener {
         redraw();
     }
 
+    public void redrawDice(){
+        controls.redrawDice();
+        redraw();
+    }
+
     public void checkAccusationOrSuggestion(Sprite.SpriteAlias s, Weapon.WeaponAlias w, Room.RoomAlias r, boolean suggestion){
 		// Get the sprite, weapon and room
 		Sprite guessedSprite = cluedoGame.getBoard().getSprites().get(s);
@@ -194,32 +199,31 @@ public class GUI extends JFrame implements ComponentListener {
 	public void confirmShowHiddenContent(User user){
     	clearComponents();
     	controls.confirmShowHiddenContent();
-//		canvas.confirmShowHiddenContent(user);
+		canvas.confirmShowHiddenContent(user);
     	redraw();
 	}
 
 	public void chooseHiddenPlayerCard(User user, ArrayList<Card> cards){
     	clearComponents();
-    	controls.chooseHiddenPlayerCard(cards);
-//    	canvas.chooseHiddenPlayerCard(user);
+    	controls.chooseHiddenPlayerCard(cards);canvas.chooseHiddenPlayerCard(user);
     	redraw();
 	}
 
 	public void confirmShowOtherPlayerCard(){
     	clearComponents();
     	controls.confirmShowOtherPlayerCard();
-//    	canvas.confirmShowOtherPlayerCard();
+       	canvas.confirmShowOtherPlayerCard();
     	redraw();
 	}
 
 	public void showUserOtherPlayerCard(){
 		clearComponents();
 		controls.showUserOtherPlayerCard();
-//		canvas.showUserOtherPlayerCard();
+		canvas.showUserOtherPlayerCard();
 		redraw();
 	}
 
-	public void noMovesLeft(){
+	public void infeasibleMove(){
 		clearComponents();
 		controls.printError("You can not move there\nYou have " + cluedoGame.getMovesLeft() + " moves left");
 		canvas.renderBoard();
@@ -328,6 +332,13 @@ public class GUI extends JFrame implements ComponentListener {
 		return true;
 	}
 
+	public void displayRules(){
+        clearComponents();
+        canvas.displayRules();
+        controls.backOption();
+        redraw();
+    }
+
     // --------------------------------------------------
     // HELPFUL METHODS
     // --------------------------------------------------
@@ -350,11 +361,6 @@ public class GUI extends JFrame implements ComponentListener {
     public void redraw() {
         revalidate();
         repaint();
-    }
-
-    public void clear() {
-        canvas.clear();
-        controls.clear();
     }
 
     public void clearComponents() {

@@ -156,6 +156,7 @@ public class UserInterface extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 cluedoGame.getGui().gameMenu();
+                MenuOptions.setExitRulesFalse();
             }
         });
 
@@ -340,4 +341,5 @@ public class UserInterface extends JPanel {
     public void clear() {
         removeAll();
     }
+
 }
