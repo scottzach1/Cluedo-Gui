@@ -173,25 +173,33 @@ public class Board {
 				if (row > 0) {
 					if (linkCells(cell, other = cells[row - 1][col]))
 						cell.setNeighbor(Cell.Direction.NORTH, other);
-				} else if (cell.getType() != Cell.Type.HALL) cell.setNeighbor(Cell.Direction.NORTH, new Cell(-1, col, Cell.Type.UNKNOWN));
+				} else if (cell.getType() != Cell.Type.HALL) {
+					cell.setNeighbor(Cell.Direction.NORTH, new Cell(-1, col, Cell.Type.UNKNOWN));
+				}
 
 				// South
 				if (row < rows - 1) {
 					if (linkCells(cell, other = cells[row + 1][col]))
 						cell.setNeighbor(Cell.Direction.SOUTH, other);
-				} else if (cell.getType() != Cell.Type.HALL) cell.setNeighbor(Cell.Direction.SOUTH, new Cell(row + 1, col, Cell.Type.UNKNOWN));
+				} else if (cell.getType() != Cell.Type.HALL) {
+					cell.setNeighbor(Cell.Direction.SOUTH, new Cell(row + 1, col, Cell.Type.UNKNOWN));
+				}
 
 				// East
 				if (col > 0) {
 					if (linkCells(cell, other = cells[row][col - 1]))
 						cell.setNeighbor(Cell.Direction.WEST, other);
-				} else if (cell.getType() != Cell.Type.HALL) cell.setNeighbor(Cell.Direction.WEST, new Cell(row, -1, Cell.Type.UNKNOWN));
+				} else if (cell.getType() != Cell.Type.HALL) {
+					cell.setNeighbor(Cell.Direction.WEST, new Cell(row, -1, Cell.Type.UNKNOWN));
+				}
 
 				// West
 				if (col < cols - 1) {
 					if (linkCells(cell, other = cells[row][col + 1]))
 						cell.setNeighbor(Cell.Direction.EAST, other);
-				} else if (cell.getType() != Cell.Type.HALL) cell.setNeighbor(Cell.Direction.EAST, new Cell(row, row + 1, Cell.Type.UNKNOWN));
+				} else if (cell.getType() != Cell.Type.HALL) {
+					cell.setNeighbor(Cell.Direction.EAST, new Cell(row, row + 1, Cell.Type.UNKNOWN));
+				}
 			}
 		}
 
