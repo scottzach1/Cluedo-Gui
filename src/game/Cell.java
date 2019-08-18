@@ -143,9 +143,17 @@ public class Cell extends JLabel implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (!board.highlightedCells.isEmpty()) {
-			board.pathFinder.getPath().forEach(cell -> {
-				System.out.println(cell.getStringCoordinates());
+		if (board.pathFinder.getPath().stream().anyMatch(board.visitedCells::contains)) {
+			System.out.println("MATCH!");
+			board.cluedoGame.getGui().infeasibleMove();
+			return;
+		} else if (board.highlightedCells.isEmpty()) {
+			System.out.println("INFEASIBLE!");
+			board.cluedoGame.getGui().infeasibleMove();
+			return;
+		}
+		board.pathFinder.getPath().forEach(cell -> {
+			System.out.println(cell.getStringCoordinates());
 //				try {
 //					Thread.sleep(300);
 //				} catch (InterruptedException ex) {
@@ -154,19 +162,18 @@ public class Cell extends JLabel implements MouseListener {
 //				board.moveUser(board.cluedoGame.getCurrentUser(), cell);
 //				board.cluedoGame.getGui().redraw();
 //				board.getStream().forEach(Cell::render);
-			});
+		});
 
-			board.visitedCells.addAll(board.highlightedCells);
+		board.visitedCells.addAll(board.highlightedCells);
 
-			board.cluedoGame.removeMovesLeft(board.highlightedCells.size() - 1);
+		board.cluedoGame.removeMovesLeft(board.highlightedCells.size() - 1);
 
-			board.highlightedCells.clear();
-			board.highlightedRooms.clear();
+		board.highlightedCells.clear();
+		board.highlightedRooms.clear();
 
-			board.moveUser(board.cluedoGame.getCurrentUser(), this);
-			board.getStream().forEach(Cell::render);
-			board.cluedoGame.getGui().redraw();
-		}
+		board.moveUser(board.cluedoGame.getCurrentUser(), this);
+		board.getStream().forEach(Cell::render);
+		board.cluedoGame.getGui().redraw();
 
 		board.pathFinder.getPath().clear();
 	}
