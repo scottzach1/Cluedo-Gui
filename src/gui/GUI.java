@@ -223,7 +223,7 @@ public class GUI extends JFrame implements ComponentListener {
 		redraw();
 	}
 
-	public void noMovesLeft(){
+	public void infeasibleMove(){
 		clearComponents();
 		controls.printError("You can not move there\nYou have " + cluedoGame.getMovesLeft() + " moves left");
 		canvas.renderBoard();
