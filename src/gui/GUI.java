@@ -194,7 +194,7 @@ public class GUI extends JFrame implements ComponentListener {
 	public void showPlayerCard(User user, ArrayList<Card> cards){
     	clearComponents();
     	controls.showPlayerCard(user, cards);
-    	canvas.showPlayerCard(user);
+    	canvas.showPlayerCard(user, cards);
     	redraw();
 	}
 

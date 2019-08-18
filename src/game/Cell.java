@@ -22,7 +22,7 @@ public class Cell extends JLabel implements MouseListener {
 			EAST.reverse = WEST;
 			WEST.reverse = EAST;
 		}
-		Direction reverse() { return reverse; }// values()[ordinal() + ((ordinal() > 1) ? -2 : 2)]; }
+		Direction reverse() { return  values()[ordinal() + ((ordinal() > 1) ? -2 : 2)]; }
 	}
 
 	/**
