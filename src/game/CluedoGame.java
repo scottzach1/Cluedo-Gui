@@ -21,7 +21,7 @@ public class CluedoGame {
 	// ------------------------
 
 	// Setup attributes
-    public static boolean shortestPath = true;
+    public static boolean shortestPath = false;
     private int playerAmount;
     private String tempUserName;
 	private Sprite.SpriteAlias tempSpriteChoice;
@@ -54,7 +54,7 @@ public class CluedoGame {
 		// Starting state
 		state = State.MAIN_MENU;
 		// Construct components
-		board = new Board();
+		board = new Board(this);
 		gui = new GUI(this);
 		gui.addLayoutComponents();
 
@@ -140,7 +140,7 @@ public class CluedoGame {
 		// Starting state
 		state = State.MAIN_MENU;
 		// Construct components
-		board = new Board();
+		board = new Board(this);
 		gui.addLayoutComponents();
 
 		// Set up start menu options

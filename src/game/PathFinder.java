@@ -151,8 +151,8 @@ public class PathFinder {
      */
     public boolean findExactPath(Cell start, Cell end, int steps) {
         if (board == null) throw new RuntimeException("Game.PathFinder does not have a Game.Board!");
-        visitedRooms = new HashSet<>(visitedRooms);
-        visitedCells = new HashSet<>(visitedCells);
+        visitedRooms = (visitedRooms != null) ? visitedRooms : new HashSet<>(visitedRooms);
+        visitedCells = (visitedCells != null) ? visitedCells : new HashSet<>(visitedCells);
         return findExactPathHelper(new DFSNode(start, null), end, visitedRooms, visitedCells, steps);
     }
 

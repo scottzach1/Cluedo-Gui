@@ -86,7 +86,7 @@ public class Cell extends JLabel implements MouseListener {
 		}
 
 		if (sprite != null) {
-			if (sprite.matchesType(board.activeSprite))
+			if (sprite.matchesType(board.cluedoGame.getCurrentUser().getSprite().getSpriteAlias()))
 					base = icons.get(sprite.getCell());
 			else 	layers.add(icons.get(sprite.getMarker()));
 		}
@@ -139,12 +139,24 @@ public class Cell extends JLabel implements MouseListener {
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		if (isType(Type.VOID)) return;
+		CluedoGame cluedoGame = board.cluedoGame;
+		int movesLeft = cluedoGame.getMovesLeft();
+		Cell startingCell = cluedoGame.getCurrentUser().getSprite().getPosition();
+
 		board.highlightedCells.clear();
 		board.highlightedRooms.clear();
+
 		PathFinder pathFinder = (board.pathFinder = new PathFinder(board, board.highlightedCells, board.highlightedRooms));
-		if (CluedoGame.shortestPath) pathFinder.findShortestPath(board.getSprites().get(board.activeSprite).getPosition(), this);
-		else						 pathFinder.findExactPath(board.getSprites().get(board.activeSprite).getPosition(), this, 9);
-		board.highlightedRooms.forEach(room -> board.highlightedCells.addAll(room.getCells()));
+
+		boolean success;
+		if (CluedoGame.shortestPath)
+				success = movesLeft >= pathFinder.findShortestPath(startingCell, this);
+		else 	success = pathFinder.findExactPath(startingCell, this, movesLeft);
+
+		if (!success) {
+			board.highlightedCells.clear();
+			board.highlightedRooms.clear();
+		}  else board.highlightedRooms.forEach(room -> board.highlightedCells.addAll(room.getCells()));
 		board.getStream().forEach(Cell::render);
 		System.out.println(board.highlightedCells.size());
 	}
