@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -17,7 +19,7 @@ import game.Board;
 import game.Sprite;
 import game.User;
 
-public class GUI extends JFrame {
+public class GUI extends JFrame implements ComponentListener {
 	// Nothing important
 	private static final long serialVersionUID = 1L;
 
@@ -71,6 +73,8 @@ public class GUI extends JFrame {
 		frame.setJMenuBar(menuBar);
 		frame.add(canvas, BorderLayout.CENTER);
 		frame.add(controls, BorderLayout.SOUTH);
+
+		addComponentListener(this);
 
 		// Set to visible and resizable
 		frame.setResizable(true);
@@ -179,4 +183,17 @@ public class GUI extends JFrame {
 		runGUI();
 	}
 
+	@Override
+	public void componentResized(ComponentEvent e) {
+		redraw();
+	}
+
+	@Override
+	public void componentMoved(ComponentEvent e) {}
+
+	@Override
+	public void componentShown(ComponentEvent e) {}
+
+	@Override
+	public void componentHidden(ComponentEvent e) {}
 }

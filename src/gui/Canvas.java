@@ -12,7 +12,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
-public class Canvas extends JPanel implements ComponentListener {
+public class Canvas extends JPanel {
 	
 	// --------------------------------------------------
 	// FIELDS
@@ -35,7 +35,7 @@ public class Canvas extends JPanel implements ComponentListener {
 	// --------------------------------------------------
 
 	public Canvas(GUI parent, Board board) {
-		borderTitle = " - - ";
+		borderTitle = "CLUEDO GAME";
 		components = new ArrayList<>();
 		gui = parent;
 		this.board = board;
@@ -51,8 +51,6 @@ public class Canvas extends JPanel implements ComponentListener {
 				TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, new Font("Serif", Font.BOLD, 18), accentCol);
 		setBorder(b);
 		setBackground(baseCol);
-
-		addComponentListener(this);
 
 		// Set layout
 		setLayout(new GridBagLayout());
@@ -155,6 +153,10 @@ public class Canvas extends JPanel implements ComponentListener {
 	}
 
 	public void renderBoard() {
+
+		if (this.getSize().equals(size)) return;
+		size = this.getSize();
+
 		int cellSize = -1 + (Math.min(size.width / board.getCols(), size.height / board.getRows()));
 		clear();
 		board.getStream().forEach(cell -> {
@@ -179,15 +181,6 @@ public class Canvas extends JPanel implements ComponentListener {
 			this.removeAll();
 		}
 	}
-
-	@Override public void componentResized(ComponentEvent e) {
-		if (e.getComponent().getSize().equals(size)) return;
-		size = e.getComponent().getSize();
-		renderBoard();
-	}
-	@Override public void componentMoved(ComponentEvent e) {}
-	@Override public void componentShown(ComponentEvent e) {}
-	@Override public void componentHidden(ComponentEvent e) {}
 
 	public static void main(String[] args) {
 		Board b = new Board();
