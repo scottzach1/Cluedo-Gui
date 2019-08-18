@@ -1,5 +1,9 @@
 package game;
 
+import extra.CombinedImageIcon;
+
+import javax.swing.*;
+
 public abstract class Card {
 
 	// ------------------------
@@ -30,6 +34,12 @@ public abstract class Card {
 	 * @return Return name on Game.Card.
 	 */
 	public String getName() {return name;};
+
+	public ImageIcon getCard(Enum alias, boolean highlight) {
+		ImageIcon icon = new ImageIcon("card_" + alias.toString().toLowerCase() + ".png");
+		if (!highlight) return icon;
+		else 			return new CombinedImageIcon(icon, new ImageIcon("card_unseen.png"));
+	}
 
 	@Override
 	public String toString() {
