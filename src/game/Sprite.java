@@ -46,33 +46,36 @@ public class Sprite extends Card {
 	 */
 	public User getUser() { return user; }
 
-	public ImageIcon getIcon() { return parseIcon(spriteAlias); }
+	public boolean matchesType(SpriteAlias alias) {
+		return spriteAlias == alias;
+	}
 
-	public static ImageIcon parseIcon(SpriteAlias spriteAlias) {
+	public String getMarker() { return parseMarker(spriteAlias); }
+	public String getCell() { return  parseCell(spriteAlias); }
+
+	public static String parseMarker(SpriteAlias spriteAlias) {
 		switch (spriteAlias) {
-			case MRS_WHITE:			return new ImageIcon("marker_mrs_white.png");
-			case COLONEL_MUSTARD:	return new ImageIcon("marker_colonel_mustard.png");
-			case MR_GREEN:			return new ImageIcon("marker_mr_green.png");
-			case MRS_PEACOCK:		return new ImageIcon("marker_mrs_peacock.png");
-			case MISS_SCARLETT:		return new ImageIcon("marker_miss_scarlett.png");
-			case PROFESSOR_PLUM:	return new ImageIcon("marker_professor_plum.png");
-			default:				return new ImageIcon("marker_unknown.png");
+			case MRS_WHITE:			return "marker_mrs_white.png";
+			case COLONEL_MUSTARD:	return "marker_colonel_mustard.png";
+			case MR_GREEN:			return "marker_mr_green.png";
+			case MRS_PEACOCK:		return "marker_mrs_peacock.png";
+			case MISS_SCARLETT:		return "marker_miss_scarlett.png";
+			case PROFESSOR_PLUM:	return "marker_professor_plum.png";
+			default:				return "marker_unknown.png";
 		}
 	}
 
-	public ImageIcon getCellIcon() { return parseCellIcon(spriteAlias); }
-	public static ImageIcon parseCellIcon(SpriteAlias spriteAlias) {
+	public static String parseCell(SpriteAlias spriteAlias) {
 		switch (spriteAlias) {
-			case PROFESSOR_PLUM:	return new ImageIcon("cell_professor_plum.png");
-			case MISS_SCARLETT:		return new ImageIcon("cell_miss_scarlett.png");
-			case MRS_PEACOCK:		return new ImageIcon("cell_mrs_peacock.png");
-			case MR_GREEN:			return new ImageIcon("cell_mr_green.png");
-			case COLONEL_MUSTARD:	return new ImageIcon("cell_colonel_mustard.png");
-			case MRS_WHITE:			return new ImageIcon("cell_mrs_white.png");
-			default:				return new ImageIcon("cell_unknown.png");
+			case PROFESSOR_PLUM:	return "cell_professor_plum.png";
+			case MISS_SCARLETT:		return "cell_miss_scarlett.png";
+			case MRS_PEACOCK:		return  "cell_mrs_peacock.png";
+			case MR_GREEN:			return  "cell_mr_green.png";
+			case COLONEL_MUSTARD:	return  "cell_colonel_mustard.png";
+			case MRS_WHITE:			return  "cell_mrs_white.png";
+			default:				return "cell_unknown.png";
 		}
 	}
-
 
 	/**
 	 * setUser: Sets a Game.User to play this Game.Sprite.
