@@ -26,6 +26,7 @@ public class UserInterface extends JPanel {
     private Dimension size;
     private final CluedoGame cluedoGame;
     private final Controls parent;
+    private static boolean shortestPath;
 
 
     // --------------------------------------------------
@@ -35,6 +36,7 @@ public class UserInterface extends JPanel {
     public UserInterface(CluedoGame aCluedoGame, Controls aParent) {
         cluedoGame = aCluedoGame;
         parent = aParent;
+        shortestPath = true;
         // Set the Size of the Control panel
         setPreferredSize(new Dimension((cluedoGame.getGui().getWidth() * 2 / 3) - 3, (cluedoGame.getGui().getHeight())));
 
@@ -56,6 +58,7 @@ public class UserInterface extends JPanel {
         JButton showHand = new JButton("Show Hand");
         JButton detectivesNotes = new JButton("Detectives Note");
         JButton suggest = new JButton("Suggest");
+        JButton pathFinderSettings = new JButton("Shortest Path");
         JButton accuse = new JButton("Accuse (Solve)");
         JButton skipTurn = new JButton("Skip Turn");
 
@@ -73,6 +76,9 @@ public class UserInterface extends JPanel {
                 cluedoGame.getGui().showDetectiveCards();
             }
         });
+        // Add pathFinderSettings action listener
+		pathFinderSettings.addActionListener(e ->
+				pathFinderSettings.setText((shortestPath = !shortestPath) ? "Shortest Path" : "  Exact Path "));
         // add skipTurn action listener
         skipTurn.addActionListener(new ActionListener() {
             @Override
@@ -108,6 +114,10 @@ public class UserInterface extends JPanel {
         // Second row
         gc.weighty = 0.5;
         gc.gridy = 1;
+
+        gc.gridx = 0;
+        gc.anchor = GridBagConstraints.LINE_END;
+        add(pathFinderSettings, gc);
 
         gc.gridx = 1;
         gc.anchor = GridBagConstraints.CENTER;
@@ -174,11 +184,16 @@ public class UserInterface extends JPanel {
 		confirm.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String text = "Confirm your";
+				StringBuilder text = new StringBuilder();
+				text.append("Confirm your");
 				if (suggestion)
-					text += " suggestion\n";
+					text.append(" suggestion\n");
+				else
+					text.append(" accusation\n(WARNING: an incorrect guess will mean you lose)\n");
 
-				text += ((Sprite.SpriteAlias) spriteOptions.getSelectedItem()).toString() 
+				text.append(((Sprite.SpriteAlias) spriteOptions.getSelectedItem()).toString()
+						+ " used the " + ((Weapon.WeaponAlias) weaponOptions.getSelectedItem()).toString()
+						+ " in the " + ((Room.RoomAlias) roomOptions.getSelectedItem()).toString());
 			}
 		});
 
@@ -214,5 +229,9 @@ public class UserInterface extends JPanel {
     public void clear() {
         removeAll();
     }
+
+    public static boolean getPathSettings(){
+    	return shortestPath;
+	}
 
 }
