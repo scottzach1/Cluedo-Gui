@@ -1,14 +1,14 @@
 package gui;
 
+import game.CluedoGame;
+
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.border.Border;
 
 public class Console extends JPanel {
@@ -21,7 +21,7 @@ public class Console extends JPanel {
 
 	private GridBagConstraints gc;
 	private Dimension size;
-	private final GUI gui;
+	private final CluedoGame cluedoGame;
 
 	
 	
@@ -29,8 +29,8 @@ public class Console extends JPanel {
 	// CONSTRUCTOR
 	// --------------------------------------------------
 	
-	public Console(GUI parent) {
-		gui = parent;
+	public Console(CluedoGame parent) {
+		cluedoGame = parent;
 
 		// Set the Size of the Control panel
 		size = getPreferredSize();

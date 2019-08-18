@@ -12,9 +12,21 @@ import java.util.*;
  */
 public class CluedoGame {
 
+	public static enum STATE{
+		MAIN_MENU, PLAYER_COUNT, USER_CREATION, START_GAME;
+	}
+
 	// ------------------------
 	// MEMBER VARIABLES
 	// ------------------------
+
+	// Setup attributes
+	private int playerAmount;
+	private String tempUserName;
+	private Sprite.SpriteAlias tempSpriteChoice;
+	private Set<Sprite.SpriteAlias> availableSprites;
+	private int tempUserNum;
+
 
 	// Game Attributes
 	private Board board;
@@ -24,6 +36,7 @@ public class CluedoGame {
 	private Card[] solution;
 	private String status;
 	private GUI gui;
+	private STATE state;
 
 	// ------------------------
 	// CONSTRUCTOR
@@ -32,9 +45,16 @@ public class CluedoGame {
 	/**
 	 * Game.CluedoGame: Constructor
 	 */
-	private CluedoGame() {
+	public CluedoGame() {
+		// Starting state
+		state = STATE.MAIN_MENU;
+		// Construct components
 		board = new Board();
-		gui = new GUI(board);
+		gui = new GUI(this);
+		gui.addLayoutComponents();
+
+		// Set up start menu options
+		availableSprites = new HashSet<>(board.getSprites().keySet());
 	}
 
 	// ------------------------
@@ -45,7 +65,16 @@ public class CluedoGame {
 	 * gameController: Maintains the order of the game
 	 */
 	private void gameController() {
-		gui.runGUI();
+		System.out.println(state);
+			if (state == STATE.MAIN_MENU)
+				gui.mainMenu();
+			else if (state == STATE.PLAYER_COUNT)
+				gui.howManyPlayers();
+			else if (state == STATE.USER_CREATION)
+				gui.createUser(tempUserNum);
+			else if (state == STATE.START_GAME){
+				gui.runGame();
+			}
 	}
 
 	/**
@@ -167,6 +196,60 @@ public class CluedoGame {
 		}
 
 	}
+
+	public Board getBoard(){
+		return board;
+	}
+
+	public GUI getGui(){
+		return gui;
+	}
+
+	public void addNewUser(){
+		User u = new User();
+		u.setUserName(tempUserName);
+		u.setSprite(board.getSprites().get(tempSpriteChoice));
+		board.getSprites().get(tempSpriteChoice).setUser(u);
+		users.add(u);
+	}
+
+	public void nextState() {
+		state = STATE.values()[state.ordinal() + 1];
+		gameController();
+	}
+
+	public void setPlayerAmount(int playerAmount) {
+		this.playerAmount = playerAmount;
+	}
+
+	public Set<Sprite.SpriteAlias> getAvailableSprites(){
+		return availableSprites;
+	}
+
+	public void removeAvailableSprite(Sprite.SpriteAlias s){
+		availableSprites.remove(s);
+	}
+
+	public void setTempUserName(String un) {
+		this.tempUserName = un;
+	}
+
+	public void setTempSprite(Sprite.SpriteAlias sa) {
+		tempSpriteChoice = sa;
+	}
+
+	public void nextTempUserNum() {
+		tempUserNum++;
+		if (tempUserNum < playerAmount) {
+			System.out.println("YO");
+			gameController();
+		}
+		else {
+			System.out.println("YO");
+			nextState();
+		}
+	}
+
 
 	public static void main(String[] args) {
 		// Setup

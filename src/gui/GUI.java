@@ -1,23 +1,17 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.util.List;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.WindowConstants;
 
 import game.Board;
-import game.Sprite;
-import game.User;
+import game.CluedoGame;
 
 public class GUI extends JFrame implements ComponentListener {
 	// Nothing important
@@ -34,69 +28,55 @@ public class GUI extends JFrame implements ComponentListener {
 	public static final int SCREEN_HEIGHT = screenSize.height;
 	public static final int SCREEN_WIDTH = screenSize.width;
 
-	// Allows for states
-	private int state;
-
 	// Fields: All the contents of this container
-	private JFrame frame;
 	private Canvas canvas;
 	private Controls controls;
 	private JMenuBar menuBar;
-	private int playerAmount;
-	private List<User> users;
-	private String tempUserName;
-	private Sprite.SpriteAlias tempSpriteChoice;
-	private int tempUserNum;
+
+	// Set up stuff
+	private final CluedoGame cludeoGame;
 	private final Board board;
 
 	// --------------------------------------------------
 	// CONSTRUCTOR
 	// --------------------------------------------------
 
-	public GUI(Board b) {
-		state = 0;
-		tempUserNum = 0;
-		tempUserName = "";
-		board = b;
+	public GUI(CluedoGame aCluedoGame) {
+		super("CLUEDO GAME");
+		cludeoGame = aCluedoGame;
+		board = cludeoGame.getBoard();
 
 		// Create the frame
-		frame = new JFrame("CLUEDO GAME");
-		frame.setSize(screenSize.getSize());
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-		// Create the layout
-		canvas = new Canvas(this, board);
-		controls = new Controls(this, board);
-		menuBar = new MenuOptions();
-
-		// Add panels to frame
-		frame.setJMenuBar(menuBar);
-		frame.add(canvas, BorderLayout.CENTER);
-		frame.add(controls, BorderLayout.SOUTH);
+		setPreferredSize(screenSize.getSize());
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		addComponentListener(this);
 
 		// Set to visible and resizable
-		frame.setResizable(true);
-		frame.setVisible(true);
-		frame.pack();
+		setResizable(true);
+		setVisible(true);
+		pack();
 	}
 
 	// --------------------------------------------------
 	// PUBLIC METHODS
 	// --------------------------------------------------
 
-	public void runGUI() {
-		if (state == 0)
-			mainMenu();
-		else if (state == 1)
-			howManyPlayers();
-		else if (state == 2)
-			createUser();
+	public void addLayoutComponents(){
+		// Create the layout
+		canvas = new Canvas (cludeoGame);
+		controls = new Controls(cludeoGame);
+		menuBar = new MenuOptions();
+
+		// Add panels to frame
+		setJMenuBar(menuBar);
+		add(canvas, BorderLayout.CENTER);
+		add(controls, BorderLayout.SOUTH);
 	}
 
+
 	// Display the main menu
-	private void mainMenu() {
+	public void mainMenu() {
 		clear();
 		canvas.mainMenu();
 		controls.mainMenu();
@@ -104,38 +84,36 @@ public class GUI extends JFrame implements ComponentListener {
 	}
 
 	// Displays the main menu for each panel
-	private void howManyPlayers() {
+	public void howManyPlayers() {
 		clear();
 		canvas.howManyPlayers();
 		controls.howManyPlayers();
 		redraw();
 	}
 
-	private void createUser() {
+	public void createUser(int tempUserNum) {
 		clear();
 		canvas.createUser(tempUserNum);
 		controls.createUser(tempUserNum);
 		redraw();
 	}
 
-	public void selectCharacter() {
+	public void selectCharacter(String tempUserName) {
 		clear();
 		canvas.selectCharacter(tempUserName);
 		controls.selectCharacter(tempUserName);
 		redraw();
 	}
 
+	public void runGame(){
+		clear();
+		controls.addContainers();
+		redraw();
+	}
+
 	// --------------------------------------------------
 	// HELPFUL METHODS
 	// --------------------------------------------------
-	public JFrame getFrame() {
-		return frame;
-	}
-
-	public void setFrame(JFrame frame) {
-		this.frame = frame;
-	}
-
 	public Canvas getCanvas() {
 		return canvas;
 	}
@@ -152,46 +130,14 @@ public class GUI extends JFrame implements ComponentListener {
 		this.controls = controls;
 	}
 
-	public void setPlayerAmount(int playerAmount) {
-		this.playerAmount = playerAmount;
-	}
-
-	public void setTempUserName(String un) {
-		this.tempUserName = un;
-	}
-
-	public void setTempSprite(Sprite.SpriteAlias sa) {
-		tempSpriteChoice = sa;
-	}
-
-	public void addNewUser(){
-		User u = new User();
-		u.setUserName(tempUserName);
-		u.setSprite(board.getSprites().get(tempSpriteChoice));
-		users.add(u);
-	}
-
-	public void nextTempUserNum() {
-		tempUserNum++;
-		if (tempUserNum <= playerAmount)
-			runGUI();
-		else
-			nextState();
-	}
-
 	public void redraw() {
-		frame.revalidate();
-		frame.repaint();
+		revalidate();
+		repaint();
 	}
 
 	public void clear() {
 		canvas.clear();
 		controls.clear();
-	}
-
-	public void nextState() {
-		state++;
-		runGUI();
 	}
 
 	@Override

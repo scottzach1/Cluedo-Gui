@@ -1,6 +1,6 @@
 package gui;
 
-import game.Board;
+import game.CluedoGame;
 import game.Sprite;
 
 import java.awt.BorderLayout;
@@ -13,6 +13,7 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -33,17 +34,15 @@ public class Controls extends JPanel {
 	private UserInterface ui;
 	private Dimension size;
 	private GridBagConstraints gc;
-	private final Board board;
-	private final GUI gui;
+	private final CluedoGame cluedoGame;
 
 	// --------------------------------------------------
 	// CONSTRUCTOR
 	// --------------------------------------------------
 
-	public Controls(GUI parent, Board b) {
+	public Controls(CluedoGame parent) {
 		borderTitle = "CONTROLS";
-		gui = parent;
-		board = b;
+		cluedoGame = parent;
 
 		// Set the Size of the Control panel
 		size = getPreferredSize();
@@ -83,7 +82,7 @@ public class Controls extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				gui.nextState();
+				cluedoGame.nextState();
 			}
 			
 		});
@@ -143,8 +142,8 @@ public class Controls extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					int players = Integer.parseInt(group.getSelection().getActionCommand());
-					gui.setPlayerAmount(players);
-					gui.nextState();
+					cluedoGame.setPlayerAmount(players);
+					cluedoGame.nextState();
 				} catch (Exception e) {}
 			}
 
@@ -175,9 +174,9 @@ public class Controls extends JPanel {
 		nameField.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				gui.setTempUserName(nameField.getText());
-				gui.selectCharacter();
-			}			
+				cluedoGame.setTempUserName(nameField.getText());
+				cluedoGame.getGui().selectCharacter(nameField.getText());
+			}
 		});
 		
 		// Add the name
@@ -202,11 +201,8 @@ public class Controls extends JPanel {
 		gc = new GridBagConstraints();
 
 		// Create drop down menu
-		JComboBox spriteOptions = new JComboBox();
+		JComboBox spriteOptions = new JComboBox(new Vector< Sprite.SpriteAlias>(cluedoGame.getAvailableSprites()));
 		spriteOptions.setPreferredSize(new Dimension(size.width / 10, size.height /10));
-		for (Sprite.SpriteAlias s : board.getSprites().keySet()) {
-			spriteOptions.addItem(s);
-		}
 
 		// Create submit button
 		JButton submit = new JButton("SUBMIT");
@@ -215,7 +211,9 @@ public class Controls extends JPanel {
 		submit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				gui.nextTempUserNum();
+				cluedoGame.setTempSprite((Sprite.SpriteAlias) spriteOptions.getSelectedItem());
+				cluedoGame.removeAvailableSprite((Sprite.SpriteAlias) spriteOptions.getSelectedItem());
+				cluedoGame.nextTempUserNum();
 			}
 		});
 
@@ -238,9 +236,11 @@ public class Controls extends JPanel {
 	 */
 	public void addContainers() {
 
+		setLayout(new BorderLayout());
+
 		// Create and Add the two panels
-		c = new Console(gui);
-		ui = new UserInterface(gui);
+		c = new Console(cluedoGame);
+		ui = new UserInterface(cluedoGame);
 
 		add(c, BorderLayout.WEST);
 		add(ui, BorderLayout.EAST);
