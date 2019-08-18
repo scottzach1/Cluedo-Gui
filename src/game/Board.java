@@ -20,13 +20,15 @@ public class Board {
 	private Map<Weapon.WeaponAlias, Weapon> weapons;
 	private Map<String, ImageIcon> baseImageIcons;
 	private Map<String, ImageIcon> scaledImageIcons;
+	public PathFinder pathFinder;
 	private int prevCellSize;
 
 	private Cell[][] cells;
 	private int rows, cols;
 
-	public static Set<Cell> HIGHLIGHTED_CELLS = new HashSet<>();
-	public static Sprite.SpriteAlias ACTIVE_SPRITE = Sprite.SpriteAlias.MR_GREEN;
+	public Set<Cell> highlightedCells = new HashSet<>();
+	public Set<Room> highlightedRooms = new HashSet<>();
+	public Sprite.SpriteAlias activeSprite = Sprite.SpriteAlias.MR_GREEN;
 
 	// ------------------------
 	// CONSTRUCTOR
@@ -39,6 +41,7 @@ public class Board {
 	 * - Generates Weapons and randomly allocates them to Rooms.
 	 */
 	public Board() {
+		pathFinder = new PathFinder(this, highlightedCells, null);
 		setupImageIcons();
 		generateComponents();
 		setupCells();
