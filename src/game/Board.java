@@ -97,7 +97,7 @@ public class Board {
 					char c = line.charAt(lineIndex);
 
 					Cell.Type type = Cell.getType(c);
-					Cell cell = new Cell(row, col, (type!= Cell.Type.START_PAD) ? type : Cell.Type.HALL, scaledImageIcons);
+					Cell cell = new Cell(row, col, (type!= Cell.Type.START_PAD) ? type : Cell.Type.HALL, this);
 					cells[row][col] = cell;
 
 					if (c == 'X') continue; // This is a door, ignore for now.
@@ -125,95 +125,38 @@ public class Board {
 			System.out.println("File Exception: " + e);
 		}
 
-		for (int row = 0; row != rows; ++row) {
-			for (int col = 0; col != cols; ++col) {
-				Cell cell = cells[row][col];
-				Cell other;
-
-				if (cell.getType() == Cell.Type.ROOM && cell.getRoom() == null) {
-					// This is a door, link with corresponding room and doorsteps.
-
-					// North
-					if (row > 0) {
-						other = cells[row - 1][col];
-						if (other.getType() == Cell.Type.ROOM && other.getRoom() != null)
-							cell.setRoom(other.getRoom());
-						else if (other.getType() == Cell.Type.HALL && doorSteps.contains(other)) {
-							cell.setNeighbor(Cell.Direction.NORTH, other);
-							other.setNeighbor(Cell.Direction.SOUTH, cell);
-						}
-					}
-
-					// South
-					if (row < rows - 1) {
-						other = cells[row + 1][col];
-						if (other.getType() == Cell.Type.ROOM && other.getRoom() != null)
-							cell.setRoom(other.getRoom());
-						else if (other.getType() == Cell.Type.HALL && doorSteps.contains(other)) {
-							cell.setNeighbor(Cell.Direction.SOUTH, other);
-							other.setNeighbor(Cell.Direction.NORTH, cell);
-						}
-					}
-
-					// East
-					if (col > 0) {
-						other = cells[row][col - 1];
-						if (other.getType() == Cell.Type.ROOM && other.getRoom() != null)
-							cell.setRoom(other.getRoom());
-						else if (other.getType() == Cell.Type.HALL && doorSteps.contains(other)) {
-							cell.setNeighbor(Cell.Direction.WEST, other);
-							other.setNeighbor(Cell.Direction.EAST, cell);
-						}
-					}
-
-					// West
-					if (col < cols + 1) {
-						other = cells [row][col + 1];
-						if (other.getType() == Cell.Type.ROOM && other.getRoom() != null)
-							cell.setRoom(other.getRoom());
-						else if (other.getType() == Cell.Type.HALL && doorSteps.contains(other)) {
-							cell.setNeighbor(Cell.Direction.EAST, other);
-							other.setNeighbor(Cell.Direction.WEST, cell);
-						}
-					}
-				}
-
-				// North
-				if (row > 0) {
-					if (linkCells(cell, other = cells[row - 1][col]))
-						cell.setNeighbor(Cell.Direction.NORTH, other);
-				} else if (cell.getType() != Cell.Type.HALL) {
-					cell.setNeighbor(Cell.Direction.NORTH, new Cell(-1, col, Cell.Type.UNKNOWN, scaledImageIcons));
-				}
-
-				// South
-				if (row < rows - 1) {
-					if (linkCells(cell, other = cells[row + 1][col]))
-						cell.setNeighbor(Cell.Direction.SOUTH, other);
-				} else if (cell.getType() != Cell.Type.HALL) {
-					cell.setNeighbor(Cell.Direction.SOUTH, new Cell(row + 1, col, Cell.Type.UNKNOWN, scaledImageIcons));
-				}
-
-				// East
-				if (col > 0) {
-					if (linkCells(cell, other = cells[row][col - 1]))
-						cell.setNeighbor(Cell.Direction.WEST, other);
-				} else if (cell.getType() != Cell.Type.HALL) {
-					cell.setNeighbor(Cell.Direction.WEST, new Cell(row, -1, Cell.Type.UNKNOWN, scaledImageIcons));
-				}
-
-				// West
-				if (col < cols - 1) {
-					if (linkCells(cell, other = cells[row][col + 1]))
-						cell.setNeighbor(Cell.Direction.EAST, other);
-				} else if (cell.getType() != Cell.Type.HALL) {
-					cell.setNeighbor(Cell.Direction.EAST, new Cell(row, row + 1, Cell.Type.UNKNOWN, scaledImageIcons));
-				}
-			}
-		}
+		linkCells(doorSteps);
 
 		// Calculate doors for each room.
 		rooms.values().forEach(Room::calculateDoorSteps);
+	}
+
+	private void linkCells(Set<Cell> doorSteps) {
+		for (int row = 0; row != rows; ++row) {
+			for (int col = 0; col != cols; ++col) {
+				Cell cell = cells[row][col];
+
+				for (Cell.Direction dir : Cell.Direction.values()) {
+					Cell other = cell.go(cells, dir);
+
+					if (cell.getType() == Cell.Type.ROOM && cell.getRoom() == null && other != null) {
+						// This is a door, link with corresponding room and doorsteps.
+						if (other.getType() == Cell.Type.ROOM && other.getRoom() != null)
+							cell.setRoom(other.getRoom());
+						else if (other.getType() == Cell.Type.HALL && doorSteps.contains(other)) {
+							cell.setNeighbor(dir, other);
+							other.setNeighbor(dir.reverse(), cell);
+						}
+					}
+
+					if (other != null && linkCells(cell, other)) {
+						cell.setNeighbor(dir, other);
+					} else if (cell.getType() != Cell.Type.HALL) {
+						cell.setNeighbor(dir, new Cell(-1, -1, Cell.Type.UNKNOWN, this));
+					}
+				}
+			}
+		}
 	}
 
 
@@ -254,6 +197,14 @@ public class Board {
 	// ------------------------
 	// INTERFACE
 	// ------------------------
+
+	public Map<String, ImageIcon> getScaledImageIcons() {
+		return scaledImageIcons;
+	}
+
+	public Map<String, ImageIcon> getBaseImageIcons() {
+		return baseImageIcons;
+	}
 
 	/**
 	 * getSprites: Return a map of all the Characters on the Game.Board.

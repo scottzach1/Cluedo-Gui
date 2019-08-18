@@ -26,7 +26,6 @@ public class UserInterface extends JPanel {
     private Dimension size;
     private final CluedoGame cluedoGame;
     private final Controls parent;
-    private static boolean shortestPath;
 
 
     // --------------------------------------------------
@@ -36,7 +35,6 @@ public class UserInterface extends JPanel {
     public UserInterface(CluedoGame aCluedoGame, Controls aParent) {
         cluedoGame = aCluedoGame;
         parent = aParent;
-        shortestPath = true;
         // Set the Size of the Control panel
         setPreferredSize(new Dimension((cluedoGame.getGui().getWidth() * 2 / 3) - 3, (cluedoGame.getGui().getHeight())));
 
@@ -78,7 +76,7 @@ public class UserInterface extends JPanel {
         });
         // Add pathFinderSettings action listener
 		pathFinderSettings.addActionListener(e ->
-				pathFinderSettings.setText((shortestPath = !shortestPath) ? "Shortest Path" : "  Exact Path "));
+				pathFinderSettings.setText((CluedoGame.shortestPath = !CluedoGame.shortestPath) ? "Shortest Path" : "  Exact Path "));
         // add skipTurn action listener
         skipTurn.addActionListener(new ActionListener() {
             @Override
@@ -229,9 +227,4 @@ public class UserInterface extends JPanel {
     public void clear() {
         removeAll();
     }
-
-    public static boolean getPathSettings(){
-    	return shortestPath;
-	}
-
 }

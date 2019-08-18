@@ -161,17 +161,24 @@ public class Sprite extends Card {
 		switch (s) {
 		case MRS_WHITE:			spriteColor = new Color(184, 184, 184);
 								opposingColor = Color.BLACK;
+								break;
 		case COLONEL_MUSTARD:	spriteColor = new Color(190, 157, 0);
 								opposingColor = Color.BLACK;
+								break;
 		case MR_GREEN:			spriteColor = new Color(67, 133, 1);
 								opposingColor = Color.WHITE;
+								break;
 		case MRS_PEACOCK:		spriteColor = new Color(42, 85, 120);
 								opposingColor = Color.WHITE;
+								break;
 		case MISS_SCARLETT: 	spriteColor = new Color(139, 5, 4);
 								opposingColor = Color.WHITE;
+								break;
 		case PROFESSOR_PLUM:	spriteColor = new Color(125, 15, 205);
 								opposingColor = Color.WHITE;
-		default:
+								break;
+		default:                spriteColor = new Color(64, 255, 0, 255);
+		                        opposingColor = new Color(255, 90, 0);
 	}
 
 	}
