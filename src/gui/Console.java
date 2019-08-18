@@ -59,6 +59,14 @@ public class Console extends JPanel {
 	}
 
 	public void drawDice(int dieOne, int dieTwo){
+		JLabel dieOneLabel = new JLabel();
+		JLabel dieTwoLabel = new JLabel();
+
+		ImageIcon dieOneIcon = dice[dieOne - 1];
+		ImageIcon dieTwoIcon = dice[dieTwo - 1];
+
+		Image diceOneImg = dieOneIcon.getImage();
+		Image dieTwoImg = dieTwoIcon.getImage();
 
 	}
 	

@@ -102,14 +102,16 @@ public class Controls extends JPanel {
 		gc.weighty = 2;
 		gc.gridy = 0;
 
+		int checkBoxSize = Math.min(Math.min(getWidth() / 4, getHeight() / 3), 50);
+
 		for (int i = 0; i < 4; i++) {
 			// NORMAL IMAGE
 			Image image = (new ImageIcon("normal_check_box.png")).getImage();
-			image = image.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
+			image = image.getScaledInstance(checkBoxSize, checkBoxSize, java.awt.Image.SCALE_SMOOTH);
 			ImageIcon normal = new ImageIcon(image);
 			// SELECTED IMAGE
 			Image image2 = (new ImageIcon("selected_check_box.png")).getImage();
-			image2 = image2.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
+			image2 = image2.getScaledInstance(checkBoxSize, checkBoxSize, java.awt.Image.SCALE_SMOOTH);
 			ImageIcon selected = new ImageIcon(image2);
 
 			JCheckBox b = new JCheckBox((i + 3) + "");
