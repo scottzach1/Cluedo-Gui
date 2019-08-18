@@ -234,6 +234,10 @@ public class CluedoGame {
 		movesLeft = moves;
 	}
 
+	public int getMovesLeft(){
+		return movesLeft;
+	}
+
 	public void removeMovesLeft(int usedMoves){
 		movesLeft -= usedMoves;
 	}
