@@ -151,8 +151,8 @@ public class PathFinder {
      */
     public boolean findExactPath(Cell start, Cell end, int steps) {
         if (board == null) throw new RuntimeException("Game.PathFinder does not have a Game.Board!");
-        visitedRooms = (visitedRooms != null) ? visitedRooms : new HashSet<>(visitedRooms);
-        visitedCells = (visitedCells != null) ? visitedCells : new HashSet<>(visitedCells);
+//        visitedRooms = (visitedRooms != null) ? visitedRooms : new HashSet<>();
+//        visitedCells = (visitedCells != null) ? visitedCells : new HashSet<>();
         return findExactPathHelper(new DFSNode(start, null), end, visitedRooms, visitedCells, steps);
     }
 
@@ -170,11 +170,14 @@ public class PathFinder {
 
         Cell current = node.current;
 
+        visitedCells.add(current);
+
         // Success Termination.
         if (current.sameRoom(end) || (current.sameCell(end) && node.depth == steps)) {
             if (current.getRoom() != null) visitedRooms.add(current.getRoom());
             visitedCells.add(current);
-            parentVisitedCells.addAll(visitedCells);
+            parentVisitedCells = visitedCells;
+            parentVisitedRooms = visitedRooms;
             return true;
         }
 
@@ -185,7 +188,7 @@ public class PathFinder {
 
         // Select the neighbours, or door ways if in a room.
         if (current.getRoom() != null) {
-            neighbours = current.getRoom().getDoorSteps();
+            neighbours = new HashSet<>(current.getRoom().getDoorSteps());
             visitedRooms.add(current.getRoom());
         } else neighbours = new HashSet<>(current.getNeighbors().values());
 
@@ -197,7 +200,8 @@ public class PathFinder {
             if (findExactPathHelper(new DFSNode(neigh, node), end, new HashSet<>(visitedRooms), new HashSet<>(visitedCells), steps)) {
                 if (current.getRoom() != null) visitedRooms.add(current.getRoom());
                 visitedCells.add(current);
-                parentVisitedCells.addAll(visitedCells);
+                parentVisitedCells = visitedCells;
+                parentVisitedRooms = visitedRooms;
                 return true;
             }
         }

@@ -160,8 +160,7 @@ public class Cell extends JLabel implements MouseListener {
 			board.highlightedRooms.forEach(room -> board.highlightedCells.addAll(room.getCells()));
 		}
 		board.getStream().forEach(Cell::render);
-		if (!success) setIcon(new CombinedImageIcon(prevIcon, icons.get("cell_red.png")));
-		render();
+		if (!success) setIcon(new CombinedImageIcon(prevIcon, icons.get("cell_invalid.png")));
 
 		System.out.println(board.highlightedCells.size());
 	}
