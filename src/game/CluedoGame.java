@@ -258,7 +258,6 @@ public class CluedoGame {
 	}
 
 	public User getCurrentUser(){
-		System.out.println(userNum + " " + users.size());
 		return users.get(userNum);
 	}
 

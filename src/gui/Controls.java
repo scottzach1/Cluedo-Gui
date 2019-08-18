@@ -52,7 +52,7 @@ public class Controls extends JPanel {
     /**
      * mainMenu:
      */
-    public void mainMenu() {
+    protected void mainMenu() {
         gc = new GridBagConstraints();
         drawBorder();
 
@@ -142,7 +142,7 @@ public class Controls extends JPanel {
 
     }
 
-    public void createUser(int playerNum) {
+    protected void createUser(int playerNum) {
         gc = new GridBagConstraints();
         drawBorder();
 
@@ -187,7 +187,7 @@ public class Controls extends JPanel {
 
     }
 
-    public void selectCharacter(String userName) {
+    protected void selectCharacter(String userName) {
         gc = new GridBagConstraints();
         drawBorder();
 
@@ -228,7 +228,7 @@ public class Controls extends JPanel {
     /**
      * addContainers:
      */
-    public void addContainers() {
+    protected void addContainers() {
         gc = new GridBagConstraints();
         drawBorder();
 
@@ -243,20 +243,20 @@ public class Controls extends JPanel {
         gc.gridx = 0;
         gc.weightx = 1;
         gc.gridwidth = 1;
-        gc.insets = new Insets(5,5,0,5);
+        gc.insets = new Insets(5, 5, 0, 5);
         add(console, gc);
 
         gc.gridx = 1;
         gc.weightx = 2;
         gc.gridwidth = 2;
-        gc.insets = new Insets(5,0,0,5);
+        gc.insets = new Insets(5, 0, 0, 5);
         add(userInterface, gc);
     }
 
     /**
      *
      */
-    public void nextPlayer() {
+    protected void nextPlayer() {
         dieOne = cluedoGame.rollDie();
         dieTwo = cluedoGame.rollDie();
         cluedoGame.setMovesThisTurn(dieOne + dieTwo);
@@ -266,15 +266,35 @@ public class Controls extends JPanel {
 
     }
 
-    public void gameMenu() {
+    protected void gameMenu() {
         console.drawDice(dieOne, dieTwo);
         userInterface.mainPlayerMenu();
         drawBorder();
     }
 
-    public void backOption(){
+    protected void backOption() {
         userInterface.backOption();
         drawBorder();
+    }
+
+    protected void accuseOrSuggest(boolean suggestion) {
+        userInterface.accuseOrSuggest(suggestion);
+        drawBorder();
+    }
+
+    protected void printError(String errorMsg, UserInterface.ERROR_TYPE error_type) {
+        console.printError(errorMsg);
+        switch (error_type) {
+            case FALSE_SUGGESTION:
+                userInterface.falseSuggestion();
+                break;
+            case FALSE_ACCUSATION:
+                userInterface.falseAccusation();
+                break;
+            case BACK:
+                userInterface.backOption();
+                break;
+        }
     }
 
     // --------------------------------------------------
@@ -288,15 +308,15 @@ public class Controls extends JPanel {
         this.borderTitle = borderTitle;
     }
 
-    public void setBaseCol(Color c){
+    public void setBaseCol(Color c) {
         baseCol = c;
     }
 
-    public void setAccentCol(Color c){
+    public void setAccentCol(Color c) {
         accentCol = c;
     }
 
-    private void drawBorder(){
+    private void drawBorder() {
         // Create the boarder
         Border border = BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, accentCol), borderTitle,
                 TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, new Font("Serif", Font.BOLD, Math.min(Math.min(getWidth() / 2, getHeight() / 2), 20)), accentCol);
@@ -310,6 +330,7 @@ public class Controls extends JPanel {
     public void clear() {
         removeAll();
     }
+
     public void clearComponents() {
         if (console != null)
             console.clear();

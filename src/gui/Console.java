@@ -2,123 +2,136 @@ package gui;
 
 import game.CluedoGame;
 
-import java.awt.*;
-
 import javax.swing.*;
 import javax.swing.border.Border;
+import java.awt.*;
 
 public class Console extends JPanel {
-	
-	// --------------------------------------------------
-	// FIELDS
-	// --------------------------------------------------
 
-	private final Color baseCol = new Color(100, 0, 30);
+    // --------------------------------------------------
+    // FIELDS
+    // --------------------------------------------------
 
-	private GridBagConstraints gc;
-	private Dimension size;
-	private final CluedoGame cluedoGame;
-	private final ImageIcon[] dice = {
-			new ImageIcon("dice1.png"),
-			new ImageIcon("dice2.png"),
-			new ImageIcon("dice3.png"),
-			new ImageIcon("dice4.png"),
-			new ImageIcon("dice5.png"),
-			new ImageIcon("dice6.png")
-	};
+    private final Color baseCol = new Color(100, 0, 30);
 
-	
-	
-	// --------------------------------------------------
-	// CONSTRUCTOR
-	// --------------------------------------------------
-	
-	public Console(CluedoGame parent) {
-		cluedoGame = parent;
+    private GridBagConstraints gc;
+    private Dimension size;
+    private final CluedoGame cluedoGame;
+    private final ImageIcon[] dice = {
+            new ImageIcon("dice1.png"),
+            new ImageIcon("dice2.png"),
+            new ImageIcon("dice3.png"),
+            new ImageIcon("dice4.png"),
+            new ImageIcon("dice5.png"),
+            new ImageIcon("dice6.png")
+    };
 
-		// Set the Size of the Control panel
-		setPreferredSize(new Dimension((cluedoGame.getGui().getWidth() / 3) - 3, (cluedoGame.getGui().getHeight())));
 
-		// Create the boarder
-		drawBorder();
+    // --------------------------------------------------
+    // CONSTRUCTOR
+    // --------------------------------------------------
 
-		// Set layout
-		setLayout(new GridBagLayout());
-		gc = new GridBagConstraints();
-	}
+    public Console(CluedoGame parent) {
+        cluedoGame = parent;
 
-	public void drawDice(int dieOne, int dieTwo){
+        // Set the Size of the Control panel
+        setPreferredSize(new Dimension((cluedoGame.getGui().getWidth() / 3) - 3, (cluedoGame.getGui().getHeight())));
 
-		gc = new GridBagConstraints();
+        // Create the boarder
+        drawBorder();
 
-		// Create the labels for representing them
-		JLabel dieOneLabel = new JLabel();
-		JLabel dieTwoLabel = new JLabel();
-		JTextField movesLeft = new JTextField();
+        // Set layout
+        setLayout(new GridBagLayout());
+        gc = new GridBagConstraints();
+    }
 
-		// Get the image icon for each die
-		ImageIcon dieOneIcon = dice[dieOne - 1];
-		ImageIcon dieTwoIcon = dice[dieTwo - 1];
+    protected void drawDice(int dieOne, int dieTwo) {
 
-		// Get the image for each die
-		Image diceOneImg = dieOneIcon.getImage();
-		Image dieTwoImg = dieTwoIcon.getImage();
+        gc = new GridBagConstraints();
 
-		// Create a dynamic size for the die
-		int dieSize = Math.min(getWidth() / 4, getHeight()/4);
+        // Create the labels for representing them
+        JLabel dieOneLabel = new JLabel();
+        JLabel dieTwoLabel = new JLabel();
+        JTextField movesLeft = new JTextField();
 
-		// resize the image size
-		diceOneImg = diceOneImg.getScaledInstance(dieSize, dieSize, java.awt.Image.SCALE_SMOOTH);
-		dieTwoImg = dieTwoImg.getScaledInstance(dieSize, dieSize, java.awt.Image.SCALE_SMOOTH);
+        // Get the image icon for each die
+        ImageIcon dieOneIcon = dice[dieOne - 1];
+        ImageIcon dieTwoIcon = dice[dieTwo - 1];
 
-		// Set the text field text
-		movesLeft.setFont(new Font("Arial", Font.BOLD, Math.min(Math.min(getWidth() / 2, getHeight() / 2), 20)));
-		movesLeft.setText("Moves Left: " + cluedoGame.getMovesLeft());
-		movesLeft.setBackground(baseCol);
-		movesLeft.setForeground(Color.WHITE);
-		movesLeft.setBorder(null);
+        // Get the image for each die
+        Image diceOneImg = dieOneIcon.getImage();
+        Image dieTwoImg = dieTwoIcon.getImage();
 
-		// Add the components
-		gc.weightx = 1;
-		gc.weighty = 1;
+        // Create a dynamic size for the die
+        int dieSize = Math.min(getWidth() / 4, getHeight() / 4);
 
-		gc.gridx = 0;
-		gc.gridy = 0;
-		gc.anchor = GridBagConstraints.LAST_LINE_END;
-		gc.insets = new Insets(0, 0, 0, 5);
-		add(new JLabel(new ImageIcon(diceOneImg)), gc);
+        // resize the image size
+        diceOneImg = diceOneImg.getScaledInstance(dieSize, dieSize, java.awt.Image.SCALE_SMOOTH);
+        dieTwoImg = dieTwoImg.getScaledInstance(dieSize, dieSize, java.awt.Image.SCALE_SMOOTH);
 
-		gc.gridx = 1;
-		gc.gridy = 0;
-		gc.anchor = GridBagConstraints.LAST_LINE_START;
-		gc.insets = new Insets(0, 5, 0, 0);
-		add(new JLabel(new ImageIcon(dieTwoImg)), gc);
+        // Set the text field text
+        movesLeft.setFont(new Font("Arial", Font.BOLD, Math.min(Math.min(getWidth() / 2, getHeight() / 2), 20)));
+        movesLeft.setText("Moves Left: " + cluedoGame.getMovesLeft());
+        movesLeft.setBackground(baseCol);
+        movesLeft.setForeground(Color.WHITE);
+        movesLeft.setBorder(null);
 
-		gc.weighty = 2;
-		gc.gridx = 0;
-		gc.gridy = 1;
-		gc.gridwidth = 2;
-		gc.anchor=GridBagConstraints.CENTER;
-		gc.insets = new Insets(0, 0, 0, 0);
-		add(movesLeft, gc);
+        // Add the components
+        gc.weightx = 1;
+        gc.weighty = 1;
 
-	}
-	private void drawBorder(){
-		Border b1 = BorderFactory.createRaisedBevelBorder();
-		Border b2 = BorderFactory.createLoweredBevelBorder();
-		Border b3 = BorderFactory.createCompoundBorder(b1, b2);
-		setBorder(b3);
-		setBackground(baseCol);
-	}
-	
-	// --------------------------------------------------
-	// PUBLIC METHODS
-	// --------------------------------------------------
+        gc.gridx = 0;
+        gc.gridy = 0;
+        gc.anchor = GridBagConstraints.LAST_LINE_END;
+        gc.insets = new Insets(0, 0, 0, 5);
+        add(new JLabel(new ImageIcon(diceOneImg)), gc);
 
-	
-	
-	public void clear() {
-		removeAll();
-	}
+        gc.gridx = 1;
+        gc.gridy = 0;
+        gc.anchor = GridBagConstraints.LAST_LINE_START;
+        gc.insets = new Insets(0, 5, 0, 0);
+        add(new JLabel(new ImageIcon(dieTwoImg)), gc);
+
+        gc.weighty = 2;
+        gc.gridx = 0;
+        gc.gridy = 1;
+        gc.gridwidth = 2;
+        gc.anchor = GridBagConstraints.CENTER;
+        gc.insets = new Insets(0, 0, 0, 0);
+        add(movesLeft, gc);
+
+    }
+
+    protected void printError(String errorMsg) {
+        gc = new GridBagConstraints();
+        gc.anchor = GridBagConstraints.CENTER;
+
+        JTextArea error = new JTextArea(errorMsg);
+        error.setWrapStyleWord(true);
+        error.setLineWrap(true);
+        error.setBackground(null);
+        error.setForeground(Color.WHITE);
+        error.setBorder(null);
+
+        add(error, gc);
+    }
+
+
+    private void drawBorder() {
+        Border b1 = BorderFactory.createRaisedBevelBorder();
+        Border b2 = BorderFactory.createLoweredBevelBorder();
+        Border b3 = BorderFactory.createCompoundBorder(b1, b2);
+        setBorder(b3);
+        setBackground(baseCol);
+    }
+
+    // --------------------------------------------------
+    // PUBLIC METHODS
+    // --------------------------------------------------
+
+
+    public void clear() {
+        removeAll();
+    }
 
 }

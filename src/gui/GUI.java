@@ -1,193 +1,206 @@
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-
-import javax.swing.JFrame;
-import javax.swing.JMenuBar;
-import javax.swing.WindowConstants;
-
 import game.Board;
 import game.CluedoGame;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+
 public class GUI extends JFrame implements ComponentListener {
-	// Nothing important
-	private static final long serialVersionUID = 1L;
+    // Nothing important
+    private static final long serialVersionUID = 1L;
 
-	// --------------------------------------------------
-	// FIELDS
-	// --------------------------------------------------
+    // --------------------------------------------------
+    // FIELDS
+    // --------------------------------------------------
 
-	// Dimension of the frame, based on screen size
-	private static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	public static final int CANVAS_HEIGHT = screenSize.height * 2 / 3;
-	public static final int CONTROLS_HEIGHT = screenSize.height / 3;
-	public static final int SCREEN_HEIGHT = screenSize.height;
-	public static final int SCREEN_WIDTH = screenSize.width;
+    // Dimension of the frame, based on screen size
+    private static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    public static final int CANVAS_HEIGHT = screenSize.height * 2 / 3;
+    public static final int CONTROLS_HEIGHT = screenSize.height / 3;
+    public static final int SCREEN_HEIGHT = screenSize.height;
+    public static final int SCREEN_WIDTH = screenSize.width;
 
-	// Fields: All the contents of this container
-	private Canvas canvas;
-	private Controls controls;
-	private JMenuBar menuBar;
+    // Fields: All the contents of this container
+    private Canvas canvas;
+    private Controls controls;
+    private JMenuBar menuBar;
 
-	// Set up stuff
-	private final CluedoGame cludeoGame;
-	private final Board board;
+    // Set up stuff
+    private final CluedoGame cludeoGame;
+    private final Board board;
 
-	// --------------------------------------------------
-	// CONSTRUCTOR
-	// --------------------------------------------------
+    // --------------------------------------------------
+    // CONSTRUCTOR
+    // --------------------------------------------------
 
-	public GUI(CluedoGame aCluedoGame) {
-		super("CLUEDO GAME");
-		cludeoGame = aCluedoGame;
-		board = cludeoGame.getBoard();
+    public GUI(CluedoGame aCluedoGame) {
+        super("CLUEDO GAME");
+        cludeoGame = aCluedoGame;
+        board = cludeoGame.getBoard();
 
-		// Create the frame
-		setPreferredSize(screenSize.getSize());
-		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        // Create the frame
+        setPreferredSize(screenSize.getSize());
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-		addComponentListener(this);
+        addComponentListener(this);
 
-		// Set to visible and resizable
-		setResizable(true);
-		setVisible(true);
-		pack();
-	}
+        // Set to visible and resizable
+        setResizable(true);
+        setVisible(true);
+        pack();
+    }
 
-	// --------------------------------------------------
-	// PUBLIC METHODS
-	// --------------------------------------------------
+    // --------------------------------------------------
+    // PUBLIC METHODS
+    // --------------------------------------------------
 
-	public void addLayoutComponents(){
-		// Create the layout
-		canvas = new Canvas (cludeoGame);
-		controls = new Controls(cludeoGame);
-		menuBar = new MenuOptions();
+    public void addLayoutComponents() {
+        // Create the layout
+        canvas = new Canvas(cludeoGame);
+        controls = new Controls(cludeoGame);
+        menuBar = new MenuOptions();
 
-		// Add panels to frame
-		setJMenuBar(menuBar);
-		add(canvas, BorderLayout.CENTER);
-		add(controls, BorderLayout.SOUTH);
-		redraw();
-	}
+        // Add panels to frame
+        setJMenuBar(menuBar);
+        add(canvas, BorderLayout.CENTER);
+        add(controls, BorderLayout.SOUTH);
+        redraw();
+    }
 
 
-	// Display the main menu
-	public void mainMenu() {
-		clear();
-		canvas.mainMenu();
-		controls.mainMenu();
-		redraw();
-	}
+    // Display the main menu
+    public void mainMenu() {
+        clear();
+        canvas.mainMenu();
+        controls.mainMenu();
+        redraw();
+    }
 
-	// Displays the main menu for each panel
-	public void howManyPlayers() {
-		clear();
-		canvas.howManyPlayers();
-		controls.howManyPlayers();
-		redraw();
-	}
+    // Displays the main menu for each panel
+    public void howManyPlayers() {
+        clear();
+        canvas.howManyPlayers();
+        controls.howManyPlayers();
+        redraw();
+    }
 
-	public void createUser(int tempUserNum) {
-		clear();
-		canvas.createUser(tempUserNum);
-		controls.createUser(tempUserNum);
-		redraw();
-	}
+    public void createUser(int tempUserNum) {
+        clear();
+        canvas.createUser(tempUserNum);
+        controls.createUser(tempUserNum);
+        redraw();
+    }
 
-	public void selectCharacter(String tempUserName) {
-		clear();
-		canvas.selectCharacter(tempUserName);
-		controls.selectCharacter(tempUserName);
-		redraw();
-	}
+    public void selectCharacter(String tempUserName) {
+        clear();
+        canvas.selectCharacter(tempUserName);
+        controls.selectCharacter(tempUserName);
+        redraw();
+    }
 
-	public void gameSetup(){
-		clear();
-		controls.addContainers();
-		redraw();
-	}
+    public void gameSetup() {
+        clear();
+        controls.addContainers();
+        redraw();
+    }
 
-	public void newPlayer(){
-		// Clear everything in the canvas and controls
-		clearComponents();
-		// Redraw everything
-		controls.nextPlayer();
-		canvas.renderBoard();
-		redraw();
-	}
+    public void newPlayer() {
+        // Clear everything in the canvas and controls
+        clearComponents();
+        // Redraw everything
+        controls.nextPlayer();
+        canvas.renderBoard();
+        redraw();
+    }
 
-	public void gameMenu(){
-		// Clear everything in the canvas and controls
-		clearComponents();
-		// Redraw everything
-		controls.gameMenu();
-		canvas.renderBoard();
-		redraw();
-	}
+    public void gameMenu() {
+        // Clear everything in the canvas and controls
+        clearComponents();
+        // Redraw everything
+        controls.gameMenu();
+        canvas.renderBoard();
+        redraw();
+    }
 
-	public void showHand(){
-		clearComponents();
-		canvas.showHand(cludeoGame.getCurrentUser());
-		controls.backOption();
-		redraw();
-	}
+    public void showHand() {
+        clearComponents();
+        canvas.showHand(cludeoGame.getCurrentUser());
+        controls.backOption();
+        redraw();
+    }
 
-	public void showDetectiveCards(){
-		clearComponents();
-		canvas.showDetectiveCards(cludeoGame.getCurrentUser());
-		controls.backOption();
-		redraw();
-	}
+    public void showDetectiveCards() {
+        clearComponents();
+        canvas.showDetectiveCards(cludeoGame.getCurrentUser());
+        controls.backOption();
+        redraw();
+    }
 
-	// --------------------------------------------------
-	// HELPFUL METHODS
-	// --------------------------------------------------
-	public Canvas getCanvas() {
-		return canvas;
-	}
+    public void accuseOrSuggest(boolean suggestion) {
+        clearComponents();
+        canvas.renderBoard();
+        controls.accuseOrSuggest(suggestion);
+        redraw();
+    }
 
-	public void setCanvas(Canvas canvas) {
-		this.canvas = canvas;
-	}
+    public void printError(String errorMsg, UserInterface.ERROR_TYPE error_type) {
+        clearComponents();
+        controls.printError(errorMsg, error_type);
+        canvas.renderBoard();
+        redraw();
+    }
 
-	public Controls getControls() {
-		return controls;
-	}
+    // --------------------------------------------------
+    // HELPFUL METHODS
+    // --------------------------------------------------
+    public Canvas getCanvas() {
+        return canvas;
+    }
 
-	public void setControls(Controls controls) {
-		this.controls = controls;
-	}
+    public void setCanvas(Canvas canvas) {
+        this.canvas = canvas;
+    }
 
-	public void redraw() {
-		revalidate();
-		repaint();
-	}
+    public Controls getControls() {
+        return controls;
+    }
 
-	public void clear() {
-		canvas.clear();
-		controls.clear();
-	}
-	public void clearComponents() {
-		canvas.clearComponents();
-		controls.clearComponents();
-	}
+    public void setControls(Controls controls) {
+        this.controls = controls;
+    }
 
-	@Override
-	public void componentResized(ComponentEvent e) {
-		redraw();
-	}
+    public void redraw() {
+        revalidate();
+        repaint();
+    }
 
-	@Override
-	public void componentMoved(ComponentEvent e) {}
+    public void clear() {
+        canvas.clear();
+        controls.clear();
+    }
 
-	@Override
-	public void componentShown(ComponentEvent e) {}
+    public void clearComponents() {
+        canvas.clearComponents();
+        controls.clearComponents();
+    }
 
-	@Override
-	public void componentHidden(ComponentEvent e) {}
+    @Override
+    public void componentResized(ComponentEvent e) {
+        redraw();
+    }
+
+    @Override
+    public void componentMoved(ComponentEvent e) {
+    }
+
+    @Override
+    public void componentShown(ComponentEvent e) {
+    }
+
+    @Override
+    public void componentHidden(ComponentEvent e) {
+    }
 }
