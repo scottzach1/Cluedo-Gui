@@ -59,14 +59,44 @@ public class Console extends JPanel {
 	}
 
 	public void drawDice(int dieOne, int dieTwo){
+		// Create the labels for representing them
 		JLabel dieOneLabel = new JLabel();
 		JLabel dieTwoLabel = new JLabel();
+		JTextField movesLeft = new JTextField();
 
+		// Get the image icon for each die
 		ImageIcon dieOneIcon = dice[dieOne - 1];
 		ImageIcon dieTwoIcon = dice[dieTwo - 1];
 
+		// Get the image for each die
 		Image diceOneImg = dieOneIcon.getImage();
 		Image dieTwoImg = dieTwoIcon.getImage();
+
+		// Create a dynamic size for the die
+		int dieSize = Math.min(getWidth() / 4, getHeight()/4);
+
+		// resize the image size
+		diceOneImg = diceOneImg.getScaledInstance(dieSize, dieSize, java.awt.Image.SCALE_SMOOTH);
+		dieTwoImg = dieTwoImg.getScaledInstance(dieSize, dieSize, java.awt.Image.SCALE_SMOOTH);
+
+		// Set the text field text
+		movesLeft.setFont(new Font("Arial", Font.BOLD, Math.min(Math.min(getWidth() / 5, getHeight() / 3), 20)));
+		movesLeft.setText("Moves Left: " + cluedoGame.getMovesLeft());
+
+		// Add the components
+		gc.weightx = 1;
+		gc.weighty = 1;
+
+
+		gc.gridx = 0;
+		gc.gridy = 0;
+		add(new JLabel(new ImageIcon(diceOneImg)), gc);
+		gc.gridx = 0;
+		gc.gridy = 1;
+		add(new JLabel(new ImageIcon(dieTwoImg)), gc);
+		gc.gridx = 0;
+		gc.gridy = 1;
+		add(movesLeft, gc);
 
 	}
 	

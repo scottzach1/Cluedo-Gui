@@ -72,6 +72,7 @@ public class GUI extends JFrame implements ComponentListener {
 		setJMenuBar(menuBar);
 		add(canvas, BorderLayout.CENTER);
 		add(controls, BorderLayout.SOUTH);
+		redraw();
 	}
 
 
