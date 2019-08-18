@@ -2,13 +2,9 @@ package gui;
 
 import game.CluedoGame;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.*;
 
-import javax.swing.BorderFactory;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.Border;
 
 public class Console extends JPanel {
@@ -22,6 +18,14 @@ public class Console extends JPanel {
 	private GridBagConstraints gc;
 	private Dimension size;
 	private final CluedoGame cluedoGame;
+	private final ImageIcon[] dice = {
+			new ImageIcon("dice1.png"),
+			new ImageIcon("dice2.png"),
+			new ImageIcon("dice3.png"),
+			new ImageIcon("dice4.png"),
+			new ImageIcon("dice5.png"),
+			new ImageIcon("dice6.png")
+	};
 
 	
 	
@@ -52,6 +56,10 @@ public class Console extends JPanel {
 		gc.weighty = 1;
 		gc.gridheight = size.height;
 		gc.gridwidth = size.width;
+	}
+
+	public void drawDice(int dieOne, int dieTwo){
+
 	}
 	
 	// --------------------------------------------------

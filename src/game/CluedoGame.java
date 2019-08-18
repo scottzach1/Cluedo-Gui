@@ -13,7 +13,7 @@ import java.util.*;
 public class CluedoGame {
 
 	public static enum STATE{
-		MAIN_MENU, PLAYER_COUNT, USER_CREATION, START_GAME;
+		MAIN_MENU, PLAYER_COUNT, USER_CREATION, SETUP_GAME_DESIGN, START_GAME;
 	}
 
 	// ------------------------
@@ -37,6 +37,8 @@ public class CluedoGame {
 	private String status;
 	private GUI gui;
 	private STATE state;
+	private int movesThisTurn;
+	private int movesLeft;
 
 	// ------------------------
 	// CONSTRUCTOR
@@ -72,6 +74,10 @@ public class CluedoGame {
 				gui.howManyPlayers();
 			else if (state == STATE.USER_CREATION)
 				gui.createUser(tempUserNum);
+			else if (state == STATE.SETUP_GAME_DESIGN){
+				gui.gameSetup();
+				nextState();
+			}
 			else if (state == STATE.START_GAME){
 				gui.runGame();
 			}
@@ -218,6 +224,29 @@ public class CluedoGame {
 		gameController();
 	}
 
+	public int rollDie() {
+		Random dice = new Random();
+		return dice.nextInt(6) + 1;
+	}
+
+	public void setMovesThisTurn(int moves){
+		movesThisTurn = moves;
+		movesLeft = moves;
+	}
+
+	public void removeMovesLeft(int usedMoves){
+		movesLeft -= usedMoves;
+	}
+
+	public boolean hasMovesLeft(){
+		if (movesLeft > 0)
+			return true;
+		return false;
+	}
+
+
+
+	// Setup getters, and setters
 	public void setPlayerAmount(int playerAmount) {
 		this.playerAmount = playerAmount;
 	}

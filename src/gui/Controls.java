@@ -30,8 +30,8 @@ public class Controls extends JPanel {
 	public static final int inset = 10;
 
 	private String borderTitle;
-	private Console c;
-	private UserInterface ui;
+	private Console console;
+	private UserInterface userInterface;
 	private Dimension size;
 	private GridBagConstraints gc;
 	private final CluedoGame cluedoGame;
@@ -222,10 +222,12 @@ public class Controls extends JPanel {
 		// add the components to their locations
 		gc.gridx = 0;
 		gc.gridy = 0;
+		gc.insets = new Insets(0,0,0,10);
 		gc.anchor = GridBagConstraints.LINE_END;
 		add(spriteOptions, gc);
 		gc.gridx = 1;
 		gc.gridy = 0;
+		gc.insets = new Insets(0,10,0,0);
 		gc.anchor = GridBagConstraints.LINE_START;
 		add(submit, gc);
 
@@ -239,11 +241,21 @@ public class Controls extends JPanel {
 		setLayout(new BorderLayout());
 
 		// Create and Add the two panels
-		c = new Console(cluedoGame);
-		ui = new UserInterface(cluedoGame);
+		console = new Console(cluedoGame);
+		userInterface = new UserInterface(cluedoGame);
 
-		add(c, BorderLayout.WEST);
-		add(ui, BorderLayout.EAST);
+		add(console, BorderLayout.WEST);
+		add(userInterface, BorderLayout.EAST);
+	}
+
+	/**
+	 *
+	 */
+	public void runGame(){
+		int dieOne = cluedoGame.rollDie();
+		int dieTwo = cluedoGame.rollDie();
+		cluedoGame.setMovesThisTurn(dieOne + dieTwo);
+		console.drawDice(dieOne, dieTwo);
 	}
 
 	// --------------------------------------------------

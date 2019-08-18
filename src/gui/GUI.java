@@ -105,9 +105,16 @@ public class GUI extends JFrame implements ComponentListener {
 		redraw();
 	}
 
+	public void gameSetup(){
+		clear();
+		canvas.renderBoard();
+		controls.addContainers();
+		redraw();
+	}
+
 	public void runGame(){
 		clear();
-		controls.addContainers();
+		controls.runGame();
 		redraw();
 	}
 
