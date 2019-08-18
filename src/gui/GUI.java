@@ -191,18 +191,33 @@ public class GUI extends JFrame implements ComponentListener {
 		}
 	}
 
-	public void confirmShowHiddenContent(){
+	public void confirmShowHiddenContent(User user){
     	clearComponents();
     	controls.confirmShowHiddenContent();
-		canvas.confirmShowHiddenContent();
+		canvas.confirmShowHiddenContent(user);
     	redraw();
 	}
 
-	protected void chooseHiddenPlayerCard(User user, ArrayList<Card> cards){
+	public void chooseHiddenPlayerCard(User user, ArrayList<Card> cards){
     	clearComponents();
     	controls.chooseHiddenPlayerCard(cards);
     	canvas.chooseHiddenPlayerCard(user);
     	redraw();
+	}
+
+	public void confirmShowOtherPlayerCard(){
+    	clearComponents();
+    	controls.confirmShowOtherPlayerCard();
+    	canvas.confirmShowOtherPlayerCard();
+    	redraw();
+	}
+
+	public void showUserOtherPlayerCard(){
+		clearComponents();
+		controls.showUserOtherPlayerCard();
+		canvas.showUserOtherPlayerCard();
+		redraw();
+
 	}
 
 	public void noMovesLeft(User user){

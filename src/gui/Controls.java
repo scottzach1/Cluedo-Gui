@@ -295,6 +295,16 @@ public class Controls extends JPanel {
         drawBorder();
     }
 
+    protected void confirmShowOtherPlayerCard(){
+        userInterface.confirmShowOtherPlayerCard();
+        drawBorder();
+    }
+
+    protected  void showUserOtherPlayerCard(){
+        userInterface.showUserOtherPlayerCard();
+        drawBorder();
+    }
+
     protected void printError(String errorMsg) {
         console.printError(errorMsg);
         userInterface.backOption();

@@ -243,7 +243,7 @@ public class UserInterface extends JPanel {
 		confirm.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				cluedoGame.getGui().showPlayerCard();
+				cluedoGame.chooserHiddenCard();
 			}
 		});
 
@@ -268,6 +268,7 @@ public class UserInterface extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				Card showCard = (Card) cardsToChooseFrom.getSelectedItem();
 				cluedoGame.setShowOtherPlayerCard(showCard);
+				cluedoGame.getGui().confirmShowOtherPlayerCard();
 			}
 		});
 
@@ -277,6 +278,42 @@ public class UserInterface extends JPanel {
 
 		gc.gridx = 1;
 
+	}
+
+	protected void confirmShowOtherPlayerCard(){
+		// Clear all previous settings
+		gc = new GridBagConstraints();
+
+		JButton confirm = new JButton("Confirm");
+		confirm.setPreferredSize(new Dimension(getWidth()/6, getHeight()/6));
+		confirm.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				cluedoGame.getGui().showUserOtherPlayerCard();
+			}
+		});
+
+		gc.gridx = 0;
+		gc.gridy = 0;
+		add(confirm, gc);
+	}
+
+	protected  void showUserOtherPlayerCard(){
+		// Clear all previous settings
+		gc = new GridBagConstraints();
+
+		JButton confirm = new JButton("Cool");
+		confirm.setPreferredSize(new Dimension(getWidth()/6, getHeight()/6));
+		confirm.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				cluedoGame.nextState();
+			}
+		});
+
+		gc.gridx = 0;
+		gc.gridy = 0;
+		add(confirm, gc);
 	}
 
 
