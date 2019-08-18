@@ -32,7 +32,6 @@ public class Controls extends JPanel {
 	private String borderTitle;
 	private Console console;
 	private UserInterface userInterface;
-	private Dimension size;
 	private GridBagConstraints gc;
 	private final CluedoGame cluedoGame;
 
@@ -45,7 +44,7 @@ public class Controls extends JPanel {
 		cluedoGame = parent;
 
 		// Set the Size of the Control panel
-		size = getPreferredSize();
+		Dimension size = getPreferredSize();
 		size.height = GUI.CONTROLS_HEIGHT;
 		size.width = GUI.SCREEN_WIDTH;
 		setPreferredSize(size);
@@ -75,8 +74,8 @@ public class Controls extends JPanel {
 		gc.gridy = 0;
 
 		JButton play = new JButton("PLAY");
-		play.setPreferredSize(new Dimension(size.width / 10, size.height / 5));
-		play.setFont(new Font("Arial", Font.BOLD, 20));
+		play.setPreferredSize(new Dimension(getWidth() / 10, getHeight() / 5));
+		play.setFont(new Font("Arial", Font.BOLD, Math.min(Math.min(getWidth() / 4, getHeight() / 3), 20)));
 		
 		play.addActionListener(new ActionListener() {
 
@@ -117,7 +116,7 @@ public class Controls extends JPanel {
 			JCheckBox b = new JCheckBox((i + 3) + "");
 			b.setIcon(normal);
 			b.setSelectedIcon(selected);
-			b.setFont(new Font("Arial", Font.PLAIN, 40));
+			b.setFont(new Font("Arial", Font.PLAIN, Math.min(Math.min(getWidth() / 4, getHeight() / 3), 40)));
 			b.setBackground(null);
 			b.setForeground(Color.WHITE);
 			b.setActionCommand((i+3)+"");
@@ -163,11 +162,11 @@ public class Controls extends JPanel {
 		JTextField nameField = new JTextField(20);
 		
 		// Setup the components
-		name.setFont(new Font("Arial", Font.BOLD, 30));
+		name.setFont(new Font("Arial", Font.BOLD, Math.min(Math.min(getWidth() / 4, getHeight() / 3), 30)));
 		name.setForeground(accentCol);
 		nameField.setBackground(null);
 		
-		nameField.setFont(new Font("Arial", Font.BOLD, 30));
+		nameField.setFont(new Font("Arial", Font.BOLD, Math.min(Math.min(getWidth() / 4, getHeight() / 3), 30)));
 		nameField.setForeground(accentCol);
 		nameField.setCaretColor(accentCol);
 		nameField.setBackground(baseCol);
@@ -204,11 +203,11 @@ public class Controls extends JPanel {
 
 		// Create drop down menu
 		JComboBox spriteOptions = new JComboBox(new Vector< Sprite.SpriteAlias>(cluedoGame.getAvailableSprites()));
-		spriteOptions.setPreferredSize(new Dimension(size.width / 10, size.height /10));
+		spriteOptions.setPreferredSize(new Dimension(getWidth() / 10, getHeight() /10));
 
 		// Create submit button
 		JButton submit = new JButton("SUBMIT");
-		submit.setPreferredSize(new Dimension(size.width / 10, size.height /10));
+		submit.setPreferredSize(new Dimension(getWidth() / 10, getHeight() /10));
 
 		submit.addActionListener(new ActionListener() {
 			@Override
