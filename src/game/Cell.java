@@ -3,7 +3,6 @@ package game;
 import extra.CombinedImageIcon;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import java.util.List;
@@ -14,19 +13,40 @@ public class Cell extends JLabel implements MouseListener {
 	/**
 	 * An Enum defining the different possible directions of neighbours of a Game.Cell.
 			*/
-	public enum Direction {NORTH, SOUTH, EAST, WEST}
+	public enum Direction {
+		NORTH, SOUTH, EAST, WEST;
+		private Direction reverse;
+		static {
+			NORTH.reverse = SOUTH;
+			SOUTH.reverse = NORTH;
+			EAST.reverse = WEST;
+			WEST.reverse = EAST;
+		}
+		Direction reverse() { return reverse; }
+	}
 
 	/**
 	 * An Enum defining the different kinds of Cells in the Game.
 	 */
 	public enum Type {ROOM, HALL, START_PAD, VOID, CELLAR, WALL, UNKNOWN}
 
+	Cell go(Cell[][] cells, Direction dir) {
+		switch (dir) {
+			case NORTH:	return (row > 0) 					? cells[row - 1][col] : null;
+			case SOUTH:	return (row + 1 < cells.length) 	? cells[row + 1][col] : null;
+			case WEST:	return (col > 0)					? cells[row][col - 1] : null;
+			case EAST:	return (col + 1 < cells[0].length) 	? cells[row][col + 1] : null;
+			default: return null;
+		}
+	}
+
 	// ------------------------
 	// MEMBER VARIABLES
 	// ------------------------
 
 	// Game.Cell Attributes
-	private Map<String, ImageIcon> scaledImageIcons;
+	private Board board;
+	private Map<String, ImageIcon> icons;
 	private Sprite sprite;
 	private Room room;
 	private int col;
@@ -44,30 +64,32 @@ public class Cell extends JLabel implements MouseListener {
 	 * @param col Column of the Game.Cell.
 	 * @param type The type of Game.Cell. Ie, Type.Wall
 	 */
-	public Cell(int row, int col, Cell.Type type, Map<String, ImageIcon> icons) {
+	public Cell(int row, int col, Cell.Type type, Board board) {
 		this.row = row;
 		this.col = col;
 		this.type = type;
+		this.board = board;
 		neighbors = new HashMap<>();
-		scaledImageIcons = icons;
+		icons = board.getScaledImageIcons();
 		this.addMouseListener(this);
 	}
 
 	public Cell render() {
+//		Map<String, ImageIcon> icons = board.getScaledImageIcons();
 		ImageIcon base;
 		if (Board.HIGHLIGHTED_CELLS.contains(this))
-				base = scaledImageIcons.get(parseHighLightedImageIcon(type));
-		else 	base = scaledImageIcons.get(parseImageIcon(type));
+				base = icons.get(parseHighLightedImageIcon(type));
+		else 	base = icons.get(parseImageIcon(type));
 
 		List<ImageIcon> layers = new ArrayList<>();
 		for (Direction dir : Direction.values()) {
-			if (neighbors.get(dir) == null) layers.add(scaledImageIcons.get(parseWallIcon(dir)));
+			if (neighbors.get(dir) == null) layers.add(icons.get(parseWallIcon(dir)));
 		}
 
 		if (sprite != null) {
 			if (sprite.matchesType(Board.ACTIVE_SPRITE))
-					base = scaledImageIcons.get(sprite.getCell());
-			else 	layers.add(scaledImageIcons.get(sprite.getMarker()));
+					base = icons.get(sprite.getCell());
+			else 	layers.add(icons.get(sprite.getMarker()));
 		}
 
 		setIcon(new CombinedImageIcon(base, layers));
@@ -117,7 +139,8 @@ public class Cell extends JLabel implements MouseListener {
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		setIcon(scaledImageIcons.get(parseImageIcon(Type.UNKNOWN)));
+//		Map<String, ImageIcon> icons = board.getScaledImageIcons();
+		setIcon(icons.get(parseImageIcon(Type.UNKNOWN)));
 		repaint();
 	}
 
