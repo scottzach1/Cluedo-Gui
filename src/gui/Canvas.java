@@ -5,6 +5,8 @@ import game.CluedoGame;
 import game.Room;
 
 import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -152,16 +154,18 @@ public class Canvas extends JPanel {
 	}
 
 	public void renderBoard() {
-		// Sorry this is uggly, although resized have the cells actually changed size?
-		if (cellSize == (cellSize = -1 + (Math.min(getWidth() / board.getCols(), getHeight() / board.getRows())))) return;
+		int newCellSize = -1 + (Math.min(getWidth() / board.getCols(), getHeight() / board.getRows()));
 
-		clear();
-		board.getStream().forEach(cell -> {
-			Image image = cell.getIcon().getImage();
-			Image newImage = image.getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
-			components.add(new JLabel(new ImageIcon(newImage)));
-		});
+		// Have the cells actually changed size?
+		if (cellSize != (cellSize = newCellSize)) {
+			board.getStream().forEach(cell -> {
+				Image image = cell.getIcon().getImage();
+				Image newImage = image.getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
+				components.add(new JLabel(new ImageIcon(newImage)));
+			});
+		}
 		revalidateComponents(board.getCols());
+		clear();
 		repaint();
 	}
 
@@ -180,9 +184,8 @@ public class Canvas extends JPanel {
 	}
 
 	public static void main(String[] args) {
-
-		CluedoGame cg = new CluedoGame();
-		Board b = cg.getBoard();
+		CluedoGame cluedoGame = new CluedoGame();
+		Board b = cluedoGame.getBoard();
 
 		// Highlight some cells to test
 		Board.HIGHLIGHTED_CELLS.add(b.getCell("O2"));
@@ -196,7 +199,14 @@ public class Canvas extends JPanel {
 		Board.HIGHLIGHTED_CELLS.add(b.getCell("S6"));
 		Board.HIGHLIGHTED_CELLS.addAll(b.getRooms().get(Room.RoomAlias.CONSERVATORY).getCells());
 
-		Canvas c = new Canvas(cg);
+		Canvas c = new Canvas(cluedoGame);
+
+		c.addComponentListener(new ComponentListener() {
+			@Override public void componentResized(ComponentEvent e) { c.renderBoard(); }
+			@Override public void componentMoved(ComponentEvent e) {}
+			@Override public void componentShown(ComponentEvent e) {}
+			@Override public void componentHidden(ComponentEvent e) {}
+		});
 
 		JFrame frame = new JFrame("FrameDemo");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
