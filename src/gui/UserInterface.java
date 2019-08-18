@@ -62,7 +62,7 @@ public class UserInterface extends JPanel {
 		JButton skipTurn = new JButton("Skip Turn");
 
 		// Add button functionality
-		
+
 
 		// Add the player name
 		gc.fill = GridBagConstraints.BOTH;

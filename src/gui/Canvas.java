@@ -3,6 +3,7 @@ package gui;
 import game.Board;
 import game.CluedoGame;
 import game.Room;
+import game.User;
 
 import java.awt.*;
 import java.awt.event.ComponentEvent;
@@ -135,6 +136,14 @@ public class Canvas extends JPanel {
 
     public void runGame(){
         renderBoard();
+    }
+
+    public void showHand(User user){
+
+    }
+
+    public void showDetectiveCards(User user){
+        
     }
 
 
