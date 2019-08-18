@@ -45,7 +45,7 @@ public class GUI extends JFrame implements ComponentListener {
 	private int playerAmount;
 	private List<User> users;
 	private String tempUserName;
-	private Sprite.SpriteAlias tempCharacterChoice;
+	private Sprite.SpriteAlias tempSpriteChoice;
 	private int tempUserNum;
 	private final Board board;
 
@@ -66,7 +66,7 @@ public class GUI extends JFrame implements ComponentListener {
 
 		// Create the layout
 		canvas = new Canvas(this, board);
-		controls = new Controls(this);
+		controls = new Controls(this, board);
 		menuBar = new MenuOptions();
 
 		// Add panels to frame
@@ -160,12 +160,23 @@ public class GUI extends JFrame implements ComponentListener {
 		this.tempUserName = un;
 	}
 
-	public void setTempCharacter(Sprite.SpriteAlias sa) {
-		tempCharacterChoice = sa;
+	public void setTempSprite(Sprite.SpriteAlias sa) {
+		tempSpriteChoice = sa;
+	}
+
+	public void addNewUser(){
+		User u = new User();
+		u.setUserName(tempUserName);
+		u.setSprite(board.getSprites().get(tempSpriteChoice));
+		users.add(u);
 	}
 
 	public void nextTempUserNum() {
 		tempUserNum++;
+		if (tempUserNum <= playerAmount)
+			runGUI();
+		else
+			nextState();
 	}
 
 	public void redraw() {
