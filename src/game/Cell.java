@@ -143,6 +143,12 @@ public class Cell extends JLabel implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		if (board.visitedCells.stream().anyMatch(board.highlightedCells::contains) || board.highlightedCells.isEmpty()) {
+			board.cluedoGame.getGui().infeasibleMove();
+			return;
+		}
+
+
 		if (!board.highlightedCells.isEmpty()) {
 			board.pathFinder.getPath().forEach(cell -> {
 				System.out.println(cell.getStringCoordinates());

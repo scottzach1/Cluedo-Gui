@@ -39,10 +39,10 @@ public class User {
 	 * Auto increment USERS.
 	 */
 	public User() {
-		User.USERS++; // FIXME: HARRISON DO WE WANT TO INCREMENT FIRST?
 		userNum = UserNo.values()[User.USERS];
 		hand = new ArrayList<>();
 		observedCards = new HashSet<>();
+		User.USERS++; // FIXME: HARRISON DO WE WANT TO INCREMENT FIRST?
 	}
 
 	// ------------------------
