@@ -45,10 +45,7 @@ public class Canvas extends JPanel {
         setPreferredSize(new Dimension(GUI.SCREEN_WIDTH, GUI.CANVAS_HEIGHT));
 
         // Create the boarder
-        Border b = BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, accentCol), borderTitle,
-                TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, new Font("Serif", Font.BOLD, 18), accentCol);
-        setBorder(b);
-        setBackground(baseCol);
+        drawBorder();
 
         // Set layout
         setLayout(new GridBagLayout());
@@ -134,16 +131,19 @@ public class Canvas extends JPanel {
         revalidateComponents(1);
     }
 
-    public void runGame(){
-        renderBoard();
-    }
-
     public void showHand(User user){
 
     }
 
     public void showDetectiveCards(User user){
-        
+
+    }
+
+    private void drawBorder(){
+        Border b = BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, accentCol), borderTitle,
+                TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, new Font("Serif", Font.BOLD, 18), accentCol);
+        setBorder(b);
+        setBackground(baseCol);
     }
 
 
@@ -156,7 +156,11 @@ public class Canvas extends JPanel {
         this.borderTitle = borderTitle;
     }
 
-    public void clearComponents() {
+    public void clear() {
+        removeAll();
+    }
+
+    public void clearComponents(){
         components.clear();
         removeAll();
     }

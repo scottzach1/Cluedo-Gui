@@ -34,18 +34,14 @@ public class UserInterface extends JPanel {
 		setPreferredSize(new Dimension((cluedoGame.getGui().getWidth() * 2 / 3) - 3, (cluedoGame.getGui().getHeight())));
 		
 		// Create the boarder
-		Border b1 = BorderFactory.createRaisedBevelBorder();
-		Border b2 = BorderFactory.createLoweredBevelBorder();
-		Border b3 = BorderFactory.createCompoundBorder(b1, b2);
-		setBorder(b3);
-		setBackground(baseCol);
+		drawBorder();
 
 		// Set layout
 		setLayout(new GridBagLayout());
 		gc = new GridBagConstraints();
 	}
 
-	public void gameMenu(){
+	public void mainPlayerMenu(){
 		gc = new GridBagConstraints();
 
 		// Set Controls title
@@ -93,7 +89,20 @@ public class UserInterface extends JPanel {
 		gc.gridwidth = 4;
 		add(skipTurn, gc);
 	}
-	
+
+	public void backOption(){
+		gc = new GridBagConstraints();
+		JButton back = new JButton("Back");
+
+	}
+
+	private void drawBorder(){
+		Border b1 = BorderFactory.createRaisedBevelBorder();
+		Border b2 = BorderFactory.createLoweredBevelBorder();
+		Border b3 = BorderFactory.createCompoundBorder(b1, b2);
+		setBorder(b3);
+		setBackground(baseCol);
+	}
 	
 	// --------------------------------------------------
 	// PUBLIC METHODS
@@ -102,4 +111,5 @@ public class UserInterface extends JPanel {
 	public void clear() {
 		removeAll();
 	}
+
 }

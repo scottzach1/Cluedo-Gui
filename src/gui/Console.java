@@ -40,11 +40,7 @@ public class Console extends JPanel {
 		setPreferredSize(new Dimension((cluedoGame.getGui().getWidth() / 3) - 3, (cluedoGame.getGui().getHeight())));
 
 		// Create the boarder
-		Border b1 = BorderFactory.createRaisedBevelBorder();
-		Border b2 = BorderFactory.createLoweredBevelBorder();
-		Border b3 = BorderFactory.createCompoundBorder(b1, b2);
-		setBorder(b3);
-		setBackground(baseCol);
+		drawBorder();
 
 		// Set layout
 		setLayout(new GridBagLayout());
@@ -106,6 +102,13 @@ public class Console extends JPanel {
 		gc.insets = new Insets(0, 0, 0, 0);
 		add(movesLeft, gc);
 
+	}
+	private void drawBorder(){
+		Border b1 = BorderFactory.createRaisedBevelBorder();
+		Border b2 = BorderFactory.createLoweredBevelBorder();
+		Border b3 = BorderFactory.createCompoundBorder(b1, b2);
+		setBorder(b3);
+		setBackground(baseCol);
 	}
 	
 	// --------------------------------------------------

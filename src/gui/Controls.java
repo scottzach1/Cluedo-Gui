@@ -37,7 +37,7 @@ public class Controls extends JPanel {
         // Set the Size of the Control panel
         setPreferredSize(new Dimension(GUI.SCREEN_WIDTH, GUI.CONTROLS_HEIGHT));
 
-        setTitleBorder();
+        drawBorder();
 
         // Set the layout
         setLayout(new GridBagLayout());
@@ -53,6 +53,7 @@ public class Controls extends JPanel {
      */
     public void mainMenu() {
         gc = new GridBagConstraints();
+        drawBorder();
 
         gc.gridx = 0;
         gc.gridy = 0;
@@ -78,6 +79,7 @@ public class Controls extends JPanel {
      */
     protected void howManyPlayers() {
         gc = new GridBagConstraints();
+        drawBorder();
 
         // Set up the button group and placement
         ButtonGroup group = new ButtonGroup();
@@ -141,6 +143,7 @@ public class Controls extends JPanel {
 
     public void createUser(int playerNum) {
         gc = new GridBagConstraints();
+        drawBorder();
 
         // Create label and text field
         JLabel name = new JLabel("NAME: ");
@@ -185,6 +188,7 @@ public class Controls extends JPanel {
 
     public void selectCharacter(String userName) {
         gc = new GridBagConstraints();
+        drawBorder();
 
         // Create drop down menu
         JComboBox spriteOptions = new JComboBox(new Vector<Sprite.SpriteAlias>(cluedoGame.getAvailableSprites()));
@@ -225,7 +229,7 @@ public class Controls extends JPanel {
      */
     public void addContainers() {
         gc = new GridBagConstraints();
-        setTitleBorder();
+        drawBorder();
 
         // Create and Add the two panels
         console = new Console(cluedoGame);
@@ -251,14 +255,24 @@ public class Controls extends JPanel {
     /**
      *
      */
-    public void runGame() {
+    public void nextPlayer() {
         int dieOne = cluedoGame.rollDie();
         int dieTwo = cluedoGame.rollDie();
         cluedoGame.setMovesThisTurn(dieOne + dieTwo);
 
         console.drawDice(dieOne, dieTwo);
-        userInterface.gameMenu();
-        setTitleBorder();
+        userInterface.mainPlayerMenu();
+        drawBorder();
+    }
+
+    public void gameMenu() {
+        drawBorder();
+        userInterface.mainPlayerMenu();
+    }
+
+    public void backOption(){
+        drawBorder();
+        userInterface.backOption();
     }
 
     // --------------------------------------------------
@@ -280,7 +294,7 @@ public class Controls extends JPanel {
         accentCol = c;
     }
 
-    private void setTitleBorder(){
+    private void drawBorder(){
         // Create the boarder
         Border border = BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, accentCol), borderTitle,
                 TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, new Font("Serif", Font.BOLD, Math.min(Math.min(getWidth() / 2, getHeight() / 2), 20)), accentCol);
