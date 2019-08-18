@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.ArrayList;
+import java.util.Set;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -26,6 +27,7 @@ public class Canvas extends JPanel {
     private String borderTitle;
     private GridBagConstraints gc;
     private ArrayList<Component> components;
+    private ArrayList<JLabel> renderedCells;
     private final GUI gui;
     private int cellSize;
     private Board board;
@@ -38,6 +40,7 @@ public class Canvas extends JPanel {
     public Canvas(CluedoGame parent) {
         borderTitle = "CLUEDO GAME";
         components = new ArrayList<>();
+        renderedCells = new ArrayList<>();
         gui = parent.getGui();
         this.board = parent.getBoard();
 
@@ -171,13 +174,14 @@ public class Canvas extends JPanel {
 
         // Have the cells actually changed size?
         if (cellSize != (cellSize = newCellSize)) {
-            clearComponents();
+            renderedCells.clear();
             board.getStream().forEach(cell -> {
                 Image image = cell.getIcon().getImage();
                 Image newImage = image.getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
-                components.add(new JLabel(new ImageIcon(newImage)));
+                renderedCells.add(new JLabel(new ImageIcon(newImage)));
             });
         }
+        components.addAll(renderedCells);
         revalidateComponents(board.getCols());
         repaint();
     }
