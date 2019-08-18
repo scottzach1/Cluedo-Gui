@@ -79,6 +79,20 @@ public class UserInterface extends JPanel {
         // Add pathFinderSettings action listener
 		pathFinderSettings.addActionListener(e ->
 				pathFinderSettings.setText((shortestPath = !shortestPath) ? "Shortest Path" : "  Exact Path "));
+		// Add action listener for accuse and suggest
+		suggest.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				cluedoGame.getGui().accuseOrSuggest(true);
+			}
+		});
+		accuse.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				cluedoGame.getGui().accuseOrSuggest(false);
+			}
+		});
+
         // add skipTurn action listener
         skipTurn.addActionListener(new ActionListener() {
             @Override
@@ -169,35 +183,62 @@ public class UserInterface extends JPanel {
         spriteOptions.setPreferredSize(new Dimension(getWidth() / 6, getHeight() / 6));
         // weapon options
         JComboBox weaponOptions = new JComboBox(new Vector<Weapon.WeaponAlias>(cluedoGame.getBoard().getWeapons().keySet()));
-        spriteOptions.setPreferredSize(new Dimension(getWidth() / 6, getHeight() / 6));
+		weaponOptions.setPreferredSize(new Dimension(getWidth() / 6, getHeight() / 6));
         // Room options if an accusation, sets box if a suggestion
         JComboBox roomOptions = new JComboBox(new Vector<Room.RoomAlias>(cluedoGame.getBoard().getRooms().keySet()));
-		spriteOptions.setPreferredSize(new Dimension(getWidth() / 6, getHeight() / 6));
+		roomOptions.setPreferredSize(new Dimension(getWidth() / 6, getHeight() / 6));
         if (suggestion) {
         	roomOptions.setSelectedItem((Room.RoomAlias) cluedoGame.getCurrentUser().getSprite().getPosition().getRoom().getRoomAlias());
         	roomOptions.setEnabled(false);
         }
         // Create a confirm button
 		JButton confirm = new JButton("Confirm");
-        confirm.setPreferredSize(new Dimension(getWidth() / 4, getHeight() / 3));
+        confirm.setPreferredSize(new Dimension(getWidth() / 4, getHeight() / 6));
         // Add an action listener to the JButton
 		confirm.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				StringBuilder text = new StringBuilder();
-				text.append("Confirm your");
-				if (suggestion)
-					text.append(" suggestion\n");
-				else
-					text.append(" accusation\n(WARNING: an incorrect guess will mean you lose)\n");
-
-				text.append(((Sprite.SpriteAlias) spriteOptions.getSelectedItem()).toString()
-						+ " used the " + ((Weapon.WeaponAlias) weaponOptions.getSelectedItem()).toString()
-						+ " in the " + ((Room.RoomAlias) roomOptions.getSelectedItem()).toString());
+				cluedoGame.getGui().checkAccusationOrSuggestion((Sprite.SpriteAlias) spriteOptions.getSelectedItem(),
+						(Weapon.WeaponAlias) weaponOptions.getSelectedItem(), (Room.RoomAlias) roomOptions.getSelectedItem(), suggestion);
+			}
+		});
+		// Create a back button
+		JButton back = new JButton("Back");
+		back.setPreferredSize(new Dimension(getWidth() / 4, getHeight() / 6));
+		// Add an action listener to the back button
+		back.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				cluedoGame.getGui().gameMenu();
 			}
 		});
 
+
+		// Add all the components to this panel
+		gc.anchor = GridBagConstraints.CENTER;
+		gc.insets = new Insets(0, 5,0,5);
+		gc.gridy = 0;
+		gc.gridx = 0;
+		add(spriteOptions, gc);
+
+		gc.gridx = 1;
+		add(weaponOptions, gc);
+
+		gc.gridx = 2;
+		add(roomOptions, gc);
+
+		gc.gridy = 1;
+		gc.anchor = GridBagConstraints.LINE_END;
+		gc.insets = new Insets(10, 5,10,5);
+		gc.gridx = 1;
+		add(confirm, gc);
+
+		gc.gridx = 2;
+		add(back, gc);
+
     }
+
+
 
     protected void falseSuggestion() {
 
@@ -229,6 +270,10 @@ public class UserInterface extends JPanel {
     public void clear() {
         removeAll();
     }
+
+    public void redraw(){
+    	revalidate();
+	}
 
     public static boolean getPathSettings(){
     	return shortestPath;

@@ -89,28 +89,19 @@ public class CluedoGame {
 			}
 	}
 
-	/**
-	 * mainMenu: Orders and runs the LUI methods for the main menu to print, and
-	 * acts upon user input
-	 */
-	private void mainMenu() {
+	public boolean checkSuggestion(Card sprite, Card weapon, Card room){
+		return true;
 	}
 
-	/**
-	 * gameSetup: Orders and runs the LUI methods for the game set up stage to
-	 * print, and acts upon user input
-	 */
-	private void gameSetup() {
-	}
+	public void checkAccusation(Card sprite, Card weapon, Card room){
+		if (solution[0] == sprite && weapon == solution[1] && room == solution[2]){
+			gui.displayWinner(getCurrentUser());
+		}
+		else {
+			User loser = getCurrentUser();
 
-	/**
-	 * rounds: Acts like a forever loop, controlling what the LUI prints and acts
-	 * upon user inputs
-	 */
-	/**
-	 *
-	 */
-	private void rounds() {
+			gui.displayLoser(loser);
+		}
 	}
 
 	/**

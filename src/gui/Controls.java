@@ -60,8 +60,8 @@ public class Controls extends JPanel {
         gc.gridy = 0;
 
         JButton play = new JButton("PLAY");
-        play.setPreferredSize(new Dimension(getWidth() / 10, getHeight() / 5));
-        play.setFont(new Font("Arial", Font.BOLD, Math.min(Math.min(getWidth() / 2, getHeight() / 2), 20)));
+        play.setPreferredSize(new Dimension(getWidth() / 5, getHeight() / 5));
+        play.setFont(new Font("Arial", Font.BOLD, Math.min(Math.min(getWidth() / 5, getHeight() / 5), 20)));
 
         play.addActionListener(new ActionListener() {
 

@@ -107,12 +107,17 @@ public class Console extends JPanel {
         gc.anchor = GridBagConstraints.CENTER;
 
         JTextArea error = new JTextArea(errorMsg);
+        error.setPreferredSize(new Dimension(getWidth(), getHeight()));
         error.setWrapStyleWord(true);
         error.setLineWrap(true);
         error.setBackground(null);
         error.setForeground(Color.WHITE);
         error.setBorder(null);
+        error.setFont(new Font("Arial", Font.BOLD, Math.min(Math.min(getWidth() / 4, getHeight() / 3), 30)));
 
+        gc.gridx = 0;
+        gc.gridy = 0;
+        gc.fill = GridBagConstraints.BOTH;
         add(error, gc);
     }
 

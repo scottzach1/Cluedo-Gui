@@ -1,7 +1,6 @@
 package gui;
 
-import game.Board;
-import game.CluedoGame;
+import game.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,7 +28,7 @@ public class GUI extends JFrame implements ComponentListener {
     private JMenuBar menuBar;
 
     // Set up stuff
-    private final CluedoGame cludeoGame;
+    private final CluedoGame cluedoGame;
     private final Board board;
 
     // --------------------------------------------------
@@ -38,8 +37,8 @@ public class GUI extends JFrame implements ComponentListener {
 
     public GUI(CluedoGame aCluedoGame) {
         super("CLUEDO GAME");
-        cludeoGame = aCluedoGame;
-        board = cludeoGame.getBoard();
+        cluedoGame = aCluedoGame;
+        board = cluedoGame.getBoard();
 
         // Create the frame
         setPreferredSize(screenSize.getSize());
@@ -59,8 +58,8 @@ public class GUI extends JFrame implements ComponentListener {
 
     public void addLayoutComponents() {
         // Create the layout
-        canvas = new Canvas(cludeoGame);
-        controls = new Controls(cludeoGame);
+        canvas = new Canvas(cluedoGame);
+        controls = new Controls(cluedoGame);
         menuBar = new MenuOptions();
 
         // Add panels to frame
@@ -127,14 +126,14 @@ public class GUI extends JFrame implements ComponentListener {
 
     public void showHand() {
         clearComponents();
-        canvas.showHand(cludeoGame.getCurrentUser());
+        canvas.showHand(cluedoGame.getCurrentUser());
         controls.backOption();
         redraw();
     }
 
     public void showDetectiveCards() {
         clearComponents();
-        canvas.showDetectiveCards(cludeoGame.getCurrentUser());
+        canvas.showDetectiveCards(cluedoGame.getCurrentUser());
         controls.backOption();
         redraw();
     }
@@ -152,6 +151,52 @@ public class GUI extends JFrame implements ComponentListener {
         canvas.renderBoard();
         redraw();
     }
+
+    public void checkAccusationOrSuggestion(Sprite.SpriteAlias s, Weapon.WeaponAlias w, Room.RoomAlias r, boolean suggestion){
+		// Get the sprite, weapon and room
+		Sprite guessedSprite = cluedoGame.getBoard().getSprites().get(s);
+		Weapon guessedWeapon = cluedoGame.getBoard().getWeapons().get(w);
+		Room guessedRoom = cluedoGame.getBoard().getRooms().get(r);
+
+		// Build the JDialog box text
+		StringBuilder text = new StringBuilder();
+		text.append("Confirm your");
+		if (suggestion)
+			text.append(" suggestion\n");
+		else
+			text.append(" accusation\n(WARNING: an incorrect guess will mean you lose)\n");
+
+		text.append(guessedSprite.getSpriteAlias().toString()
+				+ " used the " + guessedWeapon.getWeaponAlias().toString()
+				+ " in the " + guessedRoom.getRoomAlias().toString());
+
+		String[] options = {"Yes, Im sure", "No, Go Back"};
+		int choice = JOptionPane.showOptionDialog(null,
+				text.toString(),
+				"Are you sure?",
+				JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE,
+				null,
+				options,
+				options[1]);
+
+		if (choice == JOptionPane.CLOSED_OPTION || choice == 1)
+			cluedoGame.getGui().gameMenu();
+		else if (suggestion) {
+			cluedoGame.checkSuggestion(guessedSprite, guessedWeapon, guessedRoom);
+		}
+		else {
+			cluedoGame.checkAccusation(guessedSprite, guessedWeapon, guessedRoom);
+		}
+	}
+
+	public void displayWinner(User user){
+
+	}
+
+	public void displayLoser(User user){
+
+	}
 
     // --------------------------------------------------
     // HELPFUL METHODS
