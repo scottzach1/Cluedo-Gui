@@ -45,17 +45,17 @@ public class GUI extends JFrame {
 	private String tempUserName;
 	private Sprite.SpriteAlias tempCharacterChoice;
 	private int tempUserNum;
-	private Board board;
+	private final Board board;
 
 	// --------------------------------------------------
 	// CONSTRUCTOR
 	// --------------------------------------------------
 
-	public GUI() {
+	public GUI(Board b) {
 		state = 0;
 		tempUserNum = 0;
 		tempUserName = "";
-		board = new Board();
+		board = b;
 
 		// Create the frame
 		frame = new JFrame("CLUEDO GAME");
@@ -177,12 +177,6 @@ public class GUI extends JFrame {
 	public void nextState() {
 		state++;
 		runGUI();
-	}
-
-	// Testing
-	public static void main(String[] args) {
-		GUI g = new GUI();
-		g.runGUI();
 	}
 
 }

@@ -1,5 +1,7 @@
 package game;
 
+import gui.GUI;
+
 import java.util.*;
 
 /* Created by Harrison Cook and Zac Scott - 2019 */
@@ -21,6 +23,7 @@ public class CluedoGame {
 	private List<User> losers;
 	private Card[] solution;
 	private String status;
+	private GUI gui;
 
 	// ------------------------
 	// CONSTRUCTOR
@@ -30,6 +33,8 @@ public class CluedoGame {
 	 * Game.CluedoGame: Constructor
 	 */
 	private CluedoGame() {
+		board = new Board();
+		gui = new GUI(board);
 	}
 
 	// ------------------------
@@ -40,6 +45,7 @@ public class CluedoGame {
 	 * gameController: Maintains the order of the game
 	 */
 	private void gameController() {
+		gui.runGUI();
 	}
 
 	/**
@@ -70,7 +76,7 @@ public class CluedoGame {
 	 * tryMove: Uses the Game.PathFinder test is a suggested path is feasible
 	 *
 	 * @param end      - Target Game.Cell
-	 * @param diceRoll - Moves player can make
+	 * @param moveType - Move type a player is making
 	 * @param user     - Who is attempting the move
 	 * @return String - "8" allowing for the next player to take their turn if
 	 *         successful
