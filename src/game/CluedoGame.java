@@ -127,7 +127,7 @@ public class CluedoGame {
 		}
 	}
 
-	public void endGame(){
+	public void confirmRestartGame(){
 		if (gui.restartGame()){
 			restartGame();
 		}

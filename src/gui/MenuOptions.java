@@ -1,5 +1,7 @@
 package gui;
 
+import game.CluedoGame;
+
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -10,15 +12,19 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 public class MenuOptions extends JMenuBar {
-	
+
+	private final CluedoGame cluedoGame;
+
 	// --------------------------------------------------
 	// CONSTRUCTOR
 	// --------------------------------------------------
-	public MenuOptions() {		
+	public MenuOptions(CluedoGame aCluedoGame) {
+		cluedoGame = aCluedoGame;
+
 		// Set the Size of the Control panel
 		Dimension size = getPreferredSize();
 		size.width = GUI.SCREEN_WIDTH;
-		size.height = 30;
+		size.height = GUI.SCREEN_HEIGHT/20;
 		setPreferredSize(size);
 		setFont(new Font("Serif", Font.BOLD, 18));
 		
@@ -26,29 +32,35 @@ public class MenuOptions extends JMenuBar {
 		JMenu file = new JMenu("File");
 		JMenuItem restartItem = new JMenuItem("Restart");
 		JMenuItem closeItem = new JMenuItem("Close");
-		
-		JMenu help = new JMenu("Help");
 		JMenuItem rulesItem = new JMenuItem("Rules");
-		JMenuItem optionsItem = new JMenuItem("Options");
 		
 		// Add buttons to directories
 		file.add(restartItem);
 		file.add(closeItem);
-		
-		help.add(rulesItem);
-		help.add(optionsItem);
+		file.add(rulesItem);
+
+		file.setPreferredSize(new Dimension(size.width / 20, size.height));
 		
 		add(file);
-		add(help);
 		
 		
 		
 		// Button actions:
+		// Restart
+		restartItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (cluedoGame.getGui().restartGame()){
+					cluedoGame.restartGame();
+				}
+			}
+		});
 		
 		// Close
 		closeItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				System.exit(0);
+				if (cluedoGame.getGui().exitGame()){
+					System.exit(0);
+				}
 			}			
 		});
 		

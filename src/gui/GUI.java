@@ -61,7 +61,7 @@ public class GUI extends JFrame implements ComponentListener {
         // Create the layout
         canvas = new Canvas(cluedoGame);
         controls = new Controls(cluedoGame);
-        menuBar = new MenuOptions();
+        menuBar = new MenuOptions(cluedoGame);
 
         // Add panels to frame
         setJMenuBar(menuBar);
@@ -217,7 +217,6 @@ public class GUI extends JFrame implements ComponentListener {
 		controls.showUserOtherPlayerCard();
 		canvas.showUserOtherPlayerCard();
 		redraw();
-
 	}
 
 	public void noMovesLeft(User user){
@@ -257,7 +256,7 @@ public class GUI extends JFrame implements ComponentListener {
 				null,
 				options,
 				options[0]);
-		cluedoGame.endGame();
+		cluedoGame.confirmRestartGame();
 
 	}
 
@@ -290,7 +289,30 @@ public class GUI extends JFrame implements ComponentListener {
 
 		int choice = JOptionPane.showOptionDialog(null,
 				text.toString(),
-				"Restart?",
+				"RESTART?",
+				JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE,
+				null,
+				options,
+				options[0]);
+
+		if (choice == JOptionPane.CLOSED_OPTION || choice == 1){
+			return false;
+		}
+		return true;
+	}
+
+
+	public boolean exitGame(){
+
+		String[] options = {"Yes please", "Opps, wrong button"};
+
+		StringBuilder text = new StringBuilder();
+		text.append("Would you like to exit the game?");
+
+		int choice = JOptionPane.showOptionDialog(null,
+				text.toString(),
+				"QUIT?",
 				JOptionPane.YES_NO_OPTION,
 				JOptionPane.QUESTION_MESSAGE,
 				null,
