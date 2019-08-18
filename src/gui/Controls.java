@@ -1,7 +1,9 @@
 package gui;
 
+import game.Card;
 import game.CluedoGame;
 import game.Sprite;
+import game.User;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -9,6 +11,7 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Vector;
 
 public class Controls extends JPanel {
@@ -282,19 +285,14 @@ public class Controls extends JPanel {
         drawBorder();
     }
 
-    protected void printError(String errorMsg, UserInterface.ERROR_TYPE error_type) {
+    protected void showPlayerCard(User user, ArrayList<Card> cards){
+        userInterface.showPlayerCard(cards);
+        drawBorder();
+    }
+
+    protected void printError(String errorMsg) {
         console.printError(errorMsg);
-        switch (error_type) {
-            case FALSE_SUGGESTION:
-                userInterface.falseSuggestion();
-                break;
-            case FALSE_ACCUSATION:
-                userInterface.falseAccusation();
-                break;
-            case BACK:
-                userInterface.backOption();
-                break;
-        }
+        userInterface.backOption();
     }
 
     // --------------------------------------------------

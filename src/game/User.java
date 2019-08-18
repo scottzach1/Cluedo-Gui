@@ -10,7 +10,7 @@ public class User {
 	 * An Enum defining the player number of a user
 	 * in the game.
 	 */
-	public enum userNo {
+	public enum UserNo {
 		PLAYER_0,
 		PLAYER_1,
 		PLAYER_2,
@@ -23,7 +23,7 @@ public class User {
 	// MEMBER VARIABLES
 	// ------------------------
 
-	private userNo userNum;
+	private UserNo userNum;
 	private String userName;
 	private List<Card> hand;
 	private Set<Card> observedCards;
@@ -40,7 +40,7 @@ public class User {
 	 */
 	public User() {
 		User.USERS++; // FIXME: HARRISON DO WE WANT TO INCREMENT FIRST?
-		userNum = userNo.values()[User.USERS];
+		userNum = UserNo.values()[User.USERS];
 		hand = new ArrayList<>();
 		observedCards = new HashSet<>();
 	}
@@ -53,7 +53,7 @@ public class User {
 	 * getUserNo: Returns the UserNo of the Game.User.
 	 * @return UserNo of user.
 	 */
-	public userNo getUserNo() {
+	public UserNo getUserNo() {
 		return userNum;
 	}
 

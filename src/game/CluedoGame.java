@@ -12,7 +12,7 @@ import java.util.*;
  */
 public class CluedoGame {
 
-	public static enum STATE{
+	public static enum State {
 		MAIN_MENU, PLAYER_COUNT, USER_CREATION, SETUP_GAME_DESIGN, NEXT_PLAYER;
 	}
 
@@ -31,15 +31,14 @@ public class CluedoGame {
 
 	// Game Attributes
 	private Board board;
-	private PathFinder pathFinder;
 	private List<User> users;
 	private List<User> losers;
 	private Card[] solution;
 	private GUI gui;
-	private STATE state;
+	private State state;
 	private int movesThisTurn;
 	private int movesLeft;
-	private int userNum ;
+	private User.UserNo currentUserNo;
 
 	// ------------------------
 	// CONSTRUCTOR
@@ -50,7 +49,7 @@ public class CluedoGame {
 	 */
 	public CluedoGame() {
 		// Starting state
-		state = STATE.MAIN_MENU;
+		state = State.MAIN_MENU;
 		// Construct components
 		board = new Board();
 		gui = new GUI(this);
@@ -62,7 +61,7 @@ public class CluedoGame {
 		losers = new ArrayList<>();
 		movesThisTurn = 0;
 		movesLeft = 0;
-		userNum = 0;
+		currentUserNo = User.UserNo.PLAYER_0;
 	}
 
 	// ------------------------
@@ -73,36 +72,77 @@ public class CluedoGame {
 	 * gameController: Maintains the order of the game
 	 */
 	private void gameController() {
-			if (state == STATE.MAIN_MENU)
+			if (state == State.MAIN_MENU)
 				gui.mainMenu();
-			else if (state == STATE.PLAYER_COUNT)
+			else if (state == State.PLAYER_COUNT)
 				gui.howManyPlayers();
-			else if (state == STATE.USER_CREATION)
+			else if (state == State.USER_CREATION)
 				gui.createUser(tempUserNum);
-			else if (state == STATE.SETUP_GAME_DESIGN){
+			else if (state == State.SETUP_GAME_DESIGN){
 				gui.gameSetup();
 				generateSolution();
 				generateHands();
 				nextState();
 			}
-			else if (state == STATE.NEXT_PLAYER){
+			else if (state == State.NEXT_PLAYER){
 				gui.newPlayer();
 			}
 	}
 
-	public boolean checkSuggestion(Card sprite, Card weapon, Card room){
-		return true;
+	public void checkSuggestion(Card sprite, Card weapon, Card room){
+		// Create an empty list of cards
+		ArrayList<Card> otherPlayersHand = new ArrayList<>();
+
+		// For every player, go through all their cards and see if they hold any the are being searched for
+		for (int i = ((currentUserNo.ordinal() + 1) % playerAmount); i != currentUserNo.ordinal(); i = (i + 1) % playerAmount){
+			User otherPlayer = users.get(i);
+			for (Card c : otherPlayer.getHand()){
+				if (c == sprite || c == weapon || c == room)
+					otherPlayersHand.add(c);
+			}
+
+			// If the player had 1 or more cards to refute the suggestion
+			if (otherPlayersHand.size() > 0){
+
+			}
+		}
 	}
 
 	public void checkAccusation(Card sprite, Card weapon, Card room){
+		User user = getCurrentUser();
 		if (solution[0] == sprite && weapon == solution[1] && room == solution[2]){
-			gui.displayWinner(getCurrentUser());
+			gui.displayWinner(user);
 		}
 		else {
-			User loser = getCurrentUser();
-
-			gui.displayLoser(loser);
+			losers.add(user);
+			gui.displayLoser(user);
 		}
+	}
+
+	public void endGame(){
+		if (gui.restartGame()){
+			restartGame();
+		}
+		else {
+			System.exit(0);
+		}
+	}
+
+	public void restartGame(){
+		// Starting state
+		state = State.MAIN_MENU;
+		// Construct components
+		board = new Board();
+		gui.addLayoutComponents();
+
+		// Set up start menu options
+		availableSprites = new HashSet<>(board.getSprites().keySet());
+		users = new ArrayList<>();
+		losers = new ArrayList<>();
+		movesThisTurn = 0;
+		movesLeft = 0;
+		currentUserNo = User.UserNo.PLAYER_0;
+		gameController();
 	}
 
 	/**
@@ -218,10 +258,15 @@ public class CluedoGame {
 	}
 
 	public void nextState() {
-		if (state != STATE.NEXT_PLAYER)
-			state = STATE.values()[state.ordinal() + 1];
-		else
-			userNum = (userNum + 1) % playerAmount;
+		if (state != State.NEXT_PLAYER)
+			state = State.values()[state.ordinal() + 1];
+		else {
+			currentUserNo = User.UserNo.values()[(currentUserNo.ordinal() + 1) % playerAmount];
+			for (User u : losers){
+				if (u.getUserNo() == currentUserNo)
+					gui.skipUser(losers.get(currentUserNo.ordinal()));
+			}
+		}
 		gameController();
 	}
 
@@ -244,13 +289,11 @@ public class CluedoGame {
 	}
 
 	public boolean hasMovesLeft(){
-		if (movesLeft > 0)
-			return true;
-		return false;
+		return movesLeft > 0;
 	}
 
 	public User getCurrentUser(){
-		return users.get(userNum);
+		return users.get(currentUserNo.ordinal());
 	}
 
 
