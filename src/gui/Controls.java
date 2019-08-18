@@ -50,8 +50,6 @@ public class Controls extends JPanel {
         // Set the layout
         setLayout(new GridBagLayout());
         gc = new GridBagConstraints();
-
-        System.out.println("YEETUS 2.0");
     }
 
     // --------------------------------------------------

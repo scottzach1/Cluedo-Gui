@@ -67,7 +67,6 @@ public class CluedoGame {
 	 * gameController: Maintains the order of the game
 	 */
 	private void gameController() {
-		System.out.println(state);
 			if (state == STATE.MAIN_MENU)
 				gui.mainMenu();
 			else if (state == STATE.PLAYER_COUNT)
