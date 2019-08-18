@@ -341,12 +341,4 @@ public class UserInterface extends JPanel {
         removeAll();
     }
 
-    protected void redraw(){
-        for(Component c : getComponents()){
-            c.revalidate();
-            c.repaint();
-        }
-        revalidate();
-        repaint();
-    }
 }

@@ -153,6 +153,11 @@ public class GUI extends JFrame implements ComponentListener {
         redraw();
     }
 
+    public void redrawDice(){
+        controls.redrawDice();
+        redraw();
+    }
+
     public void checkAccusationOrSuggestion(Sprite.SpriteAlias s, Weapon.WeaponAlias w, Room.RoomAlias r, boolean suggestion){
 		// Get the sprite, weapon and room
 		Sprite guessedSprite = cluedoGame.getBoard().getSprites().get(s);
@@ -347,8 +352,6 @@ public class GUI extends JFrame implements ComponentListener {
     }
 
     public void redraw() {
-        canvas.redraw();
-        controls.redraw();
         revalidate();
         repaint();
     }

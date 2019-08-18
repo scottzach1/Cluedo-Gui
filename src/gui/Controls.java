@@ -310,6 +310,11 @@ public class Controls extends JPanel {
         userInterface.backOption();
     }
 
+    protected void redrawDice(){
+        console.clear();
+        console.drawDice(dieOne, dieTwo);
+    }
+
     // --------------------------------------------------
     // HELPFUL METHODS
     // --------------------------------------------------
@@ -349,15 +354,6 @@ public class Controls extends JPanel {
             console.clear();
         if (userInterface != null)
             userInterface.clear();
-    }
-
-    protected void redraw(){
-        if (console != null)
-            console.clear();
-        if (userInterface != null)
-            userInterface.clear();
-        revalidate();
-        repaint();
     }
 
 }
