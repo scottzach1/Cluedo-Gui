@@ -1,9 +1,6 @@
 package gui;
 
-import game.Board;
-import game.CluedoGame;
-import game.Room;
-import game.User;
+import game.*;
 
 import java.awt.*;
 import java.awt.event.ComponentEvent;
@@ -184,6 +181,10 @@ public class Canvas extends JPanel {
         } else {
             this.removeAll();
         }
+    }
+
+    protected void showPlayerCard(User user, ArrayList<Card> cards){
+
     }
 
     public static void main(String[] args) {
