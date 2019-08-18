@@ -285,8 +285,13 @@ public class Controls extends JPanel {
         drawBorder();
     }
 
-    protected void showPlayerCard(User user, ArrayList<Card> cards){
-        userInterface.showPlayerCard(cards);
+    protected void confirmShowHiddenContent(){
+        userInterface.confirmShowHiddenContent();
+        drawBorder();
+    }
+
+    protected void chooseHiddenPlayerCard(ArrayList<Card> cards){
+        userInterface.chooseHiddenPlayerCard(cards);
         drawBorder();
     }
 

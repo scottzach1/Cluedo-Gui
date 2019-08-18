@@ -39,6 +39,7 @@ public class CluedoGame {
 	private int movesThisTurn;
 	private int movesLeft;
 	private User.UserNo currentUserNo;
+	private Card showOtherPlayerCard;
 
 	// ------------------------
 	// CONSTRUCTOR
@@ -103,7 +104,7 @@ public class CluedoGame {
 
 			// If the player had 1 or more cards to refute the suggestion
 			if (otherPlayersHand.size() > 0){
-
+				gui.confirmShowHiddenContent();
 			}
 		}
 	}
@@ -296,6 +297,13 @@ public class CluedoGame {
 		return users.get(currentUserNo.ordinal());
 	}
 
+	public void setShowOtherPlayerCard(Card c){
+		showOtherPlayerCard = c;
+	}
+
+	public Card getShowOtherPlayerCard(){
+		return showOtherPlayerCard;
+	}
 
 
 	// Setup getters, and setters
