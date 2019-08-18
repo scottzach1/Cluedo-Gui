@@ -220,7 +220,10 @@ public class GUI extends JFrame implements ComponentListener {
 	}
 
 	public void noMovesLeft(User user){
-		// TODO
+		clearComponents();
+		controls.printError("You can not move there\nYou have " + cluedoGame.getMovesLeft() + " moves left");
+		canvas.renderBoard();
+		redraw();
 	}
 
 	public void skipUser(User user){
