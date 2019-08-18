@@ -192,16 +192,16 @@ public class Canvas extends JPanel {
         Board b = cluedoGame.getBoard();
 
         // Highlight some cells to test
-        Board.HIGHLIGHTED_CELLS.add(b.getCell("O2"));
-        Board.HIGHLIGHTED_CELLS.add(b.getCell("P2"));
-        Board.HIGHLIGHTED_CELLS.add(b.getCell("Q2"));
-        Board.HIGHLIGHTED_CELLS.add(b.getCell("Q3"));
-        Board.HIGHLIGHTED_CELLS.add(b.getCell("R3"));
-        Board.HIGHLIGHTED_CELLS.add(b.getCell("R4"));
-        Board.HIGHLIGHTED_CELLS.add(b.getCell("R5"));
-        Board.HIGHLIGHTED_CELLS.add(b.getCell("R6"));
-        Board.HIGHLIGHTED_CELLS.add(b.getCell("S6"));
-        Board.HIGHLIGHTED_CELLS.addAll(b.getRooms().get(Room.RoomAlias.CONSERVATORY).getCells());
+        b.highlightedCells.add(b.getCell("O2"));
+        b.highlightedCells.add(b.getCell("P2"));
+        b.highlightedCells.add(b.getCell("Q2"));
+        b.highlightedCells.add(b.getCell("Q3"));
+        b.highlightedCells.add(b.getCell("R3"));
+        b.highlightedCells.add(b.getCell("R4"));
+        b.highlightedCells.add(b.getCell("R5"));
+        b.highlightedCells.add(b.getCell("R6"));
+        b.highlightedCells.add(b.getCell("S6"));
+        b.highlightedCells.addAll(b.getRooms().get(Room.RoomAlias.CONSERVATORY).getCells());
 
         Canvas c = new Canvas(cluedoGame);
 

@@ -76,7 +76,7 @@ public class Cell extends JLabel implements MouseListener {
 
 	public Cell render() {
 		ImageIcon base;
-		if (Board.HIGHLIGHTED_CELLS.contains(this))
+		if (board.highlightedCells.contains(this))
 				base = icons.get(parseHighLightedImageIcon(type));
 		else 	base = icons.get(parseImageIcon(type));
 
@@ -86,7 +86,7 @@ public class Cell extends JLabel implements MouseListener {
 		}
 
 		if (sprite != null) {
-			if (sprite.matchesType(Board.ACTIVE_SPRITE))
+			if (sprite.matchesType(board.activeSprite))
 					base = icons.get(sprite.getCell());
 			else 	layers.add(icons.get(sprite.getMarker()));
 		}
@@ -138,12 +138,20 @@ public class Cell extends JLabel implements MouseListener {
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		setIcon(icons.get(parseImageIcon(Type.UNKNOWN)));
-		repaint();
+		if (isType(Type.VOID)) return;
+		board.highlightedCells.clear();
+		board.highlightedRooms.clear();
+		PathFinder pathFinder = (board.pathFinder = new PathFinder(board, board.highlightedCells, board.highlightedRooms));
+		if (CluedoGame.shortestPath) pathFinder.findShortestPath(board.getSprites().get(board.activeSprite).getPosition(), this);
+		else						 pathFinder.findExactPath(board.getSprites().get(board.activeSprite).getPosition(), this, 9);
+		board.highlightedRooms.forEach(room -> board.highlightedCells.addAll(room.getCells()));
+		board.getStream().forEach(Cell::render);
+		System.out.println(board.highlightedCells.size());
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
+		board.highlightedCells.clear();
 		render();
 		repaint();
 	}
@@ -241,6 +249,7 @@ public class Cell extends JLabel implements MouseListener {
 		if (sprite != null) return sprite.toString();
 		if (type == Type.ROOM) return "_";
 		if (type == Type.HALL) return "_";
+		if (isType(Type.VOID)) return "/";
 		else if (type == Type.START_PAD) return "$";
 		return "ERROR ON TYPE";
 	}
@@ -260,6 +269,6 @@ public class Cell extends JLabel implements MouseListener {
 	 * @return true if non null room shared, false other wise.
 	 */
 	public boolean sameRoom(Cell other) {
-		return ((this.getRoom() != null) && this.getRoom() == other.getRoom());
+		return (hasRoom() && this.getRoom() == other.getRoom());
 	}
 }
