@@ -115,9 +115,9 @@ public class Console extends JPanel {
         error.setBackground(null);
         error.setForeground(Color.WHITE);
         error.setBorder(null);
-		error.setLineWrap(true);
-		error.setWrapStyleWord(true);
-        error.setFont(new Font("Arial", Font.BOLD, 30));
+        error.setLineWrap(true);
+        error.setWrapStyleWord(true);
+        error.setFont(new Font("Arial", Font.BOLD, 20));
         error.setText(errorMsg);
         error.setEditable(false);
         error.setPreferredSize(new Dimension(getWidth() / 2, getHeight() / 2));

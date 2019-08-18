@@ -35,9 +35,9 @@ public abstract class Card {
 	 */
 	public String getName() {return name;};
 
-	public ImageIcon getCard(Enum alias, boolean highlight) {
+	public static ImageIcon getCard(Enum alias, boolean unseen) {
 		ImageIcon icon = new ImageIcon("card_" + alias.toString().toLowerCase() + ".png");
-		if (!highlight) return icon;
+		if (!unseen) return icon;
 		else 			return new CombinedImageIcon(icon, new ImageIcon("card_unseen.png"));
 	}
 
