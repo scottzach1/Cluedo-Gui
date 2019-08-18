@@ -96,12 +96,18 @@ public class CluedoGame {
 		// Create an empty list of cards
 		otherPlayersHand = new ArrayList<>();
 
+		Sprite s = (Sprite) sprite;
+		Weapon w = (Weapon) weapon;
+		Room r = (Room) room;
+
 		// For every player, go through all their cards and see if they hold any the are being searched for
 		for (int i = ((currentUserNo.ordinal() + 1) % playerAmount); i != currentUserNo.ordinal(); i = (i + 1) % playerAmount){
-			for (Card c : users.get(i).getHand()){
-				if (c == sprite || c == weapon || c == room)
-					otherPlayersHand.add(c);
-			}
+			if(users.get(i).getHand().contains(s))
+				otherPlayersHand.add(s);
+			if(users.get(i).getHand().contains(w))
+				otherPlayersHand.add(w);
+			if(users.get(i).getHand().contains(r))
+				otherPlayersHand.add(r);
 
 			// If the player had 1 or more cards to refute the suggestion
 			if (otherPlayersHand.size() > 0){

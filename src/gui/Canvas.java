@@ -128,6 +128,91 @@ public class Canvas extends JPanel {
     }
 
     public void showHand(User user) {
+        // Clear previous settings
+        gc = new GridBagConstraints();
+        gc.gridwidth = 7;
+
+        int amountOfSprites = 0;
+        int amountOfWeapons = 0;
+        int amountOfRooms = 0;
+        ArrayList<Sprite> spriteCards = new ArrayList<>();
+        ArrayList<Weapon> weaponCards = new ArrayList<>();
+        ArrayList<Room> roomCards = new ArrayList<>();
+
+        // Go through this users hand and seperate all the cards
+        for (Card c : cluedoGame.getCurrentUser().getHand()){
+            if (c instanceof Sprite) {
+                amountOfSprites++;
+                spriteCards.add((Sprite) c);
+            }
+            else if (c instanceof Weapon) {
+                amountOfWeapons++;
+                weaponCards.add((Weapon)c);
+            }
+            else if (c instanceof Room) {
+                amountOfRooms++;
+                roomCards.add((Room)c);
+            }
+        }
+
+        // Create a label for each of the card types
+        JLabel sprites = new JLabel("Sprites");
+        sprites.setFont(new Font("Arial", Font.BOLD, 20));
+        JLabel weapons = new JLabel("Weapons");
+        weapons.setFont(new Font("Arial", Font.BOLD, 20));
+        JLabel rooms = new JLabel("Rooms");
+        rooms.setFont(new Font("Arial", Font.BOLD, 20));
+
+        // Place the label if there is any cards for it
+        int currentGridX = 0;
+        gc.gridy = 0;
+        gc.weightx = 1;
+        gc.weighty = 1;
+
+        if (amountOfSprites > 0) {
+            gc.gridx = currentGridX;
+            gc.gridwidth = amountOfSprites;
+            add(sprites, gc);
+            currentGridX += amountOfSprites;
+        }
+        if (amountOfWeapons > 0) {
+            gc.gridx = currentGridX;
+            gc.gridwidth = amountOfWeapons;
+            add(weapons, gc);
+            currentGridX += amountOfWeapons;
+        }
+        if (amountOfRooms > 0) {
+            gc.gridx = currentGridX;
+            gc.gridwidth = amountOfRooms;
+            add(rooms, gc);
+            currentGridX += amountOfRooms;
+        }
+
+        currentGridX = 0;
+        gc.gridy = 0;
+        gc.weightx = 1;
+        gc.weighty = 1;
+        gc.gridx = 0;
+        for (Sprite s : spriteCards){
+            gc.gridx = currentGridX;
+            JLabel lab = new JLabel(Card.getCard(s.getSpriteAlias(), false));
+            add(lab, gc);
+            currentGridX++;
+        }
+        for (Weapon w : weaponCards){
+            gc.gridx = currentGridX;
+            JLabel lab = new JLabel(Card.getCard(w.getWeaponAlias(), false));
+            add(lab, gc);
+            currentGridX++;
+        }
+        for (Room r : roomCards){
+            gc.gridx = currentGridX;
+            JLabel lab = new JLabel(Card.getCard(r.getRoomAlias(), false));
+            add(lab, gc);
+            currentGridX++;
+        }
+
+
 
     }
 
@@ -246,6 +331,7 @@ public class Canvas extends JPanel {
     }
 
     private void revalidateComponents(int cols) {
+        gc = new GridBagConstraints();
         if (components.size() > 0) {
             gc.gridy = 0;
             for (int i = 0; i < components.size(); i++) {
@@ -257,10 +343,6 @@ public class Canvas extends JPanel {
         } else {
             this.removeAll();
         }
-    }
-
-    protected void showPlayerCard(User user, ArrayList<Card> cards) {
-
     }
 
     protected void displayRules() {
