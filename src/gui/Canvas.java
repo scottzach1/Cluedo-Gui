@@ -2,14 +2,13 @@ package gui;
 
 import game.*;
 
+import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.ArrayList;
-
-import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.TitledBorder;
 
 public class Canvas extends JPanel {
 
@@ -128,15 +127,15 @@ public class Canvas extends JPanel {
         revalidateComponents(1);
     }
 
-    public void showHand(User user){
+    public void showHand(User user) {
 
     }
 
-    public void showDetectiveCards(User user){
+    public void showDetectiveCards(User user) {
 
     }
 
-    public void confirmShowHiddenContent(User user){
+    public void confirmShowHiddenContent(User user) {
         // Create a text instructions for the user to follow
         JTextArea instructions = new JTextArea();
 
@@ -156,7 +155,7 @@ public class Canvas extends JPanel {
         revalidateComponents(1);
     }
 
-    public void chooseHiddenPlayerCard(User user){
+    public void chooseHiddenPlayerCard(User user) {
         // Create a text instructions for the user to follow
         JTextArea instructions = new JTextArea();
 
@@ -176,7 +175,7 @@ public class Canvas extends JPanel {
         revalidateComponents(1);
     }
 
-    public void confirmShowOtherPlayerCard(){
+    public void confirmShowOtherPlayerCard() {
         // Create a text instructions for the user to follow
         JTextArea instructions = new JTextArea();
 
@@ -196,7 +195,7 @@ public class Canvas extends JPanel {
         revalidateComponents(1);
     }
 
-    public void showUserOtherPlayerCard(){
+    public void showUserOtherPlayerCard() {
         // Create a text instructions for the user to follow
         JTextArea instructions = new JTextArea();
 
@@ -216,7 +215,7 @@ public class Canvas extends JPanel {
         revalidateComponents(1);
     }
 
-    private void drawBorder(){
+    private void drawBorder() {
         Border b = BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, accentCol), borderTitle,
                 TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, new Font("Serif", Font.BOLD, 18), accentCol);
         setBorder(b);
@@ -233,12 +232,7 @@ public class Canvas extends JPanel {
         this.borderTitle = borderTitle;
     }
 
-    public void clear() {
-        components.clear();
-        removeAll();
-    }
-
-    public void clearComponents(){
+    public void clearComponents() {
         components.clear();
         removeAll();
     }
@@ -265,7 +259,40 @@ public class Canvas extends JPanel {
         }
     }
 
-    protected void showPlayerCard(User user, ArrayList<Card> cards){
+    protected void showPlayerCard(User user, ArrayList<Card> cards) {
+
+    }
+
+    protected void displayRules() {
+        // Create a text instructions for the user to follow
+        JTextArea instructions = new JTextArea();
+
+        // Create the font for the text
+        Font font = new Font("Arial", Font.PLAIN, 20);
+        instructions.setFont(font);
+
+        // Add the text to the instructions
+        instructions.append("Aim:\t\tFigure out the mystery to who murdered the butler, what weapon they used, and in what room."
+                + "\nGame:\t\tThe game is turn based. Upon starting, each player is dealt a hand of cards. These cards are secret"
+                + "\n\t\tand give you evidence as to who, what and where the murder DIDN'T take place."
+                + "\n\t\tOn your turn, you roll two dice and navigate your sprite around the map. To find out what other players have,"
+                + "\n\t\tyou will need to make a suggestion about the weapon, room and person. You can only make a suggestion in"
+                + "\n\t\ta room, using said room as your piece of evidence. You will also need to suggest a person and weapon which will be "
+                + "\n\t\ttransported to that room. If you are accused of a crime, you will be transported to the room of which your accuser is in."
+                + "\n\t\tOnce a suggestion has been made, going clockwise, each player is asked to provide ONE piece of evidence to dispute the claim."
+                + "\n\t\tIf a piece of evidence is shown, no more evidence is needed to dispute the claim. You can not hold back evidence."
+                + "\n\t\tAccusations are used when you would like to solve the murder mystery. Careful though, if you are wrong you"
+                + "\n\t\twill be kicked from the game. At this point, all you can do is refute others claims."
+                + "\nNavigation:\t\tOn your turn, use the buttons in the 'Control' panel to make actions."
+                + "\n\t\tHover over board to see a highlighted path of where you can go, click to then move there.");
+
+        // Set the preferred size such that 40pt text can fit
+        // (Only thing on screen means that it can take up everything
+        instructions.setBackground(null);
+        instructions.setEditable(false);
+
+        components.add(instructions);
+        revalidateComponents(1);
 
     }
 

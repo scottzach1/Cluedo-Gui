@@ -73,7 +73,7 @@ public class GUI extends JFrame implements ComponentListener {
 
     // Display the main menu
     public void mainMenu() {
-        clear();
+        clearComponents();
         canvas.mainMenu();
         controls.mainMenu();
         redraw();
@@ -81,28 +81,28 @@ public class GUI extends JFrame implements ComponentListener {
 
     // Displays the main menu for each panel
     public void howManyPlayers() {
-        clear();
+        clearComponents();
         canvas.howManyPlayers();
         controls.howManyPlayers();
         redraw();
     }
 
     public void createUser(int tempUserNum) {
-        clear();
+        clearComponents();
         canvas.createUser(tempUserNum);
         controls.createUser(tempUserNum);
         redraw();
     }
 
     public void selectCharacter(String tempUserName) {
-        clear();
+        clearComponents();
         canvas.selectCharacter(tempUserName);
         controls.selectCharacter(tempUserName);
         redraw();
     }
 
     public void gameSetup() {
-        clear();
+        clearComponents();
         controls.addContainers();
         redraw();
     }
@@ -332,6 +332,13 @@ public class GUI extends JFrame implements ComponentListener {
 		return true;
 	}
 
+	public void displayRules(){
+        clearComponents();
+        canvas.displayRules();
+        controls.backOption();
+        redraw();
+    }
+
     // --------------------------------------------------
     // HELPFUL METHODS
     // --------------------------------------------------
@@ -354,11 +361,6 @@ public class GUI extends JFrame implements ComponentListener {
     public void redraw() {
         revalidate();
         repaint();
-    }
-
-    public void clear() {
-        canvas.clear();
-        controls.clear();
     }
 
     public void clearComponents() {

@@ -74,7 +74,7 @@ public class CluedoGame {
 	/**
 	 * gameController: Maintains the order of the game
 	 */
-	private void gameController() {
+	public void gameController() {
 			if (state == State.MAIN_MENU)
 				gui.mainMenu();
 			else if (state == State.PLAYER_COUNT)
@@ -275,6 +275,10 @@ public class CluedoGame {
 			}
 		}
 		gameController();
+	}
+
+	public State getState(){
+		return state;
 	}
 
 	public int rollDie() {
