@@ -153,11 +153,9 @@ public class Canvas extends JPanel {
 	}
 
 	public void renderBoard() {
+		// Sorry this is uggly, although resized have the cells actually changed size?
+		if (cellSize == (cellSize = -1 + (Math.min(getWidth() / board.getCols(), getHeight() / board.getRows())))) return;
 
-		if (this.getSize().equals(size)) return;
-		size = this.getSize();
-
-		int cellSize = -1 + (Math.min(size.width / board.getCols(), size.height / board.getRows()));
 		clear();
 		board.getStream().forEach(cell -> {
 			Image image = cell.getIcon().getImage();
