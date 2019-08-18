@@ -3,12 +3,13 @@ package game;
 import extra.CombinedImageIcon;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class Cell {
+public class Cell extends JLabel implements MouseListener {
 
 	/**
 	 * An Enum defining the different possible directions of neighbours of a Game.Cell.
@@ -25,7 +26,7 @@ public class Cell {
 	// ------------------------
 
 	// Game.Cell Attributes
-	private ImageIcon icon;
+	private Map<String, ImageIcon> scaledImageIcons;
 	private Sprite sprite;
 	private Room room;
 	private int col;
@@ -43,56 +44,90 @@ public class Cell {
 	 * @param col Column of the Game.Cell.
 	 * @param type The type of Game.Cell. Ie, Type.Wall
 	 */
-	public Cell(int row, int col, Cell.Type type) {
+	public Cell(int row, int col, Cell.Type type, Map<String, ImageIcon> icons) {
 		this.row = row;
 		this.col = col;
 		this.type = type;
 		neighbors = new HashMap<>();
-		this.icon = parseImageIcon(type);
+		scaledImageIcons = icons;
+		this.addMouseListener(this);
 	}
 
-	static ImageIcon parseImageIcon(Cell.Type type) {
-		switch (type) {
-			case CELLAR: 	return new ImageIcon("cell_green.png");
-            case HALL:		return new ImageIcon("cell_grey.png");
-            case START_PAD: return new ImageIcon("cell_grey.png");
-            case ROOM:      return new ImageIcon("cell_red.png");
-            case VOID:      return new ImageIcon("cell_void.png");
-			default:		return new ImageIcon("cell_unknown.png");
+	public Cell render() {
+		ImageIcon base;
+		if (Board.HIGHLIGHTED_CELLS.contains(this))
+				base = scaledImageIcons.get(parseHighLightedImageIcon(type));
+		else 	base = scaledImageIcons.get(parseImageIcon(type));
+
+		List<ImageIcon> layers = new ArrayList<>();
+		for (Direction dir : Direction.values()) {
+			if (neighbors.get(dir) == null) layers.add(scaledImageIcons.get(parseWallIcon(dir)));
+		}
+
+		if (sprite != null) {
+			if (sprite.matchesType(Board.ACTIVE_SPRITE))
+					base = scaledImageIcons.get(sprite.getCell());
+			else 	layers.add(scaledImageIcons.get(sprite.getMarker()));
+		}
+
+		setIcon(new CombinedImageIcon(base, layers));
+		return this;
+	}
+
+    static String parseWallIcon(Direction dir) {
+		switch (dir) {
+			case WEST:		return "wall_left.png";
+			case EAST:		return "wall_right.png";
+			case NORTH:		return "wall_top.png";
+			case SOUTH:		return "wall_bot.png";
+			default:		return "cell_void.png";
 		}
 	}
 
-	static ImageIcon parseHighLightedImageIcon(Cell.Type type) {
+	static String parseImageIcon(Cell.Type type) {
 		switch (type) {
-			case HALL:		return new ImageIcon("cell_grey_highlighted.png");
-			case START_PAD:	return new ImageIcon("cell_grey_highlighted.png");
-			case ROOM:		return new ImageIcon("cell_red_highlighted.png");
+			case CELLAR: 	return "cell_green.png";
+			case HALL:		return "cell_grey.png";
+			case START_PAD: return "cell_grey.png";
+			case ROOM:      return "cell_red.png";
+			case VOID:      return "cell_void.png";
+			default:		return "cell_unknown.png";
+		}
+	}
+
+	static String parseHighLightedImageIcon(Cell.Type type) {
+		switch (type) {
+			case HALL:		return "cell_grey_highlighted.png";
+			case START_PAD:	return "cell_grey_highlighted.png";
+			case ROOM:		return "cell_red_highlighted.png";
 			default:		return parseImageIcon(type);
 		}
 	}
 
-    public ImageIcon getIcon() {
-		List<ImageIcon> layers = new ArrayList<>();
-		for (Direction dir : Direction.values()) {
-			if (neighbors.get(dir) == null) layers.add(parseWallIcon(dir));
-		}
-		if (sprite != null) layers.add(sprite.getIcon());
-		if (sprite != null && sprite.getSpriteAlias() == Board.ACTIVE_SPRITE) return new CombinedImageIcon(sprite.getCellIcon(), layers);
-		if (Board.HIGHLIGHTED_CELLS.contains(this)) return new CombinedImageIcon(parseHighLightedImageIcon(type), layers);
-		else return new CombinedImageIcon(icon, layers);
-    }
-
-    static ImageIcon parseWallIcon(Direction dir) {
-		switch (dir) {
-			case WEST:		return new ImageIcon("wall_left.png");
-			case EAST:		return new ImageIcon("wall_right.png");
-			case NORTH:		return new ImageIcon("wall_top.png");
-			case SOUTH:		return new ImageIcon("wall_bot.png");
-			default:		return new ImageIcon("cell_void.png");
-		}
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		System.out.println("You clicked on a cell");
 	}
 
-    // ------------------------
+	@Override
+	public void mousePressed(MouseEvent e) {}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		setIcon(scaledImageIcons.get(parseImageIcon(Type.UNKNOWN)));
+		repaint();
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		render();
+		repaint();
+	}
+
+	// ------------------------
 	// INTERFACE
 	// ------------------------
 
@@ -112,7 +147,7 @@ public class Cell {
 	 * setSprite: Place a sprite on the Game.Cell.
 	 * @param sprite Game.Sprite to place on Game.Cell.
 	 */
-	void setSprite(Sprite sprite) {this.sprite = sprite;}
+	void setSprite(Sprite sprite) {this.sprite = sprite; }
 
 	/**
 	 * getRoom: Get the Game.Room a cell is in, if any.

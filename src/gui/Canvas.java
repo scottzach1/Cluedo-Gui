@@ -9,7 +9,6 @@ import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.ArrayList;
-import java.util.Set;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -27,9 +26,7 @@ public class Canvas extends JPanel {
     private String borderTitle;
     private GridBagConstraints gc;
     private ArrayList<Component> components;
-    private ArrayList<JLabel> renderedCells;
     private final GUI gui;
-    private int cellSize;
     private Board board;
 
 
@@ -40,13 +37,11 @@ public class Canvas extends JPanel {
     public Canvas(CluedoGame parent) {
         borderTitle = "CLUEDO GAME";
         components = new ArrayList<>();
-        renderedCells = new ArrayList<>();
         gui = parent.getGui();
         this.board = parent.getBoard();
 
         // Set the Size of the canvas panel
         setPreferredSize(new Dimension(GUI.SCREEN_WIDTH, GUI.CANVAS_HEIGHT));
-
         // Create the boarder
         drawBorder();
 
@@ -171,17 +166,8 @@ public class Canvas extends JPanel {
 
     public void renderBoard() {
         int newCellSize = -1 + (Math.min(getWidth() / board.getCols(), getHeight() / board.getRows()));
-
-        // Have the cells actually changed size?
-        if (cellSize != (cellSize = newCellSize)) {
-            renderedCells.clear();
-            board.getStream().forEach(cell -> {
-                Image image = cell.getIcon().getImage();
-                Image newImage = image.getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
-                renderedCells.add(new JLabel(new ImageIcon(newImage)));
-            });
-        }
-        components.addAll(renderedCells);
+        board.scaleIcons(newCellSize);
+        board.getStream().forEach(cell -> components.add(cell.render()));
         revalidateComponents(board.getCols());
         repaint();
     }
@@ -221,6 +207,7 @@ public class Canvas extends JPanel {
         c.addComponentListener(new ComponentListener() {
             @Override
             public void componentResized(ComponentEvent e) {
+                c.clearComponents();
                 c.renderBoard();
             }
 
@@ -237,7 +224,7 @@ public class Canvas extends JPanel {
             }
         });
 
-        JFrame frame = new JFrame("FrameDemo");
+        JFrame frame = new JFrame("Board Demo");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(c, BorderLayout.CENTER);
 

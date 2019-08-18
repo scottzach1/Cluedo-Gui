@@ -18,6 +18,9 @@ public class Board {
 	private Map<Room.RoomAlias, Room> rooms;
 	private Map<Sprite.SpriteAlias, Sprite> sprites;
 	private Map<Weapon.WeaponAlias, Weapon> weapons;
+	private Map<String, ImageIcon> baseImageIcons;
+	private Map<String, ImageIcon> scaledImageIcons;
+	private int prevCellSize;
 
 	private Cell[][] cells;
 	private int rows, cols;
@@ -36,7 +39,12 @@ public class Board {
 	 * - Generates Weapons and randomly allocates them to Rooms.
 	 */
 	public Board() {
+		setupImageIcons();
+		generateComponents();
+		setupCells();
+	}
 
+	private void generateComponents() {
 		// Generate room cards
 		rooms = new HashMap<>();
 		for (Room.RoomAlias alias : Room.RoomAlias.values()) {
@@ -59,7 +67,9 @@ public class Board {
 			weapons.put(alias, weapon);
 			weapon.setRoom(roomList.remove(roomList.size() - 1));
 		}
+	}
 
+	private void setupCells() {
 		// This are using for linking the door ways later.
 		Set<Cell> doorSteps = new HashSet<>();
 
@@ -87,7 +97,7 @@ public class Board {
 					char c = line.charAt(lineIndex);
 
 					Cell.Type type = Cell.getType(c);
-					Cell cell = new Cell(row, col, (type!= Cell.Type.START_PAD) ? type : Cell.Type.HALL);
+					Cell cell = new Cell(row, col, (type!= Cell.Type.START_PAD) ? type : Cell.Type.HALL, scaledImageIcons);
 					cells[row][col] = cell;
 
 					if (c == 'X') continue; // This is a door, ignore for now.
@@ -120,7 +130,6 @@ public class Board {
 				Cell cell = cells[row][col];
 				Cell other;
 
-//				if (cell.getType() == Cell.Type.VOID) continue;
 				if (cell.getType() == Cell.Type.ROOM && cell.getRoom() == null) {
 					// This is a door, link with corresponding room and doorsteps.
 
@@ -130,8 +139,8 @@ public class Board {
 						if (other.getType() == Cell.Type.ROOM && other.getRoom() != null)
 							cell.setRoom(other.getRoom());
 						else if (other.getType() == Cell.Type.HALL && doorSteps.contains(other)) {
-								cell.setNeighbor(Cell.Direction.NORTH, other);
-								other.setNeighbor(Cell.Direction.SOUTH, cell);
+							cell.setNeighbor(Cell.Direction.NORTH, other);
+							other.setNeighbor(Cell.Direction.SOUTH, cell);
 						}
 					}
 
@@ -174,7 +183,7 @@ public class Board {
 					if (linkCells(cell, other = cells[row - 1][col]))
 						cell.setNeighbor(Cell.Direction.NORTH, other);
 				} else if (cell.getType() != Cell.Type.HALL) {
-					cell.setNeighbor(Cell.Direction.NORTH, new Cell(-1, col, Cell.Type.UNKNOWN));
+					cell.setNeighbor(Cell.Direction.NORTH, new Cell(-1, col, Cell.Type.UNKNOWN, scaledImageIcons));
 				}
 
 				// South
@@ -182,7 +191,7 @@ public class Board {
 					if (linkCells(cell, other = cells[row + 1][col]))
 						cell.setNeighbor(Cell.Direction.SOUTH, other);
 				} else if (cell.getType() != Cell.Type.HALL) {
-					cell.setNeighbor(Cell.Direction.SOUTH, new Cell(row + 1, col, Cell.Type.UNKNOWN));
+					cell.setNeighbor(Cell.Direction.SOUTH, new Cell(row + 1, col, Cell.Type.UNKNOWN, scaledImageIcons));
 				}
 
 				// East
@@ -190,7 +199,7 @@ public class Board {
 					if (linkCells(cell, other = cells[row][col - 1]))
 						cell.setNeighbor(Cell.Direction.WEST, other);
 				} else if (cell.getType() != Cell.Type.HALL) {
-					cell.setNeighbor(Cell.Direction.WEST, new Cell(row, -1, Cell.Type.UNKNOWN));
+					cell.setNeighbor(Cell.Direction.WEST, new Cell(row, -1, Cell.Type.UNKNOWN, scaledImageIcons));
 				}
 
 				// West
@@ -198,13 +207,44 @@ public class Board {
 					if (linkCells(cell, other = cells[row][col + 1]))
 						cell.setNeighbor(Cell.Direction.EAST, other);
 				} else if (cell.getType() != Cell.Type.HALL) {
-					cell.setNeighbor(Cell.Direction.EAST, new Cell(row, row + 1, Cell.Type.UNKNOWN));
+					cell.setNeighbor(Cell.Direction.EAST, new Cell(row, row + 1, Cell.Type.UNKNOWN, scaledImageIcons));
 				}
 			}
 		}
 
 		// Calculate doors for each room.
 		rooms.values().forEach(Room::calculateDoorSteps);
+	}
+
+
+	private void setupImageIcons() {
+		baseImageIcons = new HashMap<>();
+		scaledImageIcons = new HashMap<>();
+		// Setup ImageIcons
+		for (Sprite.SpriteAlias alias : Sprite.SpriteAlias.values()) {
+			baseImageIcons.put(Sprite.parseCell(alias), null);
+			baseImageIcons.put(Sprite.parseMarker(alias), null);
+		}
+		for (Cell.Type type : Cell.Type.values()) {
+			baseImageIcons.put(Cell.parseImageIcon(type), null);
+			baseImageIcons.put(Cell.parseHighLightedImageIcon(type), null);
+		}
+		for (Cell.Direction dir : Cell.Direction.values()) {
+			baseImageIcons.put(Cell.parseWallIcon(dir), null);
+		}
+		for (String fname : baseImageIcons.keySet()) {
+			baseImageIcons.put(fname, new ImageIcon(fname));
+			scaledImageIcons.put(fname, new ImageIcon(fname));
+		}
+	}
+
+	public void scaleIcons(int cellSize) {
+		if (cellSize == prevCellSize) return;
+		for (String fname : baseImageIcons.keySet()) {
+			Image baseImage = baseImageIcons.get(fname).getImage();
+			scaledImageIcons.put(fname, new ImageIcon(baseImage.getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH)));
+		}
+		prevCellSize = cellSize;
 	}
 
 	public boolean linkCells(Cell a, Cell b) {
