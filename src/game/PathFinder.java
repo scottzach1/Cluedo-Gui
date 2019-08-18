@@ -16,20 +16,8 @@ public class PathFinder {
      */
     public PathFinder(Board board) {
         this.board = board;
-        visitedCells = new HashSet<>();
-        visitedRooms = new HashSet<>();
-    }
-
-    /**
-     * Game.PathFinder: The constructor for Path Finder
-     * @param board board
-     * @param visitedCells any cells already visited.
-     * @param visitedRooms any rooms visited.
-     */
-    public PathFinder(Board board, Set<Cell> visitedCells, Set<Room> visitedRooms) {
-        this.board = board;
-        this.visitedCells = (visitedCells == null) ? new HashSet<>() : visitedCells;
-        this.visitedRooms = (visitedRooms == null) ? new HashSet<>() : visitedRooms;
+        this.visitedCells = board.highlightedCells;
+        this.visitedRooms = board.highlightedRooms;
     }
 
     /**
@@ -169,15 +157,14 @@ public class PathFinder {
         Set<Cell> visitedCells = new HashSet<>(parentVisitedCells);
 
         Cell current = node.current;
-
         visitedCells.add(current);
 
         // Success Termination.
         if (current.sameRoom(end) || (current.sameCell(end) && node.depth == steps)) {
             if (current.getRoom() != null) visitedRooms.add(current.getRoom());
             visitedCells.add(current);
-            parentVisitedCells = visitedCells;
-            parentVisitedRooms = visitedRooms;
+            board.highlightedCells = visitedCells;
+            board.highlightedRooms = visitedRooms;
             return true;
         }
 
@@ -197,13 +184,7 @@ public class PathFinder {
             if (neigh.getSprite() != null) continue; // Game.Sprite on Game.Cell.
 
             // Return success of child to parent.
-            if (findExactPathHelper(new DFSNode(neigh, node), end, new HashSet<>(visitedRooms), new HashSet<>(visitedCells), steps)) {
-                if (current.getRoom() != null) visitedRooms.add(current.getRoom());
-                visitedCells.add(current);
-                parentVisitedCells = visitedCells;
-                parentVisitedRooms = visitedRooms;
-                return true;
-            }
+            if (findExactPathHelper(new DFSNode(neigh, node), end, visitedRooms, visitedCells, steps)) return true;
         }
 
         // Note we don't add to add all neighbours as visited as there is not path from this Game.Cell.

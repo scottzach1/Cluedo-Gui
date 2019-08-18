@@ -146,7 +146,7 @@ public class Cell extends JLabel implements MouseListener {
 		board.highlightedCells.clear();
 		board.highlightedRooms.clear();
 
-		PathFinder pathFinder = (board.pathFinder = new PathFinder(board, board.highlightedCells, board.highlightedRooms));
+		PathFinder pathFinder = (board.pathFinder = new PathFinder(board));
 
 		boolean success;
 		if (CluedoGame.shortestPath)

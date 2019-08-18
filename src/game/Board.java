@@ -49,7 +49,7 @@ public class Board {
 		highlightedCells = new HashSet<>();
 		highlightedRooms = new HashSet<>();
 
-		pathFinder = new PathFinder(this, highlightedCells, null);
+		pathFinder = new PathFinder(this);
 		setupImageIcons();
 		generateComponents();
 		setupCells();
