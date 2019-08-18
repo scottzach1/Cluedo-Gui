@@ -41,7 +41,7 @@ public class Canvas extends JPanel {
         this.board = parent.getBoard();
 
         // Set the Size of the canvas panel
-        setPreferredSize(getPreferredSize());
+        setPreferredSize(new Dimension(GUI.SCREEN_WIDTH, GUI.CANVAS_HEIGHT));
 
         // Create the boarder
         Border b = BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, accentCol), borderTitle,
@@ -62,8 +62,9 @@ public class Canvas extends JPanel {
 
     public void mainMenu() {
         Image image = (new ImageIcon("title.png")).getImage();
-        image = image.getScaledInstance(getWidth(), getHeight(), java.awt.Image.SCALE_SMOOTH);
+        image = image.getScaledInstance(getWidth() / 2, getHeight() / 2, java.awt.Image.SCALE_SMOOTH);
         JLabel titleImg = new JLabel(new ImageIcon(image));
+        titleImg.setPreferredSize(new Dimension(getWidth() / 2, getHeight() / 2));
 
         components.add(titleImg);
         revalidateComponents(1);
@@ -130,6 +131,10 @@ public class Canvas extends JPanel {
 
         components.add(instructions);
         revalidateComponents(1);
+    }
+
+    public void runGame(){
+        renderBoard();
     }
 
 

@@ -108,14 +108,18 @@ public class GUI extends JFrame implements ComponentListener {
 
 	public void gameSetup(){
 		clear();
-		canvas.renderBoard();
 		controls.addContainers();
 		redraw();
 	}
 
 	public void runGame(){
-		clear();
+		// Clear everything in the canvas and controls
+		canvas.clearComponents();
+		controls.clearComponents();
+
+		// Redraw everything
 		controls.runGame();
+		canvas.runGame();
 		redraw();
 	}
 

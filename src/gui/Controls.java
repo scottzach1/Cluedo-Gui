@@ -17,9 +17,8 @@ public class Controls extends JPanel {
     // FIELDS
     // --------------------------------------------------
 
-    private final Color accentCol = Color.WHITE;
-    private final Color baseCol = Color.DARK_GRAY;
-    public static final int inset = 10;
+    private Color accentCol = Color.WHITE;
+    private Color baseCol = Color.DARK_GRAY;
 
     private String borderTitle;
     private Console console;
@@ -36,16 +35,9 @@ public class Controls extends JPanel {
         cluedoGame = parent;
 
         // Set the Size of the Control panel
-        Dimension size = getPreferredSize();
-        size.height = GUI.CONTROLS_HEIGHT;
-        size.width = GUI.SCREEN_WIDTH;
-        setPreferredSize(size);
+        setPreferredSize(new Dimension(GUI.SCREEN_WIDTH, GUI.CONTROLS_HEIGHT));
 
-        // Create the boarder
-        Border border = BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, accentCol), borderTitle,
-                TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, new Font("Serif", Font.BOLD, 18), accentCol);
-        setBorder(border);
-        setBackground(baseCol);
+        setTitleBorder();
 
         // Set the layout
         setLayout(new GridBagLayout());
@@ -66,7 +58,6 @@ public class Controls extends JPanel {
         gc.gridy = 0;
 
         JButton play = new JButton("PLAY");
-        System.out.println(getWidth() + " " + getHeight() + " " + this.getPreferredSize().width + " " + this.getPreferredSize().height);
         play.setPreferredSize(new Dimension(getWidth() / 10, getHeight() / 5));
         play.setFont(new Font("Arial", Font.BOLD, Math.min(Math.min(getWidth() / 2, getHeight() / 2), 20)));
 
@@ -197,11 +188,12 @@ public class Controls extends JPanel {
 
         // Create drop down menu
         JComboBox spriteOptions = new JComboBox(new Vector<Sprite.SpriteAlias>(cluedoGame.getAvailableSprites()));
-        spriteOptions.setPreferredSize(new Dimension(getWidth() / 10, getHeight() / 10));
+        spriteOptions.setPreferredSize(new Dimension(getWidth() / 6, getHeight() / 6));
 
         // Create submit button
         JButton submit = new JButton("SUBMIT");
-        submit.setPreferredSize(new Dimension(getWidth() / 10, getHeight() / 10));
+        submit.setPreferredSize(new Dimension(getWidth() / 6, getHeight() / 6));
+
 
         submit.addActionListener(new ActionListener() {
             @Override
@@ -232,15 +224,28 @@ public class Controls extends JPanel {
      * addContainers:
      */
     public void addContainers() {
-
-        setLayout(new BorderLayout());
+        gc = new GridBagConstraints();
+        setTitleBorder();
 
         // Create and Add the two panels
         console = new Console(cluedoGame);
-        userInterface = new UserInterface(cluedoGame);
+        userInterface = new UserInterface(cluedoGame, this);
 
-        add(console, BorderLayout.WEST);
-        add(userInterface, BorderLayout.EAST);
+        gc.fill = GridBagConstraints.BOTH;
+        gc.weighty = 1;
+
+        gc.gridy = 0;
+        gc.gridx = 0;
+        gc.weightx = 1;
+        gc.gridwidth = 1;
+        gc.insets = new Insets(5,5,0,5);
+        add(console, gc);
+
+        gc.gridx = 1;
+        gc.weightx = 2;
+        gc.gridwidth = 2;
+        gc.insets = new Insets(5,0,0,5);
+        add(userInterface, gc);
     }
 
     /**
@@ -250,7 +255,10 @@ public class Controls extends JPanel {
         int dieOne = cluedoGame.rollDie();
         int dieTwo = cluedoGame.rollDie();
         cluedoGame.setMovesThisTurn(dieOne + dieTwo);
+
         console.drawDice(dieOne, dieTwo);
+        userInterface.gameMenu();
+        setTitleBorder();
     }
 
     // --------------------------------------------------
@@ -264,11 +272,33 @@ public class Controls extends JPanel {
         this.borderTitle = borderTitle;
     }
 
+    public void setBaseCol(Color c){
+        baseCol = c;
+    }
+
+    public void setAccentCol(Color c){
+        accentCol = c;
+    }
+
+    private void setTitleBorder(){
+        // Create the boarder
+        Border border = BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, accentCol), borderTitle,
+                TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, new Font("Serif", Font.BOLD, Math.min(Math.min(getWidth() / 2, getHeight() / 2), 20)), accentCol);
+        setBorder(border);
+        setBackground(baseCol);
+    }
+
     /**
      * clear:
      */
     public void clear() {
         removeAll();
+    }
+    public void clearComponents() {
+        if (console != null)
+            console.clear();
+        if (userInterface != null)
+            userInterface.clear();
     }
 
 }
