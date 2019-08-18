@@ -12,9 +12,9 @@ public class Cell extends JLabel implements MouseListener {
 
 	/**
 	 * An Enum defining the different possible directions of neighbours of a Game.Cell.
-			*/
+	 */
 	public enum Direction {
-		NORTH, SOUTH, EAST, WEST;
+		NORTH, EAST, SOUTH, WEST;
 		private Direction reverse;
 		static {
 			NORTH.reverse = SOUTH;
@@ -22,7 +22,7 @@ public class Cell extends JLabel implements MouseListener {
 			EAST.reverse = WEST;
 			WEST.reverse = EAST;
 		}
-		Direction reverse() { return reverse; }
+		Direction reverse() { return reverse; }// values()[ordinal() + ((ordinal() > 1) ? -2 : 2)]; }
 	}
 
 	/**
@@ -36,7 +36,7 @@ public class Cell extends JLabel implements MouseListener {
 			case SOUTH:	return (row + 1 < cells.length) 	? cells[row + 1][col] : null;
 			case WEST:	return (col > 0)					? cells[row][col - 1] : null;
 			case EAST:	return (col + 1 < cells[0].length) 	? cells[row][col + 1] : null;
-			default: return null;
+			default: 	return null;
 		}
 	}
 
@@ -75,7 +75,6 @@ public class Cell extends JLabel implements MouseListener {
 	}
 
 	public Cell render() {
-//		Map<String, ImageIcon> icons = board.getScaledImageIcons();
 		ImageIcon base;
 		if (Board.HIGHLIGHTED_CELLS.contains(this))
 				base = icons.get(parseHighLightedImageIcon(type));
@@ -139,7 +138,6 @@ public class Cell extends JLabel implements MouseListener {
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-//		Map<String, ImageIcon> icons = board.getScaledImageIcons();
 		setIcon(icons.get(parseImageIcon(Type.UNKNOWN)));
 		repaint();
 	}
@@ -154,6 +152,10 @@ public class Cell extends JLabel implements MouseListener {
 	// INTERFACE
 	// ------------------------
 
+
+	public boolean hasRoom() { return room != null; }
+	public boolean missingRoom() { return type == Type.ROOM && room == null; }
+	public boolean isType(Type type) { return type == getType(); }
 	/**
 	 * getType: Get the Type of the Game.Cell.
 	 * @return the Type of the Game.Cell.

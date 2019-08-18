@@ -97,7 +97,7 @@ public class Board {
 					char c = line.charAt(lineIndex);
 
 					Cell.Type type = Cell.getType(c);
-					Cell cell = new Cell(row, col, (type!= Cell.Type.START_PAD) ? type : Cell.Type.HALL, this);
+					Cell cell = new Cell(row, col, (type != Cell.Type.START_PAD) ? type : Cell.Type.HALL, this);
 					cells[row][col] = cell;
 
 					if (c == 'X') continue; // This is a door, ignore for now.
@@ -132,31 +132,38 @@ public class Board {
 	}
 
 	private void linkCells(Set<Cell> doorSteps) {
-		for (int row = 0; row != rows; ++row) {
-			for (int col = 0; col != cols; ++col) {
-				Cell cell = cells[row][col];
+		// Link all the doors
+		getStream().forEach(cell -> {
+			if (!cell.missingRoom()) return; // Skip cell.
 
 				for (Cell.Direction dir : Cell.Direction.values()) {
 					Cell other = cell.go(cells, dir);
 
-					if (cell.getType() == Cell.Type.ROOM && cell.getRoom() == null && other != null) {
-						// This is a door, link with corresponding room and doorsteps.
-						if (other.getType() == Cell.Type.ROOM && other.getRoom() != null)
-							cell.setRoom(other.getRoom());
-						else if (other.getType() == Cell.Type.HALL && doorSteps.contains(other)) {
-							cell.setNeighbor(dir, other);
-							other.setNeighbor(dir.reverse(), cell);
-						}
-					}
+					if (other == null) continue;
 
-					if (other != null && linkCells(cell, other)) {
+					if (other.isType(Cell.Type.ROOM) && other.hasRoom())
+						cell.setRoom(other.getRoom());
+					else if (other.isType(Cell.Type.HALL) && doorSteps.contains(other)) {
 						cell.setNeighbor(dir, other);
-					} else if (cell.getType() != Cell.Type.HALL) {
-						cell.setNeighbor(dir, new Cell(-1, -1, Cell.Type.UNKNOWN, this));
+						other.setNeighbor(dir.reverse(), cell);
 					}
 				}
+		});
+
+		// Link neighbours
+		getStream().forEach(cell -> {
+			for (Cell.Direction dir : Cell.Direction.values()) {
+				Cell other = cell.go(cells, dir);
+
+				if (other != null) {
+					if (linkCells(cell, other)) {
+						cell.setNeighbor(dir, other);
+					}
+				} else if (cell.getType() != Cell.Type.HALL) {
+					cell.setNeighbor(dir, new Cell(-1, -1, Cell.Type.UNKNOWN, this));
+				}
 			}
-		}
+		});
 	}
 
 
