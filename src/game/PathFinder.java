@@ -57,7 +57,7 @@ public class PathFinder {
     public int findShortestPath(Cell start, Cell end) {
         // NOTE: Commenting will be nearly identical to my 261 asg.  - (Zac Scott 300447976)
 
-        if (end.getSprite() != null || end.getType().equals(Cell.Type.WALL)) return Integer.MAX_VALUE;
+        if (end.getSprite() != null) return Integer.MAX_VALUE;
 
         PriorityQueue<AStarNode> priorityQueue = new PriorityQueue<>();
         HashMap<Cell, AStarNode> previousNodes = new HashMap<>();
