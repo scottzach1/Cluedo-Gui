@@ -88,6 +88,8 @@ public class CluedoGame {
 				nextState();
 			}
 			else if (state == State.NEXT_PLAYER){
+				board.visitedCells.clear();
+				board.visitedRooms.clear();
 				gui.newPlayer();
 			}
 	}

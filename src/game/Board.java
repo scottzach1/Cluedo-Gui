@@ -29,7 +29,7 @@ public class Board {
 
 	public Set<Cell> visitedCells, highlightedCells;
 	public Set<Room> visitedRooms, highlightedRooms;
-	public Sprite.SpriteAlias activeSprite = Sprite.SpriteAlias.MR_GREEN;
+	public Stack<Cell> path = new Stack<>();
 
 	// ------------------------
 	// CONSTRUCTOR
@@ -194,6 +194,7 @@ public class Board {
 			baseImageIcons.put(Cell.parseWallIcon(dir), null);
 		}
 		baseImageIcons.put("cell_invalid.png", null);
+		baseImageIcons.put("cell_visited.png", null);
 		for (String fname : baseImageIcons.keySet()) {
 			baseImageIcons.put(fname, new ImageIcon(fname));
 			scaledImageIcons.put(fname, new ImageIcon(fname));

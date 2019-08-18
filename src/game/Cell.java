@@ -15,14 +15,7 @@ public class Cell extends JLabel implements MouseListener {
 	 */
 	public enum Direction {
 		NORTH, EAST, SOUTH, WEST;
-		private Direction reverse;
-		static {
-			NORTH.reverse = SOUTH;
-			SOUTH.reverse = NORTH;
-			EAST.reverse = WEST;
-			WEST.reverse = EAST;
-		}
-		Direction reverse() { return  values()[ordinal() + ((ordinal() > 1) ? -2 : 2)]; }
+		Direction reverse() { return values()[ordinal() + ((ordinal() > 1) ? -2 : 2)]; }
 	}
 
 	/**
@@ -32,11 +25,16 @@ public class Cell extends JLabel implements MouseListener {
 
 	Cell go(Cell[][] cells, Direction dir) {
 		switch (dir) {
-			case NORTH:	return (row > 0) 					? cells[row - 1][col] : null;
-			case SOUTH:	return (row + 1 < cells.length) 	? cells[row + 1][col] : null;
-			case WEST:	return (col > 0)					? cells[row][col - 1] : null;
-			case EAST:	return (col + 1 < cells[0].length) 	? cells[row][col + 1] : null;
-			default: 	return null;
+			case NORTH:
+				return (row > 0) ? cells[row - 1][col] : null;
+			case SOUTH:
+				return (row + 1 < cells.length) ? cells[row + 1][col] : null;
+			case WEST:
+				return (col > 0) ? cells[row][col - 1] : null;
+			case EAST:
+				return (col + 1 < cells[0].length) ? cells[row][col + 1] : null;
+			default:
+				return null;
 		}
 	}
 
@@ -61,8 +59,9 @@ public class Cell extends JLabel implements MouseListener {
 
 	/**
 	 * Game.Cell: The Constructor for a new Game.Cell.
-	 * @param row Row of the Game.Cell.
-	 * @param col Column of the Game.Cell.
+	 *
+	 * @param row  Row of the Game.Cell.
+	 * @param col  Column of the Game.Cell.
 	 * @param type The type of Game.Cell. Ie, Type.Wall
 	 */
 	public Cell(int row, int col, Cell.Type type, Board board) {
@@ -78,60 +77,98 @@ public class Cell extends JLabel implements MouseListener {
 	public Cell render() {
 		ImageIcon base;
 		if (board.highlightedCells.contains(this))
-				base = icons.get(parseHighLightedImageIcon(type));
-		else 	base = icons.get(parseImageIcon(type));
+			base = icons.get(parseHighLightedImageIcon(type));
+		else base = icons.get(parseImageIcon(type));
 
 		List<ImageIcon> layers = new ArrayList<>();
 		for (Direction dir : Direction.values()) {
 			if (neighbors.get(dir) == null) layers.add(icons.get(parseWallIcon(dir)));
 		}
 
+		if (board.visitedCells.contains(this)) layers.add(icons.get("cell_visited.png"));
+
 		if (sprite != null) {
 			if (sprite.matchesType(board.cluedoGame.getCurrentUser().getSprite().getSpriteAlias()))
-					base = icons.get(sprite.getCell());
-			else 	layers.add(icons.get(sprite.getMarker()));
+				base = icons.get(sprite.getCell());
+			else layers.add(icons.get(sprite.getMarker()));
 		}
 		setIcon(prevIcon = new CombinedImageIcon(base, layers));
 		return this;
 	}
 
-    static String parseWallIcon(Direction dir) {
+	static String parseWallIcon(Direction dir) {
 		switch (dir) {
-			case WEST:		return "wall_left.png";
-			case EAST:		return "wall_right.png";
-			case NORTH:		return "wall_top.png";
-			case SOUTH:		return "wall_bot.png";
-			default:		return "cell_void.png";
+			case WEST:
+				return "wall_left.png";
+			case EAST:
+				return "wall_right.png";
+			case NORTH:
+				return "wall_top.png";
+			case SOUTH:
+				return "wall_bot.png";
+			default:
+				return "cell_void.png";
 		}
 	}
 
 	static String parseImageIcon(Cell.Type type) {
 		switch (type) {
-			case CELLAR: 	return "cell_green.png";
-			case HALL:		return "cell_grey.png";
-			case START_PAD: return "cell_grey.png";
-			case ROOM:      return "cell_red.png";
-			case VOID:      return "cell_void.png";
-			default:		return "cell_unknown.png";
+			case CELLAR:
+				return "cell_green.png";
+			case HALL:
+				return "cell_grey.png";
+			case START_PAD:
+				return "cell_grey.png";
+			case ROOM:
+				return "cell_red.png";
+			case VOID:
+				return "cell_void.png";
+			default:
+				return "cell_unknown.png";
 		}
 	}
 
 	static String parseHighLightedImageIcon(Cell.Type type) {
 		switch (type) {
-			case HALL:		return "cell_grey_highlighted.png";
-			case START_PAD:	return "cell_grey_highlighted.png";
-			case ROOM:		return "cell_red_highlighted.png";
-			default:		return parseImageIcon(type);
+			case HALL:
+				return "cell_grey_highlighted.png";
+			case START_PAD:
+				return "cell_grey_highlighted.png";
+			case ROOM:
+				return "cell_red_highlighted.png";
+			default:
+				return parseImageIcon(type);
 		}
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (!board.highlightedCells.isEmpty()) {
+			board.pathFinder.getPath().forEach(cell -> {
+				System.out.println(cell.getStringCoordinates());
+//				try {
+//					Thread.sleep(300);
+//				} catch (InterruptedException ex) {
+//					ex.printStackTrace();
+//				}
+//				board.moveUser(board.cluedoGame.getCurrentUser(), cell);
+//				board.cluedoGame.getGui().redraw();
+//				board.getStream().forEach(Cell::render);
+			});
+
+			board.visitedCells.addAll(board.highlightedCells);
+
 			board.cluedoGame.removeMovesLeft(board.highlightedCells.size() - 1);
+
+			board.highlightedCells.clear();
+			board.highlightedRooms.clear();
+
 			board.moveUser(board.cluedoGame.getCurrentUser(), this);
+			board.getStream().forEach(Cell::render);
 			board.cluedoGame.getGui().redraw();
 		}
+
+		board.pathFinder.getPath().clear();
 	}
 
 	@Override
@@ -149,6 +186,7 @@ public class Cell extends JLabel implements MouseListener {
 
 		board.highlightedCells.clear();
 		board.highlightedRooms.clear();
+		board.pathFinder.getPath().clear();
 
 		PathFinder pathFinder = board.pathFinder;
 
@@ -165,13 +203,13 @@ public class Cell extends JLabel implements MouseListener {
 		}
 		board.getStream().forEach(Cell::render);
 		if (!success) setIcon(new CombinedImageIcon(prevIcon, icons.get("cell_invalid.png")));
-
-		System.out.println(board.highlightedCells.size());
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
+		board.highlightedRooms.clear();
 		board.highlightedCells.clear();
+		board.getStream().forEach(Cell::render);
 		render();
 		repaint();
 	}

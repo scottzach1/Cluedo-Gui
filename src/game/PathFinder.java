@@ -2,12 +2,14 @@ package game;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PathFinder {
 
     // Needed for checkValidFromString
     private Board board;
     private Set<Cell> visitedCells;
+    private Stack<Cell> path;
     private Set<Room> visitedRooms;
 
     /**
@@ -16,8 +18,13 @@ public class PathFinder {
      */
     public PathFinder(Board board) {
         this.board = board;
+        this.path = board.path;
         this.visitedCells = board.highlightedCells;
         this.visitedRooms = board.highlightedRooms;
+    }
+
+    public Stack<Cell> getPath() {
+        return path;
     }
 
     /**
@@ -90,7 +97,7 @@ public class PathFinder {
 
         if (!node.current.sameCell(end)) return Integer.MAX_VALUE; // Path was unable to be found. End was unreachable.
 
-        Stack<Cell> path = new Stack<>(); // Stack of path. NOTE: I could just remember n steps. This was helpful for debugging too!
+        path = new Stack<>(); // Stack of path. NOTE: I could just remember n steps. This was helpful for debugging too!
 
         while (node != null) { // Work our way back through the nodes.
             path.push(node.current);
@@ -98,12 +105,14 @@ public class PathFinder {
         }
 
         // Visit all rooms in the path.
-        if (visitedRooms != null) visitedRooms.addAll(path.stream().map(Cell::getRoom).filter(Objects::nonNull).collect(Collectors.toSet()));
-        if (visitedCells != null) visitedCells.addAll(path);
+        visitedRooms.addAll(path.stream().map(Cell::getRoom).filter(Objects::nonNull).collect(Collectors.toSet()));
+        visitedCells.addAll(path);
+        path.pop();
+        Collections.reverse(this.path);
 
         // Path Can Be Used here if needed.
 
-        return path.size() - 1; // -1 as first node is start.
+        return this.path.size(); // -1 as first node is start.
     }
 
     /**
@@ -139,7 +148,7 @@ public class PathFinder {
      */
     public boolean findExactPath(Cell start, Cell end, int steps) {
         if (board == null) throw new RuntimeException("Game.PathFinder does not have a Game.Board!");
-        return findExactPathHelper(new DFSNode(start, null), end, visitedRooms, visitedCells, steps);
+        return findExactPathHelper(new DFSNode(start, null), end, visitedRooms, visitedCells, new ArrayDeque<>(), steps);
     }
 
     /**
@@ -150,12 +159,14 @@ public class PathFinder {
      * @param parentVisitedRooms the rooms forbidden as they are visited this turn.
      * @return true path was found meeting parameters, false otherwise.
      */
-    private boolean findExactPathHelper(DFSNode node, Cell end, Set<Room> parentVisitedRooms, Set<Cell> parentVisitedCells, int steps) {
+    private boolean findExactPathHelper(DFSNode node, Cell end, Set<Room> parentVisitedRooms, Set<Cell> parentVisitedCells, Queue<Cell> parentPath, int steps) {
         Set<Room> visitedRooms = new HashSet<>(parentVisitedRooms);
         Set<Cell> visitedCells = new HashSet<>(parentVisitedCells);
+        Queue<Cell> currentPath = new ArrayDeque<>(parentPath);
 
         Cell current = node.current;
         visitedCells.add(current);
+        currentPath.add(current);
 
         // Success Termination.
         if (current.sameRoom(end) || (current.sameCell(end) && node.depth == steps)) {
@@ -163,6 +174,9 @@ public class PathFinder {
             visitedCells.add(current);
             board.highlightedCells = visitedCells;
             board.highlightedRooms = visitedRooms;
+            path.clear();
+            currentPath.poll();
+            path.addAll(currentPath);
             return true;
         }
 
@@ -182,7 +196,7 @@ public class PathFinder {
             if (neigh.getSprite() != null) continue; // Game.Sprite on Game.Cell.
 
             // Return success of child to parent.
-            if (findExactPathHelper(new DFSNode(neigh, node), end, visitedRooms, visitedCells, steps)) return true;
+            if (findExactPathHelper(new DFSNode(neigh, node), end, visitedRooms, visitedCells, currentPath, steps)) return true;
         }
 
         // Note we don't add to add all neighbours as visited as there is not path from this Game.Cell.
