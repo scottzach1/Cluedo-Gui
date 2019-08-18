@@ -1,14 +1,13 @@
 package gui;
 
+import game.CluedoGame;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
 import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
@@ -23,15 +22,15 @@ public class UserInterface extends JPanel {
 	private String borderTitle = "UI";
 	private GridBagConstraints gc;
 	private Dimension size;
-	private final GUI gui;
+	private final CluedoGame cluedoGame;
 	
 	
 	// --------------------------------------------------
 	// CONSTRUCTOR
 	// --------------------------------------------------
 	
-	public UserInterface(GUI parent) {
-		gui = parent;
+	public UserInterface(CluedoGame parent) {
+		cluedoGame = parent;
 		// Set the Size of the Control panel
 		size = getPreferredSize();
 		size.width = (GUI.SCREEN_WIDTH * 2 / 3) - (Controls.inset / 2);

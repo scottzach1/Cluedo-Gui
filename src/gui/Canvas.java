@@ -1,11 +1,10 @@
 package gui;
 
 import game.Board;
+import game.CluedoGame;
 import game.Room;
 
 import java.awt.*;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -34,11 +33,11 @@ public class Canvas extends JPanel {
 	// CONSTRUCTOR
 	// --------------------------------------------------
 
-	public Canvas(GUI parent, Board board) {
+	public Canvas(CluedoGame parent) {
 		borderTitle = "CLUEDO GAME";
 		components = new ArrayList<>();
-		gui = parent;
-		this.board = board;
+		gui = parent.getGui();
+		this.board = parent.getBoard();
 
 		// Set the Size of the canvas panel
 		size = getPreferredSize();
@@ -103,7 +102,7 @@ public class Canvas extends JPanel {
 		instructions.setFont(font);
 		
 		// Add the text to the instructions
-		instructions.append("Player " + playerNum + ", what is your preferred name?");
+		instructions.append("Player " + (playerNum + 1) + ", what is your preferred name?");
 		
 		// Set the preferred size such that 40pt text can fit
 		// (Only thing on screen means that it can take up everything
@@ -181,7 +180,9 @@ public class Canvas extends JPanel {
 	}
 
 	public static void main(String[] args) {
-		Board b = new Board();
+
+		CluedoGame cg = new CluedoGame();
+		Board b = cg.getBoard();
 
 		// Highlight some cells to test
 		Board.HIGHLIGHTED_CELLS.add(b.getCell("O2"));
@@ -195,7 +196,7 @@ public class Canvas extends JPanel {
 		Board.HIGHLIGHTED_CELLS.add(b.getCell("S6"));
 		Board.HIGHLIGHTED_CELLS.addAll(b.getRooms().get(Room.RoomAlias.CONSERVATORY).getCells());
 
-		Canvas c = new Canvas(null, b);
+		Canvas c = new Canvas(cg);
 
 		JFrame frame = new JFrame("FrameDemo");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -1,5 +1,8 @@
 package gui;
 
+import game.CluedoGame;
+import game.Sprite;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -10,15 +13,9 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
@@ -36,15 +33,16 @@ public class Controls extends JPanel {
 	private Console c;
 	private UserInterface ui;
 	private Dimension size;
-	private final GUI gui;
+	private GridBagConstraints gc;
+	private final CluedoGame cluedoGame;
 
 	// --------------------------------------------------
 	// CONSTRUCTOR
 	// --------------------------------------------------
 
-	public Controls(GUI parent) {
+	public Controls(CluedoGame parent) {
 		borderTitle = "CONTROLS";
-		gui = parent;
+		cluedoGame = parent;
 
 		// Set the Size of the Control panel
 		size = getPreferredSize();
@@ -53,13 +51,14 @@ public class Controls extends JPanel {
 		setPreferredSize(size);
 
 		// Create the boarder
-		Border b = BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, accentCol), borderTitle,
+		Border border = BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, accentCol), borderTitle,
 				TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, new Font("Serif", Font.BOLD, 18), accentCol);
-		setBorder(b);
+		setBorder(border);
 		setBackground(baseCol);
 
 		// Set the layout
 		setLayout(new GridBagLayout());
+		gc = new GridBagConstraints();
 	}
 
 	// --------------------------------------------------
@@ -70,9 +69,7 @@ public class Controls extends JPanel {
 	 * mainMenu:
 	 */
 	public void mainMenu() {
-		// Set layout
-		setLayout(new GridBagLayout());
-		GridBagConstraints gc = new GridBagConstraints();
+		gc = new GridBagConstraints();
 
 		gc.gridx = 0;
 		gc.gridy = 0;
@@ -85,7 +82,7 @@ public class Controls extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				gui.nextState();
+				cluedoGame.nextState();
 			}
 			
 		});
@@ -97,8 +94,7 @@ public class Controls extends JPanel {
 	 * howManyPlayers:
 	 */
 	protected void howManyPlayers() {
-		
-		GridBagConstraints gc = new GridBagConstraints();
+		gc = new GridBagConstraints();
 
 		// Set up the button group and placement
 		ButtonGroup group = new ButtonGroup();
@@ -109,11 +105,11 @@ public class Controls extends JPanel {
 		for (int i = 0; i < 4; i++) {
 			// NORMAL IMAGE
 			Image image = (new ImageIcon("normal_check_box.png")).getImage();
-			image = image.getScaledInstance(size.width / 8, size.height / 2, java.awt.Image.SCALE_SMOOTH);
+			image = image.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
 			ImageIcon normal = new ImageIcon(image);
 			// SELECTED IMAGE
 			Image image2 = (new ImageIcon("selected_check_box.png")).getImage();
-			image2 = image2.getScaledInstance(size.width / 8, size.height / 2, java.awt.Image.SCALE_SMOOTH);
+			image2 = image2.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
 			ImageIcon selected = new ImageIcon(image2);
 
 			JCheckBox b = new JCheckBox((i + 3) + "");
@@ -146,8 +142,8 @@ public class Controls extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					int players = Integer.parseInt(group.getSelection().getActionCommand());
-					gui.setPlayerAmount(players);
-					gui.nextState();
+					cluedoGame.setPlayerAmount(players);
+					cluedoGame.nextState();
 				} catch (Exception e) {}
 			}
 
@@ -158,7 +154,7 @@ public class Controls extends JPanel {
 	}
 	
 	public void createUser(int playerNum) {
-		GridBagConstraints gc = new GridBagConstraints();
+		gc = new GridBagConstraints();
 		
 		// Create label and text field
 		JLabel name = new JLabel("NAME: ");	
@@ -178,9 +174,9 @@ public class Controls extends JPanel {
 		nameField.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				gui.setTempUserName(nameField.getText());
-				gui.selectCharacter();
-			}			
+				cluedoGame.setTempUserName(nameField.getText());
+				cluedoGame.getGui().selectCharacter(nameField.getText());
+			}
 		});
 		
 		// Add the name
@@ -202,7 +198,37 @@ public class Controls extends JPanel {
 	}
 	
 	public void selectCharacter(String userName) {
-		
+		gc = new GridBagConstraints();
+
+		// Create drop down menu
+		JComboBox spriteOptions = new JComboBox(new Vector< Sprite.SpriteAlias>(cluedoGame.getAvailableSprites()));
+		spriteOptions.setPreferredSize(new Dimension(size.width / 10, size.height /10));
+
+		// Create submit button
+		JButton submit = new JButton("SUBMIT");
+		submit.setPreferredSize(new Dimension(size.width / 10, size.height /10));
+
+		submit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				cluedoGame.setTempSprite((Sprite.SpriteAlias) spriteOptions.getSelectedItem());
+				cluedoGame.removeAvailableSprite((Sprite.SpriteAlias) spriteOptions.getSelectedItem());
+				cluedoGame.nextTempUserNum();
+			}
+		});
+
+		gc.weightx = 1;
+		gc.weighty = 1;
+		// add the components to their locations
+		gc.gridx = 0;
+		gc.gridy = 0;
+		gc.anchor = GridBagConstraints.LINE_END;
+		add(spriteOptions, gc);
+		gc.gridx = 1;
+		gc.gridy = 0;
+		gc.anchor = GridBagConstraints.LINE_START;
+		add(submit, gc);
+
 	}
 
 	/**
@@ -210,9 +236,11 @@ public class Controls extends JPanel {
 	 */
 	public void addContainers() {
 
+		setLayout(new BorderLayout());
+
 		// Create and Add the two panels
-		c = new Console(gui);
-		ui = new UserInterface(gui);
+		c = new Console(cluedoGame);
+		ui = new UserInterface(cluedoGame);
 
 		add(c, BorderLayout.WEST);
 		add(ui, BorderLayout.EAST);
