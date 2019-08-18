@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.util.ArrayList;
 
 public class GUI extends JFrame implements ComponentListener {
     // Nothing important
@@ -145,9 +146,9 @@ public class GUI extends JFrame implements ComponentListener {
         redraw();
     }
 
-    public void printError(String errorMsg, UserInterface.ERROR_TYPE error_type) {
+    public void printError(String errorMsg) {
         clearComponents();
-        controls.printError(errorMsg, error_type);
+        controls.printError(errorMsg);
         canvas.renderBoard();
         redraw();
     }
@@ -190,12 +191,94 @@ public class GUI extends JFrame implements ComponentListener {
 		}
 	}
 
+	public void showPlayerCard(User user, ArrayList<Card> cards){
+    	clearComponents();
+    	controls.showPlayerCard(user, cards);
+    	canvas.showPlayerCard(user);
+    	redraw();
+	}
+
+	public void skipUser(User user){
+		String[] options = {"AWH MAN!"};
+
+		StringBuilder text = new StringBuilder();
+		text.append(user.getUserName() + "'s turn is skipped." +
+				"\n They have already lost the game.");
+
+		int choice = JOptionPane.showOptionDialog(null,
+				text.toString(),
+				"LOSER!",
+				JOptionPane.OK_OPTION,
+				JOptionPane.INFORMATION_MESSAGE,
+				null,
+				options,
+				options[0]);
+		cluedoGame.nextState();
+	}
+
 	public void displayWinner(User user){
+		String[] options = {"WOOOOO!!!"};
+
+		StringBuilder text = new StringBuilder();
+		text.append(user.getUserName() +" is the best detective." +
+				"\n They have won the game!");
+
+		int choice = JOptionPane.showOptionDialog(null,
+				text.toString(),
+				"WINNER!",
+				JOptionPane.OK_OPTION,
+				JOptionPane.INFORMATION_MESSAGE,
+				null,
+				options,
+				options[0]);
+		cluedoGame.endGame();
 
 	}
 
 	public void displayLoser(User user){
+		String[] options = {"WHAT! No way!"};
 
+		StringBuilder text = new StringBuilder();
+		text.append(user.getUserName() +" did NOT guess correctly." +
+				"\n They are now unable to win." +
+				"\n However, they can still show their cards");
+
+		int choice = JOptionPane.showOptionDialog(null,
+				text.toString(),
+				"LOSER!",
+				JOptionPane.OK_OPTION,
+				JOptionPane.INFORMATION_MESSAGE,
+				null,
+				options,
+				options[0]);
+		cluedoGame.nextState();
+
+	}
+
+	public boolean restartGame(){
+
+		String[] options = {"Heck Yeah!", "Nah, that's enough for me."};
+
+		StringBuilder text = new StringBuilder();
+		text.append("Would you like to restart the game?");
+
+		int choice = JOptionPane.showOptionDialog(null,
+				text.toString(),
+				"Restart?",
+				JOptionPane.YES_NO_OPTION,
+				JOptionPane.QUESTION_MESSAGE,
+				null,
+				options,
+				options[0]);
+
+		if (choice == JOptionPane.CLOSED_OPTION || choice == 1){
+			return false;
+		}
+		return true;
+	}
+
+	public void noMovesLeft(User user){
+		// TODO
 	}
 
     // --------------------------------------------------

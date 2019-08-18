@@ -7,13 +7,11 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Vector;
 
 public class UserInterface extends JPanel {
 
-    public static enum ERROR_TYPE {
-        FALSE_SUGGESTION, FALSE_ACCUSATION, BACK;
-    }
 
     // --------------------------------------------------
     // FIELDS
@@ -172,7 +170,7 @@ public class UserInterface extends JPanel {
 
 		// If the player is not in a room, making a suggestion
         if (cluedoGame.getCurrentUser().getSprite().getPosition().getType() != Cell.Type.ROOM && suggestion) {
-            cluedoGame.getGui().printError("You are not currently in a room", ERROR_TYPE.BACK);
+            cluedoGame.getGui().printError("You are not currently in a room");
             return;
         }
 
@@ -236,15 +234,10 @@ public class UserInterface extends JPanel {
 
     }
 
+    protected void showPlayerCard(ArrayList<Card> cards){
 
+	}
 
-    protected void falseSuggestion() {
-
-    }
-
-    protected void falseAccusation() {
-
-    }
 
     private void drawBorder() {
         Border b1 = BorderFactory.createRaisedBevelBorder();
