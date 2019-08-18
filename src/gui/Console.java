@@ -103,21 +103,24 @@ public class Console extends JPanel {
     }
 
     protected void printError(String errorMsg) {
+
         gc = new GridBagConstraints();
         gc.anchor = GridBagConstraints.CENTER;
+        gc.weighty = 1;
+        gc.weightx = 1;
+        gc.insets = new Insets(0,10,0,0);
 
-        JTextArea error = new JTextArea(errorMsg);
-        error.setPreferredSize(new Dimension(getWidth(), getHeight()));
-        error.setWrapStyleWord(true);
-        error.setLineWrap(true);
+        JTextArea error = new JTextArea(3, 10);
         error.setBackground(null);
         error.setForeground(Color.WHITE);
         error.setBorder(null);
-        error.setFont(new Font("Arial", Font.BOLD, Math.min(Math.min(getWidth() / 4, getHeight() / 3), 30)));
+		error.setLineWrap(true);
+		error.setWrapStyleWord(true);
+        error.setFont(new Font("Arial", Font.PLAIN, 20));
+        error.setText(errorMsg);
 
         gc.gridx = 0;
         gc.gridy = 0;
-        gc.fill = GridBagConstraints.BOTH;
         add(error, gc);
     }
 
