@@ -202,7 +202,7 @@ public class Controls extends JPanel {
 		gc = new GridBagConstraints();
 
 		// Create drop down menu
-		JComboBox<Sprite.SpriteAlias> spriteOptions = new JComboBox<>();
+		JComboBox spriteOptions = new JComboBox();
 		spriteOptions.setPreferredSize(new Dimension(size.width / 10, size.height /10));
 		for (Sprite.SpriteAlias s : board.getSprites().keySet()) {
 			spriteOptions.addItem(s);
@@ -215,8 +215,6 @@ public class Controls extends JPanel {
 		submit.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(spriteOptions.getPrototypeDisplayValue().toString());
-				gui.setTempSprite(spriteOptions.getPrototypeDisplayValue());
 				gui.nextTempUserNum();
 			}
 		});
