@@ -39,6 +39,9 @@ public class CluedoGame {
 	private int movesThisTurn;
 	private int movesLeft;
 	private User.UserNo currentUserNo;
+	private Card showOtherPlayerCard;
+	private User otherPlayer;
+	private ArrayList<Card> otherPlayersHand;
 
 	// ------------------------
 	// CONSTRUCTOR
@@ -91,21 +94,26 @@ public class CluedoGame {
 
 	public void checkSuggestion(Card sprite, Card weapon, Card room){
 		// Create an empty list of cards
-		ArrayList<Card> otherPlayersHand = new ArrayList<>();
+		otherPlayersHand = new ArrayList<>();
 
 		// For every player, go through all their cards and see if they hold any the are being searched for
 		for (int i = ((currentUserNo.ordinal() + 1) % playerAmount); i != currentUserNo.ordinal(); i = (i + 1) % playerAmount){
-			User otherPlayer = users.get(i);
-			for (Card c : otherPlayer.getHand()){
+			for (Card c : users.get(i).getHand()){
 				if (c == sprite || c == weapon || c == room)
 					otherPlayersHand.add(c);
 			}
 
 			// If the player had 1 or more cards to refute the suggestion
 			if (otherPlayersHand.size() > 0){
-
+				otherPlayer = users.get(i);
+				gui.confirmShowHiddenContent(otherPlayer);
+				return;
 			}
 		}
+	}
+
+	public void chooserHiddenCard(){
+		gui.chooseHiddenPlayerCard(otherPlayer, otherPlayersHand);
 	}
 
 	public void checkAccusation(Card sprite, Card weapon, Card room){
@@ -296,6 +304,13 @@ public class CluedoGame {
 		return users.get(currentUserNo.ordinal());
 	}
 
+	public void setShowOtherPlayerCard(Card c){
+		showOtherPlayerCard = c;
+	}
+
+	public Card getShowOtherPlayerCard(){
+		return showOtherPlayerCard;
+	}
 
 
 	// Setup getters, and setters

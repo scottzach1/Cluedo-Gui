@@ -234,8 +234,86 @@ public class UserInterface extends JPanel {
 
     }
 
-    protected void showPlayerCard(ArrayList<Card> cards){
+    protected void confirmShowHiddenContent(){
+		// Clear all previous settings
+		gc = new GridBagConstraints();
 
+		JButton confirm = new JButton("Confirm");
+		confirm.setPreferredSize(new Dimension(getWidth()/6, getHeight()/6));
+		confirm.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				cluedoGame.chooserHiddenCard();
+			}
+		});
+
+		gc.gridx = 0;
+		gc.gridy = 0;
+		add(confirm, gc);
+	}
+
+    protected void chooseHiddenPlayerCard(ArrayList<Card> cards){
+		// Clear all previous settings
+		gc = new GridBagConstraints();
+
+    	// Create a combo box for all the cards to choose from
+		// and a button to confirm the selection
+		JComboBox cardsToChooseFrom = new JComboBox(new Vector<Card>(cards));
+		cardsToChooseFrom.setPreferredSize(new Dimension(getWidth()/6, getHeight()/6));
+
+		JButton confirm = new JButton("Confirm");
+		confirm.setPreferredSize(new Dimension(getWidth()/6, getHeight()/6));
+		confirm.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Card showCard = (Card) cardsToChooseFrom.getSelectedItem();
+				cluedoGame.setShowOtherPlayerCard(showCard);
+				cluedoGame.getGui().confirmShowOtherPlayerCard();
+			}
+		});
+
+		gc.gridy = 0;
+		gc.gridy = 0;
+		add(cardsToChooseFrom, gc);
+
+		gc.gridx = 1;
+
+	}
+
+	protected void confirmShowOtherPlayerCard(){
+		// Clear all previous settings
+		gc = new GridBagConstraints();
+
+		JButton confirm = new JButton("Confirm");
+		confirm.setPreferredSize(new Dimension(getWidth()/6, getHeight()/6));
+		confirm.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				cluedoGame.getGui().showUserOtherPlayerCard();
+			}
+		});
+
+		gc.gridx = 0;
+		gc.gridy = 0;
+		add(confirm, gc);
+	}
+
+	protected  void showUserOtherPlayerCard(){
+		// Clear all previous settings
+		gc = new GridBagConstraints();
+
+		JButton confirm = new JButton("Cool");
+		confirm.setPreferredSize(new Dimension(getWidth()/6, getHeight()/6));
+		confirm.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				cluedoGame.nextState();
+			}
+		});
+
+		gc.gridx = 0;
+		gc.gridy = 0;
+		add(confirm, gc);
 	}
 
 
