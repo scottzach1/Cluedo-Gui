@@ -143,7 +143,7 @@ public class GUI extends JFrame implements ComponentListener {
 	}
 
 	public void clear() {
-		canvas.clear();
+		canvas.clearComponents();
 		controls.clear();
 	}
 

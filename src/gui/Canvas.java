@@ -148,7 +148,7 @@ public class Canvas extends JPanel {
 		this.borderTitle = borderTitle;
 	}
 	
-	public void clear() {
+	public void clearComponents() {
 		components.clear();
 		removeAll();
 	}
@@ -158,14 +158,14 @@ public class Canvas extends JPanel {
 
 		// Have the cells actually changed size?
 		if (cellSize != (cellSize = newCellSize)) {
-			board.getStream().forEach(cell -> {
-				Image image = cell.getIcon().getImage();
-				Image newImage = image.getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
-				components.add(new JLabel(new ImageIcon(newImage)));
-			});
-		}
-		revalidateComponents(board.getCols());
-		clear();
+            clearComponents();
+            board.getStream().forEach(cell -> {
+                Image image = cell.getIcon().getImage();
+                Image newImage = image.getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
+                components.add(new JLabel(new ImageIcon(newImage)));
+            });
+        }
+        revalidateComponents(board.getCols());
 		repaint();
 	}
 
