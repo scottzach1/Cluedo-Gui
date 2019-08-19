@@ -146,12 +146,17 @@ public class Cell extends JLabel implements MouseListener {
 		if (board.pathFinder.getPath().stream().anyMatch(board.visitedCells::contains)) {
 			System.out.println("MATCH!");
 			board.cluedoGame.getGui().infeasibleMove();
+			board.cluedoGame.getGui().redrawDice();
 			return;
 		} else if (board.highlightedCells.isEmpty()) {
 			System.out.println("INFEASIBLE!");
 			board.cluedoGame.getGui().infeasibleMove();
+			board.cluedoGame.getGui().redrawDice();
 			return;
 		}
+
+		board.cluedoGame.removeMovesLeft(board.pathFinder.getPath().size());
+
 		board.pathFinder.getPath().forEach(cell -> {
 			System.out.println(cell.getStringCoordinates());
 //				try {
@@ -166,14 +171,14 @@ public class Cell extends JLabel implements MouseListener {
 
 		board.visitedCells.addAll(board.highlightedCells);
 
-		board.cluedoGame.removeMovesLeft(board.highlightedCells.size() - 1);
-
 		board.highlightedCells.clear();
 		board.highlightedRooms.clear();
 
 		board.moveUser(board.cluedoGame.getCurrentUser(), this);
 		board.getStream().forEach(Cell::render);
+
 		board.cluedoGame.getGui().redraw();
+		board.cluedoGame.getGui().redrawDice();
 
 		board.pathFinder.getPath().clear();
 	}
@@ -203,6 +208,8 @@ public class Cell extends JLabel implements MouseListener {
 		else 	success = pathFinder.findExactPath(startingCell, this, movesLeft);
 
 		if (!success) {
+			board.highlightedRooms.forEach(room -> board.highlightedCells.addAll(room.getCells()));
+			System.out.println(board.highlightedRooms.size());
 			board.highlightedCells.clear();
 			board.highlightedRooms.clear();
 		}  else {
