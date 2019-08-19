@@ -237,9 +237,6 @@ public class Canvas extends JPanel {
         gc = new GridBagConstraints();
         gc.fill = GridBagConstraints.HORIZONTAL;
 
-        int amountOfSprites = 0;
-        int amountOfWeapons = 0;
-        int amountOfRooms = 0;
         HashSet<Sprite> knownSpriteCards = new HashSet<>();
         HashSet<Weapon> knownWeaponCards = new HashSet<>();
         HashSet<Room> knownRoomCards = new HashSet<>();
@@ -247,15 +244,12 @@ public class Canvas extends JPanel {
         // Go through this users observed cards and separate all the cards by type
         for (Card c : cluedoGame.getCurrentUser().getObservedCards()){
             if (c instanceof Sprite) {
-                amountOfSprites++;
                 knownSpriteCards.add((Sprite) c);
             }
             else if (c instanceof Weapon) {
-                amountOfWeapons++;
                 knownWeaponCards.add((Weapon)c);
             }
             else if (c instanceof Room) {
-                amountOfRooms++;
                 knownRoomCards.add((Room)c);
             }
         }
@@ -274,7 +268,8 @@ public class Canvas extends JPanel {
 
 
         for (Sprite s : cluedoGame.getBoard().getSprites().values()){
-            gc.gridx = currentGridX;
+            gc.gridx = currentGridX % 3;
+            gc.gridy = (currentGridX / 3) + 1;
             Sprite.SpriteAlias sa = s.getSpriteAlias();
             JLabel lab = new JLabel(useWidth ?
                     Card.getCardSetWidth(sa, knownSpriteCards.contains(s), cardWidth) :
@@ -282,8 +277,9 @@ public class Canvas extends JPanel {
             add(lab, gc);
             currentGridX++;
         }
-        for (Weapon w : knownWeaponCards){
-            gc.gridx = currentGridX;
+        for (Weapon w : cluedoGame.getBoard().getWeapons().values()){
+            gc.gridx = currentGridX % 6;
+            gc.gridy = (currentGridX / 6) + 1;
             Weapon.WeaponAlias wa = w.getWeaponAlias();
             JLabel lab = new JLabel(useWidth ?
                     Card.getCardSetWidth(wa, knownWeaponCards.contains(w), cardWidth) :
@@ -291,8 +287,10 @@ public class Canvas extends JPanel {
             add(lab, gc);
             currentGridX++;
         }
-        for (Room r : knownRoomCards){
-            gc.gridx = currentGridX;
+        gc.weightx = 1.5;
+        for (Room r : cluedoGame.getBoard().getRooms().values()){
+            gc.gridx = currentGridX % 11;
+            gc.gridy = (currentGridX / 11) + 1;
             Room.RoomAlias ra = r.getRoomAlias();
             JLabel lab = new JLabel(useWidth ?
                     Card.getCardSetWidth(ra, knownRoomCards.contains(r), cardWidth) :
@@ -313,8 +311,11 @@ public class Canvas extends JPanel {
         // Place the label if there is any cards for it
         currentGridX = 0;
         gc.gridy = 0;
-        gc.weighty = 1;
+        gc.weighty = 0.5;
         gc.anchor = GridBagConstraints.LINE_END;
+        int amountOfSprites = 3;
+        int amountOfWeapons = 3;
+        int amountOfRooms = 5;
 
         if (amountOfSprites > 0) {
             gc.gridx = currentGridX;
