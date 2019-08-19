@@ -113,7 +113,7 @@ public class CluedoGame {
 		ArrayList<Cell> shuffledCells = new ArrayList<>(r.getCells());
 
 		// Shuffle till not on a person
-		while(shuffledCells.get(0).getSprite() != null)
+		while(shuffledCells.get(0).getSprite() != null && shuffledCells.get(0))
 			Collections.shuffle(shuffledCells);
 		s.setPosition(shuffledCells.get(0));
 
