@@ -118,11 +118,21 @@ public class CluedoGame {
 
         // Teleport the suggested Weapon to this room too
         Weapon holdingWeapon = null;
-        if (r.getWeapon() != null)
+        Room holdingRoom = null;
+
+        // If room A has a weapon
+        if (r.getWeapon() != null) {
+            // Temp hold the rooms weapon
             holdingWeapon = r.getWeapon();
+            // Temp hold Room B (room containing weapon)
+            holdingRoom = w.getRoom();
+        }
+        // Room A set weapon from Room B
         r.setWeapon(w);
-        if (holdingWeapon != null)
-            w.getRoom().setWeapon(holdingWeapon);
+        if (holdingWeapon != null) {
+            // Room B set Weapon from Room A
+            holdingRoom.setWeapon(holdingWeapon);
+        }
 
         // For every player, go through all their cards and see if they hold any the are being searched for
         for (int i = ((currentUserNo.ordinal() + 1) % playerAmount); i != currentUserNo.ordinal(); i = (i + 1) % playerAmount) {
