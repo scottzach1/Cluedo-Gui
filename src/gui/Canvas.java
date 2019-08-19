@@ -244,10 +244,8 @@ public class Canvas extends JPanel {
             if (c instanceof Sprite) {
                 knownSpriteCards.add((Sprite) c);
             } else if (c instanceof Weapon) {
-                amountOfWeapons++;
                 knownWeaponCards.add((Weapon) c);
             } else if (c instanceof Room) {
-                amountOfRooms++;
                 knownRoomCards.add((Room) c);
             }
         }
@@ -292,7 +290,7 @@ public class Canvas extends JPanel {
         // Display all the Room cards, highlighting those NOT in out observed cards
         currentGridX = 0;
         for (Room r : cluedoGame.getBoard().getRooms().values()){
-            gc.gridx = (currentGridX % 3) + 6;
+            gc.gridx = (currentGridX % 5) + 6;
             gc.gridy = (currentGridX / 5) + 1;
             Room.RoomAlias ra = r.getRoomAlias();
             JLabel lab = new JLabel(useWidth ?

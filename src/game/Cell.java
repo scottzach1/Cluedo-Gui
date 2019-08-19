@@ -118,7 +118,6 @@ public class Cell extends JLabel implements MouseListener {
         if (board.pathFinder.getPath().stream().anyMatch(board.visitedCells::contains) || board.highlightedCells.isEmpty()) {
 //            System.out.println("INFEASIBLE!");
             board.cluedoGame.getGui().infeasibleMove();
-            board.cluedoGame.getGui().redrawDice();
             return;
         }
 
