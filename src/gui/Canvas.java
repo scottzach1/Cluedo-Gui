@@ -266,35 +266,40 @@ public class Canvas extends JPanel {
         int cardWidth = getWidth() / 6;
         boolean useWidth = cardHeight > cardWidth;
 
-
+        // Display all the Sprite cards, highlighting those NOT in out observed cards
         for (Sprite s : cluedoGame.getBoard().getSprites().values()){
             gc.gridx = currentGridX % 3;
             gc.gridy = (currentGridX / 3) + 1;
             Sprite.SpriteAlias sa = s.getSpriteAlias();
             JLabel lab = new JLabel(useWidth ?
-                    Card.getCardSetWidth(sa, knownSpriteCards.contains(s), cardWidth) :
-                    Card.getCardSetHeight(sa, knownSpriteCards.contains(s), cardHeight));
+                    Card.getCardSetWidth(sa, !knownSpriteCards.contains(s), cardWidth) :
+                    Card.getCardSetHeight(sa, !knownSpriteCards.contains(s), cardHeight));
             add(lab, gc);
             currentGridX++;
         }
+
+        // Display all the Weapon cards, highlighting those NOT in out observed cards
+        currentGridX = 0;
         for (Weapon w : cluedoGame.getBoard().getWeapons().values()){
-            gc.gridx = currentGridX % 6;
-            gc.gridy = (currentGridX / 6) + 1;
+            gc.gridx = (currentGridX % 3) + 3;
+            gc.gridy = (currentGridX / 3) + 1;
             Weapon.WeaponAlias wa = w.getWeaponAlias();
             JLabel lab = new JLabel(useWidth ?
-                    Card.getCardSetWidth(wa, knownWeaponCards.contains(w), cardWidth) :
-                    Card.getCardSetHeight(wa, knownWeaponCards.contains(w), cardHeight));
+                    Card.getCardSetWidth(wa, !knownWeaponCards.contains(w), cardWidth) :
+                    Card.getCardSetHeight(wa, !knownWeaponCards.contains(w), cardHeight));
             add(lab, gc);
             currentGridX++;
         }
-        gc.weightx = 1.5;
+
+        // Display all the Room cards, highlighting those NOT in out observed cards
+        currentGridX = 0;
         for (Room r : cluedoGame.getBoard().getRooms().values()){
-            gc.gridx = currentGridX % 11;
-            gc.gridy = (currentGridX / 11) + 1;
+            gc.gridx = (currentGridX % 3) + 6;
+            gc.gridy = (currentGridX / 5) + 1;
             Room.RoomAlias ra = r.getRoomAlias();
             JLabel lab = new JLabel(useWidth ?
-                    Card.getCardSetWidth(ra, knownRoomCards.contains(r), cardWidth) :
-                    Card.getCardSetHeight(ra, knownRoomCards.contains(r), cardHeight));
+                    Card.getCardSetWidth(ra, !knownRoomCards.contains(r), cardWidth) :
+                    Card.getCardSetHeight(ra, !knownRoomCards.contains(r), cardHeight));
             add(lab, gc);
             currentGridX++;
         }
