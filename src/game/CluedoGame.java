@@ -76,7 +76,7 @@ public class CluedoGame {
 	 */
 	public void gameController() {
 			if (state == State.MAIN_MENU)
-				gui.mainMenu();
+                gui.mainMenu();
 			else if (state == State.PLAYER_COUNT)
 				gui.howManyPlayers();
 			else if (state == State.USER_CREATION)
@@ -145,20 +145,10 @@ public class CluedoGame {
 	}
 
 	public void restartGame(){
-		// Starting state
-		state = State.MAIN_MENU;
-		// Construct components
-		board = new Board(this);
-		gui.addLayoutComponents();
+	    gui.dispose();
+        CluedoGame g = new CluedoGame();
+        g.gameController();
 
-		// Set up start menu options
-		availableSprites = new HashSet<>(board.getSprites().keySet());
-		users = new ArrayList<>();
-		losers = new ArrayList<>();
-		movesThisTurn = 0;
-		movesLeft = 0;
-		currentUserNo = User.UserNo.PLAYER_0;
-		gameController();
 	}
 
 	/**

@@ -139,7 +139,7 @@ public class Canvas extends JPanel {
         ArrayList<Weapon> weaponCards = new ArrayList<>();
         ArrayList<Room> roomCards = new ArrayList<>();
 
-        // Go through this users hand and seperate all the cards
+        // Go through this users hand and separate all the cards
         for (Card c : cluedoGame.getCurrentUser().getHand()){
             if (c instanceof Sprite) {
                 amountOfSprites++;
@@ -155,14 +155,6 @@ public class Canvas extends JPanel {
             }
         }
 
-        // Create a label for each of the card types
-        Font font = new Font("Arial", Font.BOLD, 20);
-        JLabel sprites = new JLabel("Sprites");
-        sprites.setFont(font);
-        JLabel weapons = new JLabel("Weapons");
-        weapons.setFont(font);
-        JLabel rooms = new JLabel("Rooms");
-        rooms.setFont(font);
 
         // Draw all the cards
         int currentGridX = 0;
@@ -171,8 +163,8 @@ public class Canvas extends JPanel {
         gc.weighty = 2;
         gc.gridwidth = 1;
         gc.gridx = 0;
-        int cardHeight = getHeight() / 2;
-        int cardWidth = getWidth() / 8;
+        int cardHeight = (getHeight() / 2) + 10;
+        int cardWidth = (getWidth() / 6) - 10;
 
         for (Sprite s : spriteCards){
             gc.gridx = currentGridX;
@@ -202,12 +194,20 @@ public class Canvas extends JPanel {
             currentGridX++;
         }
 
+        // Create a label for each of the card types
+        Font font = new Font("Arial", Font.BOLD, 20);
+        JLabel sprites = new JLabel("Sprites");
+        sprites.setFont(font);
+        JLabel weapons = new JLabel("Weapons");
+        weapons.setFont(font);
+        JLabel rooms = new JLabel("Rooms");
+        rooms.setFont(font);
 
         // Place the label if there is any cards for it
         currentGridX = 0;
         gc.gridy = 0;
         gc.weighty = 1;
-        gc.anchor = GridBagConstraints.CENTER;
+        gc.anchor = GridBagConstraints.LINE_END;
 
         if (amountOfSprites > 0) {
             gc.gridx = currentGridX;
