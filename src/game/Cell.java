@@ -208,6 +208,10 @@ public class Cell extends JLabel implements MouseListener {
     // INTERFACE
     // ------------------------
 
+    public Weapon getWeapon() {
+        if (!hasRoom()) return null;
+        return room.getWeapon();
+    }
 
     public boolean hasRoom() {
         return room != null;
