@@ -6,7 +6,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.util.ArrayList;
 
 public class GUI extends JFrame implements ComponentListener {
     // Nothing important
@@ -68,6 +67,7 @@ public class GUI extends JFrame implements ComponentListener {
         controls = new Controls(cluedoGame);
         controls.setPreferredSize(new Dimension(getWidth(), getHeight() / 3));
         menuBar = new MenuOptions(cluedoGame);
+        pack();
 
 
         // Add panels to frame
@@ -124,8 +124,8 @@ public class GUI extends JFrame implements ComponentListener {
         redraw();
     }
 
-    public void runGUI(){
-        switch (guiState){
+    public void runGUI() {
+        switch (guiState) {
             case ACCUSE:
                 accuseOrSuggest(false);
                 break;
@@ -437,18 +437,20 @@ public class GUI extends JFrame implements ComponentListener {
     // HELPFUL METHODS
     // --------------------------------------------------
 
-    public void setErrorMsg(String str){
+    public void setErrorMsg(String str) {
         errorMsg = str;
     }
 
     public void redraw() {
         revalidate();
         repaint();
+        pack();
     }
 
     public void resize() {
         clearComponents();
-        cluedoGame.gameController();
+        if (canvas != null && controls != null)
+            cluedoGame.gameController();
         redraw();
     }
 
@@ -478,11 +480,11 @@ public class GUI extends JFrame implements ComponentListener {
     }
 
 
-    public void setGuiState(GUIState g){
+    public void setGuiState(GUIState g) {
         guiState = g;
     }
 
-    public static enum GUIState{
+    public static enum GUIState {
         ACCUSE,
         CHOOSE_HIDDEN_PLAYER_CARD,
         CONFIRM_SHOW_HIDDEN_CONTENT,
