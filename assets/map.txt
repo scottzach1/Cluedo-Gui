@@ -24,5 +24,5 @@ MAP 25 24
 22|E|E|E|E|E|E|E|_|_|H|H|H|H|H|H|_|_|X|S|S|S|S|S|S|
 23|E|E|E|E|E|E|E|_|_|H|H|H|H|H|H|_|_|S|S|S|S|S|S|S|
 24|E|W|E|E|E|E|E|_|_|H|H|W|H|H|H|_|_|S|S|S|S|S|W|S|
-25|E|E|E|E|E|E| |4| |H|H|H|H|H|H| | | |S|S|S|S|S|S|
+25|E|E|E|E|E|E| |4| |H|H|H|H|H|H| | |S|S|S|S|S|S|S|
    A B C D E F G H I J K L M N O P Q R S T U V W X

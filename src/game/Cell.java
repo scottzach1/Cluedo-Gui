@@ -87,7 +87,7 @@ public class Cell extends JLabel implements MouseListener {
         if (hasWeapon()) {
             layers.add(icons.get(Weapon.parseWeaponIcon(getWeapon().getWeaponAlias())));
             setToolTipText(getWeapon().getWeaponAlias().toString());
-        } else if (isType(Type.WEAPON)) setToolTipText("EMPTY SLOT");
+        } else if (isType(Type.WEAPON)) setToolTipText("EMPTY_SLOT");
 
         for (Direction dir : Direction.values()) {
             if (neighbors.get(dir) == null) layers.add(icons.get(parseWallIcon(dir)));
