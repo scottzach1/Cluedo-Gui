@@ -259,25 +259,44 @@ public class UserInterface extends JPanel {
 
     	// Create a combo box for all the cards to choose from
 		// and a button to confirm the selection
-		JComboBox cardsToChooseFrom = new JComboBox(new Vector<Card>(cards));
+		JComboBox cardsToChooseFrom = new JComboBox();
 		cardsToChooseFrom.setPreferredSize(new Dimension(getWidth()/6, getHeight()/6));
+		for (Card c : cards){
+		    if (c instanceof Sprite)
+                cardsToChooseFrom.addItem(((Sprite)c).getSpriteAlias());
+		    else if(c instanceof Weapon)
+		        cardsToChooseFrom.addItem(((Weapon)c).getWeaponAlias());
+		    else if (c instanceof Room)
+		        cardsToChooseFrom.addItem(((Room)c).getRoomAlias());
+        }
 
 		JButton confirm = new JButton("Confirm");
 		confirm.setPreferredSize(new Dimension(getWidth()/6, getHeight()/6));
 		confirm.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Card showCard = (Card) cardsToChooseFrom.getSelectedItem();
+			    Card showCard = null;
+			    // Get the card's object using instance of
+			    if (cardsToChooseFrom.getSelectedItem() instanceof Sprite.SpriteAlias)
+			        showCard = cluedoGame.getBoard().getSprites().get((Sprite.SpriteAlias)cardsToChooseFrom.getSelectedItem());
+                else if (cardsToChooseFrom.getSelectedItem() instanceof Weapon.WeaponAlias)
+                    showCard = cluedoGame.getBoard().getWeapons().get((Weapon.WeaponAlias)cardsToChooseFrom.getSelectedItem());
+                else if (cardsToChooseFrom.getSelectedItem() instanceof Room.RoomAlias)
+                    showCard = cluedoGame.getBoard().getRooms().get((Room.RoomAlias)cardsToChooseFrom.getSelectedItem());
+
+                // Add the card to another player, if still null, then a non card was selected
+                if (showCard == null) { return; }
 				cluedoGame.setShowOtherPlayerCard(showCard);
 				cluedoGame.getGui().confirmShowOtherPlayerCard();
 			}
 		});
 
-		gc.gridy = 0;
+		gc.gridx = 0;
 		gc.gridy = 0;
 		add(cardsToChooseFrom, gc);
 
 		gc.gridx = 1;
+		add(confirm, gc);
 
 	}
 

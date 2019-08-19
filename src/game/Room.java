@@ -91,6 +91,7 @@ public class Room extends Card {
 		this.cells.add(cell);
 		if (cell == null || cell.getRoom() == this) return;
 		cell.setRoom(this);
+		cell.setToolTipText(getRoomAlias().toString());
 	}
 
 	/**

@@ -130,7 +130,7 @@ public class Canvas extends JPanel {
     public void showHand(User user) {
         // Clear previous settings
         gc = new GridBagConstraints();
-        gc.gridwidth = 7;
+        gc.fill = GridBagConstraints.HORIZONTAL;
 
         int amountOfSprites = 0;
         int amountOfWeapons = 0;
@@ -156,60 +156,79 @@ public class Canvas extends JPanel {
         }
 
         // Create a label for each of the card types
+        Font font = new Font("Arial", Font.BOLD, 20);
         JLabel sprites = new JLabel("Sprites");
-        sprites.setFont(new Font("Arial", Font.BOLD, 20));
+        sprites.setFont(font);
         JLabel weapons = new JLabel("Weapons");
-        weapons.setFont(new Font("Arial", Font.BOLD, 20));
+        weapons.setFont(font);
         JLabel rooms = new JLabel("Rooms");
-        rooms.setFont(new Font("Arial", Font.BOLD, 20));
+        rooms.setFont(font);
+
+        // Draw all the cards
+        int currentGridX = 0;
+        gc.gridy = 1;
+        gc.weightx = 1;
+        gc.weighty = 2;
+        gc.gridwidth = 1;
+        gc.gridx = 0;
+        int cardHeight = getHeight() / 2;
+        int cardWidth = getWidth() / 8;
+
+        for (Sprite s : spriteCards){
+            gc.gridx = currentGridX;
+            Image img = Card.getCard(s.getSpriteAlias(), false).getImage();
+            img = img.getScaledInstance(cardWidth, cardHeight, java.awt.Image.SCALE_SMOOTH);
+            JLabel lab = new JLabel(new ImageIcon(img));
+            add(lab, gc);
+            System.out.println(s.getSpriteAlias().toString() + " " + currentGridX);
+            currentGridX++;
+        }
+        for (Weapon w : weaponCards){
+            gc.gridx = currentGridX;
+            Image img = Card.getCard(w.getWeaponAlias(), false).getImage();
+            img = img.getScaledInstance(cardWidth, cardHeight, java.awt.Image.SCALE_SMOOTH);
+            JLabel lab = new JLabel(new ImageIcon(img));
+            add(lab, gc);
+            System.out.println(w.getWeaponAlias().toString() + " " + currentGridX);
+            currentGridX++;
+        }
+        for (Room r : roomCards){
+            gc.gridx = currentGridX;
+            Image img = Card.getCard(r.getRoomAlias(), false).getImage();
+            img = img.getScaledInstance(cardWidth, cardHeight, java.awt.Image.SCALE_SMOOTH);
+            JLabel lab = new JLabel(new ImageIcon(img));
+            add(lab, gc);
+            System.out.println(r.getRoomAlias().toString() + " " + currentGridX);
+            currentGridX++;
+        }
+
 
         // Place the label if there is any cards for it
-        int currentGridX = 0;
+        currentGridX = 0;
         gc.gridy = 0;
-        gc.weightx = 1;
         gc.weighty = 1;
+        gc.anchor = GridBagConstraints.CENTER;
 
         if (amountOfSprites > 0) {
             gc.gridx = currentGridX;
             gc.gridwidth = amountOfSprites;
             add(sprites, gc);
+            System.out.println("Sprite " + gc.gridx + gc.gridwidth);
             currentGridX += amountOfSprites;
         }
         if (amountOfWeapons > 0) {
             gc.gridx = currentGridX;
             gc.gridwidth = amountOfWeapons;
             add(weapons, gc);
+            System.out.println("Weapons " + gc.gridx + gc.gridwidth);
             currentGridX += amountOfWeapons;
         }
         if (amountOfRooms > 0) {
             gc.gridx = currentGridX;
             gc.gridwidth = amountOfRooms;
             add(rooms, gc);
+            System.out.println("Rooms " + gc.gridx + gc.gridwidth);
             currentGridX += amountOfRooms;
-        }
-
-        currentGridX = 0;
-        gc.gridy = 0;
-        gc.weightx = 1;
-        gc.weighty = 1;
-        gc.gridx = 0;
-        for (Sprite s : spriteCards){
-            gc.gridx = currentGridX;
-            JLabel lab = new JLabel(Card.getCard(s.getSpriteAlias(), false));
-            add(lab, gc);
-            currentGridX++;
-        }
-        for (Weapon w : weaponCards){
-            gc.gridx = currentGridX;
-            JLabel lab = new JLabel(Card.getCard(w.getWeaponAlias(), false));
-            add(lab, gc);
-            currentGridX++;
-        }
-        for (Room r : roomCards){
-            gc.gridx = currentGridX;
-            JLabel lab = new JLabel(Card.getCard(r.getRoomAlias(), false));
-            add(lab, gc);
-            currentGridX++;
         }
 
 
