@@ -430,6 +430,14 @@ public class GUI extends JFrame implements ComponentListener {
         CONFIRM_SHOW_HIDDEN_CONTENT,
         CONFIRM_SHOW_OTHER_PLAYER_CARD,
         DISPLAY_RULES,
-        
+        GAME_MENU,
+        INFEASIBLE_MOVE,
+        MAIN_MENU,
+        NEW_PLAYER,
+        PRINT_ERROR,
+        SHOW_DETECTIVE_CARDS,
+        SHOW_HAND,
+        SHOW_USER_OTHER_PLAYER_CARD,
+
     }
 }

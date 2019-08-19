@@ -308,7 +308,7 @@ public class Canvas extends JPanel {
         instructions.setFont(font);
 
         // Add the text to the instructions
-        instructions.append(cluedoGame.getOtherPlayer().getUserName() + " has shown you " + cluedoGame.getShowOtherPlayerCard().getName());
+        instructions.append(cluedoGame.getOtherPlayer().getUserName() + " has shown you " + cluedoGame.getOtherPlayerCard().getName());
 
         // Set the preferred size such that 40pt text can fit
         // (Only thing on screen means that it can take up everything
