@@ -239,7 +239,7 @@ public class Canvas extends JPanel {
 
     }
 
-    public void confirmShowHiddenContent(User user) {
+    public void confirmShowHiddenContent(User other) {
         // Create a text instructions for the user to follow
         JTextArea instructions = new JTextArea();
 
@@ -248,7 +248,7 @@ public class Canvas extends JPanel {
         instructions.setFont(font);
 
         // Add the text to the instructions
-        instructions.append(user.getUserName() + ", you must refute the suggestion");
+        instructions.append(other.getUserName() + ", you must refute the suggestion");
 
         // Set the preferred size such that 40pt text can fit
         // (Only thing on screen means that it can take up everything
@@ -259,7 +259,7 @@ public class Canvas extends JPanel {
         revalidateComponents(1);
     }
 
-    public void chooseHiddenPlayerCard(User user) {
+    public void chooseHiddenPlayerCard(User other) {
         // Create a text instructions for the user to follow
         JTextArea instructions = new JTextArea();
 
@@ -268,7 +268,7 @@ public class Canvas extends JPanel {
         instructions.setFont(font);
 
         // Add the text to the instructions
-        instructions.append(user.getUserName() + ", pick a card to show");
+        instructions.append(other.getUserName() + ", pick a card to show");
 
         // Set the preferred size such that 40pt text can fit
         // (Only thing on screen means that it can take up everything

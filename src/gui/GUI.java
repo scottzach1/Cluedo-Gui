@@ -12,6 +12,7 @@ public class GUI extends JFrame implements ComponentListener {
     // Nothing important
     private static final long serialVersionUID = 1L;
 
+
     // --------------------------------------------------
     // FIELDS
     // --------------------------------------------------
@@ -22,6 +23,7 @@ public class GUI extends JFrame implements ComponentListener {
     public static final int CONTROLS_HEIGHT = screenSize.height / 3;
     public static final int SCREEN_HEIGHT = screenSize.height;
     public static final int SCREEN_WIDTH = screenSize.width;
+    private int playerNum;
 
     // Fields: All the contents of this container
     private Canvas canvas;
@@ -40,6 +42,7 @@ public class GUI extends JFrame implements ComponentListener {
         super("CLUEDO GAME");
         cluedoGame = aCluedoGame;
         board = cluedoGame.getBoard();
+        playerNum = 0;
 
         // Create the frame
         setPreferredSize(screenSize.getSize());
@@ -221,17 +224,17 @@ public class GUI extends JFrame implements ComponentListener {
         }
     }
 
-    public void confirmShowHiddenContent(User user) {
+    public void confirmShowHiddenContent() {
         clearComponents();
         controls.confirmShowHiddenContent();
-        canvas.confirmShowHiddenContent(user);
+        canvas.confirmShowHiddenContent(cluedoGame.getOtherPlayer());
         redraw();
     }
 
-    public void chooseHiddenPlayerCard(User user, ArrayList<Card> cards) {
+    public void chooseHiddenPlayerCard() {
         clearComponents();
-        controls.chooseHiddenPlayerCard(cards);
-        canvas.chooseHiddenPlayerCard(user);
+        controls.chooseHiddenPlayerCard(cluedoGame.getOtherPlayerHand());
+        canvas.chooseHiddenPlayerCard(cluedoGame.getOtherPlayer());
         redraw();
     }
 
@@ -418,5 +421,15 @@ public class GUI extends JFrame implements ComponentListener {
 
     @Override
     public void componentHidden(ComponentEvent e) {
+    }
+
+
+    private static enum GUIState{
+        ACCUSE,
+        CHOOSE_HIDDEN_PLAYER_CARD,
+        CONFIRM_SHOW_HIDDEN_CONTENT,
+        CONFIRM_SHOW_OTHER_PLAYER_CARD,
+        DISPLAY_RULES,
+        
     }
 }

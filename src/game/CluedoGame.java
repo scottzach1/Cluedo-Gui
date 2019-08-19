@@ -13,7 +13,7 @@ import java.util.*;
 public class CluedoGame {
 
 	public static enum State {
-		MAIN_MENU, PLAYER_COUNT, USER_CREATION, SETUP_GAME_DESIGN, NEXT_PLAYER;
+		MAIN_MENU, PLAYER_COUNT, USER_CREATION, SETUP_GAME_DESIGN, RUN_GUI;
 	}
 
 	// ------------------------
@@ -39,7 +39,7 @@ public class CluedoGame {
 	private int movesThisTurn;
 	private int movesLeft;
 	private User.UserNo currentUserNo;
-	private Card showOtherPlayerCard;
+	private Card otherPlayerCard;
 	private User otherPlayer;
 	private ArrayList<Card> otherPlayersHand;
 
@@ -87,7 +87,7 @@ public class CluedoGame {
 				generateHands();
 				nextState();
 			}
-			else if (state == State.NEXT_PLAYER){
+			else if (state == State.RUN_GUI){
 				board.visitedCells.clear();
 				board.visitedRooms.clear();
 				gui.newPlayer();
@@ -114,14 +114,14 @@ public class CluedoGame {
 			// If the player had 1 or more cards to refute the suggestion
 			if (otherPlayersHand.size() > 0){
 				otherPlayer = users.get(i);
-				gui.confirmShowHiddenContent(otherPlayer);
+				gui.confirmShowHiddenContent();
 				return;
 			}
 		}
 	}
 
 	public void chooserHiddenCard(){
-		gui.chooseHiddenPlayerCard(otherPlayer, otherPlayersHand);
+		gui.chooseHiddenPlayerCard();
 	}
 
 	public void checkAccusation(Card sprite, Card weapon, Card room){
@@ -264,7 +264,7 @@ public class CluedoGame {
 	}
 
 	public void nextState() {
-		if (state != State.NEXT_PLAYER)
+		if (state != State.RUN_GUI)
 			state = State.values()[state.ordinal() + 1];
 		else {
 			currentUserNo = User.UserNo.values()[(currentUserNo.ordinal() + 1) % playerAmount];
@@ -306,16 +306,20 @@ public class CluedoGame {
 	}
 
 	public void setShowOtherPlayerCard(Card c){
-		showOtherPlayerCard = c;
+        otherPlayerCard = c;
 	}
 
 	public User getOtherPlayer(){
 		return otherPlayer;
 	}
 
-	public Card getShowOtherPlayerCard(){
-		return showOtherPlayerCard;
+	public Card getOtherPlayerCard(){
+		return otherPlayerCard;
 	}
+
+	public ArrayList<Card> getOtherPlayerHand(){
+	    return otherPlayersHand;
+    }
 
 
 	// Setup getters, and setters
