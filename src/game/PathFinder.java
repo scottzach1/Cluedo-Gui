@@ -172,12 +172,14 @@ public class PathFinder {
         // Success Termination.
         if (current.sameRoom(end) || (current.sameCell(end) && node.depth == steps)) {
             if (current.getRoom() != null) visitedRooms.add(current.getRoom());
+            // Remember path.
             visitedCells.add(current);
             board.highlightedCells = visitedCells;
             board.highlightedRooms = visitedRooms;
             path.clear();
             currentPath.poll();
             path.addAll(currentPath);
+            // Return success to parent.
             return true;
         }
 
@@ -202,7 +204,6 @@ public class PathFinder {
         }
 
         // Note we don't add to add all neighbours as visited as there is not path from this Game.Cell.
-
         return false;
     }
 
@@ -213,11 +214,11 @@ public class PathFinder {
      * @param b Game.Cell to measure distance to.
      * @return Distance between Cells.
      */
-    public double getDistance(Cell a, Cell b) {
+    private double getDistance(Cell a, Cell b) {
         return (Math.sqrt(Math.pow(a.getRow() - b.getRow(), 2) + Math.pow(a.getCol() - b.getCol(), 2)));
     }
 
-    private class DFSNode {
+    private static class DFSNode {
         Cell current;
         Set<Cell> visited = new HashSet<>();
         DFSNode parent; // Useful for debugging.
@@ -238,7 +239,7 @@ public class PathFinder {
     /**
      * Private Class to assist with AStarSearch.
      */
-    private class AStarNode implements Comparable<AStarNode> {
+    private static class AStarNode implements Comparable<AStarNode> {
         Cell previous, current;
         double distanceTravelled, heuristic;
 

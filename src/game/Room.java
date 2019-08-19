@@ -130,7 +130,7 @@ public class Room extends Card {
 	 * @param c The char corresponding to a Game.Room on the MapFile.
 	 * @return The corresponding RoomAlias.
 	 */
-	public static RoomAlias parseAliasFromChar(char c) {
+	static RoomAlias parseAliasFromChar(char c) {
 		switch (c) {
 			case 'K': return RoomAlias.KITCHEN;
 			case 'B': return RoomAlias.BALLROOM;

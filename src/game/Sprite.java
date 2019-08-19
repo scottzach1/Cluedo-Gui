@@ -45,17 +45,41 @@ public class Sprite extends Card {
 	 */
 	public User getUser() { return user; }
 
+	/**
+	 * Checks whether Sprite matches alias.
+	 * @param alias Alias to compare.
+	 * @return True if matches.
+	 */
 	public boolean matchesType(SpriteAlias alias) {
 		return spriteAlias == alias;
 	}
 
+	/**
+	 * Get filename of corresponding Cell marker.
+	 * @return String filename of corresponding Cell marker.
+	 */
 	public String getMarker() { return parseMarker(spriteAlias); }
+
+	/**
+	 * Get filename of corresponding active Cell.
+	 * @return String filename of corresponding active Cell.
+	 */
 	public String getCell() { return  parseCell(spriteAlias); }
 
+	/**
+	 * Get filename of corresponding Cell marker.
+	 * @param spriteAlias Alias of marker.
+	 * @return String filename of spriteAlias' corresponding Cell marker.
+	 */
 	static String parseMarker(SpriteAlias spriteAlias) {
 		return "marker_" + spriteAlias.toString().toLowerCase() + ".png";
 	}
 
+	/**
+	 * Get filename of corresponding active Cell.
+	 * @param spriteAlias Alias of active Cell.
+	 * @return String filename of spriteAlias' corresponding active Cell.
+	 */
 	static String parseCell(SpriteAlias spriteAlias) {
 		return "cell_" + spriteAlias.toString().toLowerCase() + ".png";
 	}
@@ -130,14 +154,24 @@ public class Sprite extends Card {
 	}
 
 
+	/**
+	 * @return Colour of Sprite on Board.
+	 */
 	public Color getSpriteColor(){
 		return spriteColor;
 	}
 
+	/**
+	 * @return Oposing colour of Sprite on Board.
+	 */
 	public Color getOpposingColor(){
 		return opposingColor;
 	}
 
+	/**
+	 * Sets Colours of Sprite Stored in Board.
+	 * @param s Sprite alias to set.
+	 */
 	private void setColors(SpriteAlias s){
 		switch (s) {
 		case MRS_WHITE:			spriteColor = new Color(184, 184, 184);
@@ -164,8 +198,10 @@ public class Sprite extends Card {
 
 	}
 
+	/**
+	 * @return String name of Sprite on Card.
+	 */
 	public String toString() {
 		return spriteAlias.toString();
 	}
-
 }

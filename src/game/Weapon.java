@@ -63,6 +63,11 @@ public class Weapon extends Card {
 		return weaponAlias;
 	}
 
+	/**
+	 * Get filename of corresponding Weapon icon.
+	 * @param alias Alias of weapon.
+	 * @return String filename of alias' corresponding weapon icon.
+	 */
 	static String parseWeaponIcon(WeaponAlias alias) {
 		return "cell_" + alias.toString().toLowerCase() + ".png";
 	}
@@ -80,6 +85,9 @@ public class Weapon extends Card {
 		throw new IllegalStateException("Error parsing " + i + " as an ordinal for WeaponAlias.");
 	}
 
+	/**
+	 * @return String name of Weapon on Card.
+	 */
 	public String toString() {
 		return weaponAlias.toString();
 	}

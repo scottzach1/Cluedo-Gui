@@ -7,8 +7,16 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+/**
+ * Stylised JButton.
+ */
 public class ZButton extends JButton implements MouseListener {
 
+    /**
+     * Constructs a JButton that machtes the games design.
+     * @param label Text to display on label.
+     * @param fontSize Size of text on label.
+     */
     public ZButton(String label, int fontSize) {
         super(label);
         setBackground(UserInterface.BASE_COL.darker());
@@ -17,6 +25,7 @@ public class ZButton extends JButton implements MouseListener {
         setFont(new Font("Arial", Font.BOLD, fontSize));
         addMouseListener(this);
     }
+
 
     @Override
     public void mouseClicked(MouseEvent e) {

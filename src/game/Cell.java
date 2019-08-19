@@ -26,6 +26,12 @@ public class Cell extends JLabel implements MouseListener {
      */
     public enum Type {ROOM, HALL, START_PAD, VOID, CELLAR, UNKNOWN, WEAPON}
 
+    /**
+     * Get corresponding cell on Board in direction.
+     * @param cells Cell array of board.
+     * @param dir Direction of Cell to go.
+     * @return Cell in direction dir.
+     */
     Cell go(Cell[][] cells, Direction dir) {
         switch (dir) {
             case NORTH:
@@ -77,69 +83,172 @@ public class Cell extends JLabel implements MouseListener {
         this.addMouseListener(this);
     }
 
+    /**
+     * Render Cell on Swing Frame.
+     * - Shows Highlighted overlay if highlighted.
+     * - Shows Player marker overlay if sprite on Cell.
+     * - Shows Player active cell if active sprite on Cell.
+     * - Shows Weapon if Weapon cell and weapon in Room.
+     * @return Rendered Cell.
+     */
     public Cell render() {
         List<ImageIcon> layers = new ArrayList<>();
+
+        // Get base layer.
         ImageIcon base;
         if (board.highlightedCells.contains(this)) {
             base = icons.get(parseHighLightedImageIcon(type));
         } else base = icons.get(parseImageIcon(type));
 
+        // Add weapon to layers.
         if (hasWeapon()) {
             layers.add(icons.get(Weapon.parseWeaponIcon(getWeapon().getWeaponAlias())));
             setToolTipText(getWeapon().getWeaponAlias().toString());
         } else if (isType(Type.WEAPON)) setToolTipText("EMPTY_SLOT");
 
+        // Add walls to layers.
         for (Direction dir : Direction.values()) {
             if (neighbors.get(dir) == null) layers.add(icons.get(parseWallIcon(dir)));
         }
 
+        // Add visited overlay if visited.
         if (board.visitedCells.contains(this) && sprite == null)
             layers.add(icons.get("cell_visited.png"));
 
+        // Add sprite if on Cell. (maker unactive, whole cell active).
         if (sprite != null) {
             if (sprite.matchesType(board.cluedoGame.getCurrentUser().getSprite().getSpriteAlias()))
                 base = icons.get(sprite.getCell());
             else layers.add(icons.get(sprite.getMarker()));
             setToolTipText(sprite.getSpriteAlias().toString());
         }
+
+        // Calculate and set new Icon.
         setIcon(prevIcon = new CombinedImageIcon(base, layers));
         return this;
     }
 
+    /**
+     * Get filename of Wall in Direction dir.
+     * @param dir Direction wall to obtain.
+     * @return String filename.
+     */
     static String parseWallIcon(Direction dir) {
         return "wall_" + dir.toString().toLowerCase() + ".png";
     }
 
+    /**
+     * Get filename of Cell based on Type.
+     * @param type Type of Cell.
+     * @return String filename.
+     */
     static String parseImageIcon(Cell.Type type) {
         return "cell_" + type.toString().toLowerCase() + ".png";
     }
 
+    /**
+     * Get filename of highlighted Cell based on type.
+     * @param type Type of Cell.
+     * @return String filename.
+     */
     static String parseHighLightedImageIcon(Cell.Type type) {
         if (type == Type.WEAPON) return parseImageIcon(type);
         return "cell_" + type.toString().toLowerCase() + "_highlighted.png";
     }
 
+    /**
+     * Mouse was clicked on the Cell:
+     * Apply move to Board if Valid, otherwise prompt user invalid move.
+     * @param e Mouse Event.
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
+        // If Invalid Move.
         if (board.pathFinder.getPath().stream().anyMatch(board.visitedCells::contains) || board.highlightedCells.isEmpty()) {
             board.cluedoGame.getGui().infeasibleMove();
             return;
         }
 
+        // Else Valid Move.
+
+        // Update Dice number.
         board.cluedoGame.removeMovesLeft(board.pathFinder.getPath().size());
 
+        // Remember Cells.
         board.visitedCells.addAll(board.highlightedCells);
 
+        // Clear Highlighted for next Movement.
         board.highlightedCells.clear();
         board.highlightedRooms.clear();
+        board.pathFinder.getPath().clear();
 
+        // Move player.
         board.moveUser(board.cluedoGame.getCurrentUser(), this);
-        board.getStream().forEach(Cell::render);
 
+        // Rerender Updated components.
+        board.getStream().forEach(Cell::render);
         board.cluedoGame.getGui().redraw();
         board.cluedoGame.getGui().redrawDice();
 
-        board.pathFinder.getPath().clear();
+    }
+
+
+    /**
+     * Mouse Hover over Cell:
+     * Calculate Path to Cell, based on CluedoGames path finding mode.
+     * - Calculate Path
+     * - Add all Cells in path to highlighted Cells.
+     * @param e Mouse Event.
+     */
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        // Don't find path if Cell not on board.
+        if (isType(Type.VOID)) return;
+
+        // Grab values.
+        CluedoGame cluedoGame = board.cluedoGame;
+        int movesLeft = cluedoGame.getMovesLeft();
+        Cell startingCell = cluedoGame.getCurrentUser().getSprite().getPosition();
+        PathFinder pathFinder = board.pathFinder;
+
+        // Reset Highlighted collections.
+        pathFinder.getPath().clear();
+        board.highlightedCells.clear();
+        board.highlightedRooms.clear();
+
+        boolean success; // Remember success of PathFinder here.
+
+        // Use Shortest Path
+        if (CluedoGame.shortestPath)
+            success = movesLeft >= pathFinder.findShortestPath(startingCell, this);
+        // Else Use Exact Path.
+        else success = pathFinder.findExactPath(startingCell, this, movesLeft);
+
+        // Success, also Highlight cells in rooms visited by pathfinder.
+        if (success) board.highlightedRooms.forEach(room -> board.highlightedCells.addAll(room.getCells()));
+        else { // Else, clear highlighted collections.
+            board.highlightedCells.clear();
+            board.highlightedRooms.clear();
+        }
+        // Render board.
+        board.getStream().forEach(Cell::render);
+        // If no path to cell, render 'X' on Cell.
+        if (!success && startingCell != this) setIcon(new CombinedImageIcon(prevIcon, icons.get("cell_invalid.png")));
+    }
+
+    /**
+     * Mouse Left Cell:
+     * - Clear all highlighted Cells
+     * - Rerender Board.
+     * @param e
+     */
+    @Override
+    public void mouseExited(MouseEvent e) {
+        board.highlightedRooms.clear();
+        board.highlightedCells.clear();
+        board.getStream().forEach(Cell::render);
+        render();
+        repaint();
     }
 
     @Override
@@ -150,69 +259,52 @@ public class Cell extends JLabel implements MouseListener {
     public void mouseReleased(MouseEvent e) {
     }
 
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        if (isType(Type.VOID)) return;
-        CluedoGame cluedoGame = board.cluedoGame;
-        int movesLeft = cluedoGame.getMovesLeft();
-        Cell startingCell = cluedoGame.getCurrentUser().getSprite().getPosition();
-
-        board.highlightedCells.clear();
-        board.highlightedRooms.clear();
-        board.pathFinder.getPath().clear();
-
-        PathFinder pathFinder = board.pathFinder;
-
-        boolean success;
-        if (CluedoGame.shortestPath)
-            success = movesLeft >= pathFinder.findShortestPath(startingCell, this);
-        else success = pathFinder.findExactPath(startingCell, this, movesLeft);
-
-        if (success) {
-            board.highlightedRooms.forEach(room -> board.highlightedCells.addAll(room.getCells()));
-        } else {
-            System.out.println("failed");
-            board.highlightedCells.clear();
-            board.highlightedRooms.clear();
-        }
-        board.getStream().forEach(Cell::render);
-        if (!success && startingCell != this) setIcon(new CombinedImageIcon(prevIcon, icons.get("cell_invalid.png")));
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-        board.highlightedRooms.clear();
-        board.highlightedCells.clear();
-        board.getStream().forEach(Cell::render);
-        render();
-        repaint();
-    }
-
     // ------------------------
     // INTERFACE
     // ------------------------
 
+    /**
+     * If Cell's type is Room, get Rooms weapon.
+     */
     public Weapon getWeapon() {
         if (!hasRoom() || !isType(Type.WEAPON)) return null;
         return room.getWeapon();
     }
 
+    /**
+     * @return True if Cell can be visited by Sprite
+     * (True if a hall or room, and no sprite on it.
+     */
     public boolean isFree() {
-        return (!isType(Type.WEAPON) && sprite == null);
+        return ((isType(Type.ROOM) || isType(Type.HALL)) && sprite == null);
     }
 
+    /**
+     * @return True if Weapon Cell, in a room with a Weapon.
+     */
     public boolean hasWeapon() {
         return getWeapon() != null;
     }
 
+    /**
+     * @return True if Cell has a Room.
+     */
     public boolean hasRoom() {
         return room != null;
     }
 
+    /**
+     * @return True if Cell is missing a room. (And expecting, ie not hall).
+     */
     public boolean missingRoom() {
         return (isType(Type.ROOM) || isType(Type.WEAPON)) && room == null;
     }
 
+    /**
+     * Checks whether Cell matches a corresponding type.
+     * @param type Type to compare.
+     * @return True of Cell shared type with param.
+     */
     public boolean isType(Type type) {
         return type == getType();
     }
@@ -326,15 +418,6 @@ public class Cell extends JLabel implements MouseListener {
      */
     public String getStringCoordinates() {
         return "" + ((char) (col + 'A')) + (row + 1);
-    }
-
-    public String toString() {
-        if (sprite != null) return sprite.toString();
-        if (type == Type.ROOM) return "_";
-        if (type == Type.HALL) return "_";
-        if (isType(Type.VOID)) return "/";
-        else if (type == Type.START_PAD) return "$";
-        return "ERROR ON TYPE";
     }
 
     /**

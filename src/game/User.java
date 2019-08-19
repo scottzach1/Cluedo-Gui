@@ -69,7 +69,7 @@ public class User {
 	 * setUserName: Set the Users userName
 	 * @param userName string to set userName to.
 	 */
-	public void setUserName(String userName) {
+	void setUserName(String userName) {
 		this.userName = userName;
 	}
 
@@ -85,7 +85,7 @@ public class User {
 	 * addToHand: Adds a Game.Card to the Users hand.
 	 * @param card Game.Card to add to hand.
 	 */
-	public void addToHand(Card card) {
+	void addToHand(Card card) {
 		this.hand.add(card);
 	}
 
@@ -139,10 +139,6 @@ public class User {
 		return false;
 	}
 
-	public String toString() {
-		return userName + "(" + userNum + ")";
-	}
-
 	/**
 	 * resetUserNoCounter: Resets the UserNo static counter. Useful for testing and new games.
 	 */
@@ -153,4 +149,8 @@ public class User {
 	 * @return number of Users created since last reset.
 	 */
 	public static int getUserNoCounter() { return USERS; }
+
+	public String toString() {
+		return userName + "(" + userNum + ")";
+	}
 }

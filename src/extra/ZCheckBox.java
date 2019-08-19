@@ -7,7 +7,16 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+/**
+ * Stylised JCheckbox.
+ */
 public class ZCheckBox extends JCheckBox implements MouseListener {
+
+    /**
+     * Constructs a JTextBox that matches the games design.
+     * @param label Text to display on label.
+     * @param fontSize size of text on label.
+     */
     public ZCheckBox(String label, int fontSize) {
         super(label);
         setBackground(UserInterface.BASE_COL.darker());
