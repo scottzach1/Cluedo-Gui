@@ -52,7 +52,7 @@ public class GUI extends JFrame implements ComponentListener {
 
         // Set to visible and resizable
         setResizable(true);
-        setMinimumSize(new Dimension(200, 200));
+        setMinimumSize(new Dimension(SCREEN_WIDTH / 5, SCREEN_HEIGHT / 5));
         setVisible(true);
         pack();
     }

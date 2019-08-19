@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Canvas extends JPanel {
 
@@ -163,30 +164,35 @@ public class Canvas extends JPanel {
         gc.weighty = 2;
         gc.gridwidth = 1;
         gc.gridx = 0;
-        int cardHeight = (getHeight() / 2) + 10;
-        int cardWidth = (getWidth() / 6) - 10;
+        int cardHeight = getHeight() / 2;
+        int cardWidth = getWidth() / 6;
+        boolean useWidth = cardHeight > cardWidth;
+
 
         for (Sprite s : spriteCards){
             gc.gridx = currentGridX;
-            Image img = Card.getCard(s.getSpriteAlias(), false).getImage();
-            img = img.getScaledInstance(cardWidth, cardHeight, java.awt.Image.SCALE_SMOOTH);
-            JLabel lab = new JLabel(new ImageIcon(img));
+            Sprite.SpriteAlias sa = s.getSpriteAlias();
+            JLabel lab = new JLabel(useWidth ?
+                    Card.getCardSetWidth(sa, false, cardWidth) :
+                    Card.getCardSetHeight(sa, false, cardHeight));
             add(lab, gc);
             currentGridX++;
         }
         for (Weapon w : weaponCards){
             gc.gridx = currentGridX;
-            Image img = Card.getCard(w.getWeaponAlias(), false).getImage();
-            img = img.getScaledInstance(cardWidth, cardHeight, java.awt.Image.SCALE_SMOOTH);
-            JLabel lab = new JLabel(new ImageIcon(img));
+            Weapon.WeaponAlias wa = w.getWeaponAlias();
+            JLabel lab = new JLabel(useWidth ?
+                    Card.getCardSetWidth(wa, false, cardWidth) :
+                    Card.getCardSetHeight(wa, false, cardHeight));
             add(lab, gc);
             currentGridX++;
         }
         for (Room r : roomCards){
             gc.gridx = currentGridX;
-            Image img = Card.getCard(r.getRoomAlias(), false).getImage();
-            img = img.getScaledInstance(cardWidth, cardHeight, java.awt.Image.SCALE_SMOOTH);
-            JLabel lab = new JLabel(new ImageIcon(img));
+            Room.RoomAlias ra = r.getRoomAlias();
+            JLabel lab = new JLabel(useWidth ?
+                    Card.getCardSetWidth(ra, false, cardWidth) :
+                    Card.getCardSetHeight(ra, false, cardHeight));
             add(lab, gc);
             currentGridX++;
         }
@@ -224,12 +230,110 @@ public class Canvas extends JPanel {
             add(rooms, gc);
             currentGridX += amountOfRooms;
         }
-
-
-
     }
 
     public void showDetectiveCards(User user) {
+        // Clear previous settings
+        gc = new GridBagConstraints();
+        gc.fill = GridBagConstraints.HORIZONTAL;
+
+        int amountOfSprites = 0;
+        int amountOfWeapons = 0;
+        int amountOfRooms = 0;
+        HashSet<Sprite> knownSpriteCards = new HashSet<>();
+        HashSet<Weapon> knownWeaponCards = new HashSet<>();
+        HashSet<Room> knownRoomCards = new HashSet<>();
+
+        // Go through this users observed cards and separate all the cards by type
+        for (Card c : cluedoGame.getCurrentUser().getObservedCards()){
+            if (c instanceof Sprite) {
+                amountOfSprites++;
+                knownSpriteCards.add((Sprite) c);
+            }
+            else if (c instanceof Weapon) {
+                amountOfWeapons++;
+                knownWeaponCards.add((Weapon)c);
+            }
+            else if (c instanceof Room) {
+                amountOfRooms++;
+                knownRoomCards.add((Room)c);
+            }
+        }
+
+
+        // Draw all the cards
+        int currentGridX = 0;
+        gc.gridy = 1;
+        gc.weightx = 1;
+        gc.weighty = 2;
+        gc.gridwidth = 1;
+        gc.gridx = 0;
+        int cardHeight = getHeight() / 4;
+        int cardWidth = getWidth() / 6;
+        boolean useWidth = cardHeight > cardWidth;
+
+
+        for (Sprite s : cluedoGame.getBoard().getSprites().values()){
+            gc.gridx = currentGridX;
+            Sprite.SpriteAlias sa = s.getSpriteAlias();
+            JLabel lab = new JLabel(useWidth ?
+                    Card.getCardSetWidth(sa, knownSpriteCards.contains(s), cardWidth) :
+                    Card.getCardSetHeight(sa, knownSpriteCards.contains(s), cardHeight));
+            add(lab, gc);
+            currentGridX++;
+        }
+        for (Weapon w : knownWeaponCards){
+            gc.gridx = currentGridX;
+            Weapon.WeaponAlias wa = w.getWeaponAlias();
+            JLabel lab = new JLabel(useWidth ?
+                    Card.getCardSetWidth(wa, knownWeaponCards.contains(w), cardWidth) :
+                    Card.getCardSetHeight(wa, knownWeaponCards.contains(w), cardHeight));
+            add(lab, gc);
+            currentGridX++;
+        }
+        for (Room r : knownRoomCards){
+            gc.gridx = currentGridX;
+            Room.RoomAlias ra = r.getRoomAlias();
+            JLabel lab = new JLabel(useWidth ?
+                    Card.getCardSetWidth(ra, knownRoomCards.contains(r), cardWidth) :
+                    Card.getCardSetHeight(ra, knownRoomCards.contains(r), cardHeight));
+            add(lab, gc);
+            currentGridX++;
+        }
+
+        // Create a label for each of the card types
+        Font font = new Font("Arial", Font.BOLD, 20);
+        JLabel sprites = new JLabel("Sprites");
+        sprites.setFont(font);
+        JLabel weapons = new JLabel("Weapons");
+        weapons.setFont(font);
+        JLabel rooms = new JLabel("Rooms");
+        rooms.setFont(font);
+
+        // Place the label if there is any cards for it
+        currentGridX = 0;
+        gc.gridy = 0;
+        gc.weighty = 1;
+        gc.anchor = GridBagConstraints.LINE_END;
+
+        if (amountOfSprites > 0) {
+            gc.gridx = currentGridX;
+            gc.gridwidth = amountOfSprites;
+            add(sprites, gc);
+            currentGridX += amountOfSprites;
+        }
+        if (amountOfWeapons > 0) {
+            gc.gridx = currentGridX;
+            gc.gridwidth = amountOfWeapons;
+            add(weapons, gc);
+            currentGridX += amountOfWeapons;
+        }
+        if (amountOfRooms > 0) {
+            gc.gridx = currentGridX;
+            gc.gridwidth = amountOfRooms;
+            add(rooms, gc);
+            currentGridX += amountOfRooms;
+        }
 
     }
 

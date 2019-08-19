@@ -127,7 +127,6 @@ public class Controls extends JPanel {
         JButton submit = new JButton("SUBMIT");
 
         submit.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 try {
@@ -137,7 +136,6 @@ public class Controls extends JPanel {
                 } catch (Exception e) {
                 }
             }
-
         });
 
         add(submit, gc);

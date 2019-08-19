@@ -264,15 +264,16 @@ public class CluedoGame {
 	}
 
 	public void nextState() {
-		if (state != State.RUN_GUI)
-			state = State.values()[state.ordinal() + 1];
+		if (state != State.RUN_GUI) {
+            state = State.values()[state.ordinal() + 1];
+        }
 		else {
 			currentUserNo = User.UserNo.values()[(currentUserNo.ordinal() + 1) % playerAmount];
 			if (losers.contains(users.get(currentUserNo.ordinal()))){
 				gui.skipUser(losers.get(currentUserNo.ordinal()));
 			}
+            gui.setGuiState(GUI.GUIState.NEW_PLAYER);
 		}
-		gui.setGuiState(GUI.GUIState.GAME_MENU);
 		gameController();
 	}
 
