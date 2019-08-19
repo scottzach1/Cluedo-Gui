@@ -108,7 +108,11 @@ public class Board {
 					char c = line.charAt(lineIndex);
 
 					Cell.Type type = Cell.getType(c);
-					Cell cell = new Cell(row, col, (type != Cell.Type.START_PAD) ? type : Cell.Type.HALL, this);
+					Cell cell;
+					if (type == Cell.Type.START_PAD)
+						 cell = new Cell(row, col, Cell.Type.HALL, this);
+					else cell = new Cell(row, col, type, this);
+
 					cells[row][col] = cell;
 
 					if (c == 'X') continue; // This is a door, ignore for now.
@@ -151,7 +155,6 @@ public class Board {
 					Cell other = cell.go(cells, dir);
 
 					if (other == null) continue;
-
 					if (other.isType(Cell.Type.ROOM) && other.hasRoom())
 						cell.setRoom(other.getRoom());
 					else if (other.isType(Cell.Type.HALL) && doorSteps.contains(other)) {
@@ -170,7 +173,7 @@ public class Board {
 					if (linkCells(cell, other)) {
 						cell.setNeighbor(dir, other);
 					}
-				} else if (cell.getType() != Cell.Type.HALL) {
+				} else if (cell.isType(Cell.Type.VOID)) {
 					cell.setNeighbor(dir, new Cell(-1, -1, Cell.Type.UNKNOWN, this));
 				}
 			}
@@ -193,9 +196,13 @@ public class Board {
 		for (Cell.Direction dir : Cell.Direction.values()) {
 			baseImageIcons.put(Cell.parseWallIcon(dir), null);
 		}
+		for (Weapon.WeaponAlias alias : Weapon.WeaponAlias.values()) {
+			baseImageIcons.put(Weapon.parseWeaponIcon(alias), null);
+		}
 
 		baseImageIcons.put("cell_invalid.png", null);
 		baseImageIcons.put("cell_visited.png", null);
+		baseImageIcons.put("marker_unknown.png", null);
 
 		for (String fname : baseImageIcons.keySet()) {
 			baseImageIcons.put(fname, new ImageIcon(fname));
@@ -213,7 +220,8 @@ public class Board {
 	}
 
 	public boolean linkCells(Cell a, Cell b) {
-		return (a.getType() == b.getType());
+		if ((a.isType(Cell.Type.WEAPON) && b.isType(Cell.Type.ROOM)) || (b.isType(Cell.Type.WEAPON) && a.isType(Cell.Type.ROOM))) return true;
+		else return a.isType(b.getType());
 	}
 
 	// ------------------------
@@ -311,64 +319,6 @@ public class Board {
 		} catch (Exception e) { throw new InvalidParameterException(); }
 
 		return getCell(row, col);
-	}
-
-	/**
-	 * printBoardState: Prints the current state of the board to the console.
-	 */
-	public void printBoardState() {
-		System.out.println("\t\t   _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _");
-		for (int row = 0; row < rows; row++) {
-			System.out.print("\t\t");
-			for (int col = 0; col < cols; col++) {
-				// Print the row number at the start of each line
-				if (col == 0) {
-					String factoredRowNum = String.format("%02d", (row+1));
-					System.out.print(factoredRowNum + "|");
-				}
-
-				System.out.print(cells[row][col].toString());
-				System.out.print("|");
-			}
-			// New line for every row
-			System.out.print("\n");
-		}
-		System.out.println("\t\t   A B C D E F G H I J K L M N O P Q R S T U V W X\n");
-	}
-
-	/**
-	 * getMapBase: Returns a String copy of the map to load.
-	 * @return String copy of map to load.
-	 */
-	private String getMapBase() {
-		return "MAP 25 24\r\n" +
-				"   _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\r\n" +
-				"01|#|#|#|#|#|#|#|0|#|#|#|#|#|#|#|#|1|#|#|#|#|#|#|#|\r\n" +
-				"02|#|K|K|K|K|#|_|_|#|#|#|B|B|#|#|#|_|_|#|C|C|C|C|#|\r\n" +
-				"03|#|K|K|K|K|#|_|_|#|B|B|B|B|B|B|#|_|_|#|C|C|C|C|#|\r\n" +
-				"04|#|K|K|K|K|#|_|_|#|B|B|B|B|B|B|#|_|_|#|C|C|C|C|#|\r\n" +
-				"05|#|K|K|K|K|#|_|_|#|B|B|B|B|B|B|#|_|_|#|C|#|C|C|#|\r\n" +
-				"06|#|#|#|#|K|#|_|_|B|B|B|B|B|B|B|B|_|_|_|_|#|#|#|#|\r\n" +
-				"07|#|_|_|_|_|_|_|_|#|#|B|#|#|B|#|#|_|_|_|_|_|_|_|2|\r\n" +
-				"08|#|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|#|\r\n" +
-				"09|#|#|#|#|_|_|_|_|_|_|_|_|_|_|_|_|_|_|#|#|#|#|#|#|\r\n" +
-				"10|#|D|D|#|#|#|#|_|_|#|#|#|#|#|#|_|_|_|#|A|A|A|A|#|\r\n" +
-				"11|#|D|D|D|D|D|#|_|_|#|#|#|#|#|#|_|_|_|A|A|A|A|A|#|\r\n" +
-				"12|#|D|D|D|D|D|D|_|_|#|#|#|#|#|#|_|_|_|#|A|A|A|A|#|\r\n" +
-				"13|#|D|D|D|D|D|#|_|_|#|#|#|#|#|#|_|_|_|#|#|#|#|A|#|\r\n" +
-				"14|#|D|D|D|D|D|#|_|_|#|#|#|#|#|#|_|_|_|_|_|_|_|_|#|\r\n" +
-				"15|#|D|D|D|D|D|#|_|_|#|#|#|#|#|#|_|_|_|#|#|L|#|#|#|\r\n" +
-				"16|#|#|#|#|D|#|#|_|_|#|#|#|#|#|#|_|_|#|#|L|L|L|L|#|\r\n" +
-				"17|#|_|_|_|_|_|_|_|_|#|#|#|#|#|#|_|_|L|L|L|L|L|L|#|\r\n" +
-				"18|5|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|#|#|L|L|L|L|#|\r\n" +
-				"19|#|_|_|_|_|_|_|_|#|#|H|H|H|#|#|_|_|_|#|#|#|#|#|#|\r\n" +
-				"20|#|#|#|#|E|#|_|_|#|H|H|H|H|H|#|_|_|_|_|_|_|_|_|3|\r\n" +
-				"21|#|E|E|E|E|#|_|_|#|H|H|H|H|H|H|_|_|_|_|_|_|_|_|#|\r\n" +
-				"22|#|E|E|E|E|#|_|_|#|H|H|H|H|H|#|_|_|#|S|#|#|#|#|#|\r\n" +
-				"23|#|E|E|E|E|#|_|_|#|H|H|H|H|H|#|_|_|#|S|S|S|S|S|#|\r\n" +
-				"24|#|E|E|E|E|#|_|_|#|H|H|H|H|H|#|_|_|#|S|S|S|S|S|#|\r\n" +
-				"25|#|#|#|#|#|#|4|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|#|\r\n" +
-				"   A B C D E F G H I J K L M N O P Q R S T U V W X";
 	}
 
 	public Stream<Cell> getStream() {

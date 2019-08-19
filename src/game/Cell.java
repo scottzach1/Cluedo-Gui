@@ -24,7 +24,7 @@ public class Cell extends JLabel implements MouseListener {
     /**
      * An Enum defining the different kinds of Cells in the Game.
      */
-    public enum Type {ROOM, HALL, START_PAD, VOID, CELLAR, WALL, UNKNOWN}
+    public enum Type {ROOM, HALL, START_PAD, VOID, CELLAR, UNKNOWN, WEAPON}
 
     Cell go(Cell[][] cells, Direction dir) {
         switch (dir) {
@@ -78,13 +78,21 @@ public class Cell extends JLabel implements MouseListener {
     }
 
     public Cell render() {
+        List<ImageIcon> layers = new ArrayList<>();
         ImageIcon base;
         if (board.highlightedCells.contains(this))
             base = icons.get(parseHighLightedImageIcon(type));
-        else base = icons.get(parseImageIcon(type));
+        else if (isType(Type.WEAPON)) {
+            Weapon weapon = room.getWeapon();
+            if (weapon == null)
+                base = icons.get(parseImageIcon(Type.ROOM));
+            else {
+                base = icons.get(parseImageIcon(Type.WEAPON));
+                setToolTipText(weapon.getWeaponAlias().toString());
+                layers.add(icons.get(Weapon.parseWeaponIcon(room.getWeapon().getWeaponAlias())));
+            }
+        } else base = icons.get(parseImageIcon(type));
 
-
-        List<ImageIcon> layers = new ArrayList<>();
         for (Direction dir : Direction.values()) {
             if (neighbors.get(dir) == null) layers.add(icons.get(parseWallIcon(dir)));
         }
@@ -96,6 +104,7 @@ public class Cell extends JLabel implements MouseListener {
             if (sprite.matchesType(board.cluedoGame.getCurrentUser().getSprite().getSpriteAlias()))
                 base = icons.get(sprite.getCell());
             else layers.add(icons.get(sprite.getMarker()));
+            setToolTipText(sprite.getSpriteAlias().toString());
         }
         setIcon(prevIcon = new CombinedImageIcon(base, layers));
         return this;
@@ -110,6 +119,7 @@ public class Cell extends JLabel implements MouseListener {
     }
 
     static String parseHighLightedImageIcon(Cell.Type type) {
+        if (type == Type.WEAPON) return parseImageIcon(type);
         return "cell_" + type.toString().toLowerCase() + "_highlighted.png";
     }
 
@@ -204,7 +214,7 @@ public class Cell extends JLabel implements MouseListener {
     }
 
     public boolean missingRoom() {
-        return type == Type.ROOM && room == null;
+        return (isType(Type.ROOM) || isType(Type.WEAPON)) && room == null;
     }
 
     public boolean isType(Type type) {
@@ -303,6 +313,7 @@ public class Cell extends JLabel implements MouseListener {
      */
     static Type getType(char c) {
         if (c == 'M') return Type.CELLAR;
+        if (c == 'W') return Type.WEAPON;
         if (c == ' ') return Type.VOID;
         if (c == 'X') return Type.ROOM;
         if (c == 'Y') return Type.HALL;
