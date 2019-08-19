@@ -80,18 +80,14 @@ public class Cell extends JLabel implements MouseListener {
     public Cell render() {
         List<ImageIcon> layers = new ArrayList<>();
         ImageIcon base;
-        if (board.highlightedCells.contains(this))
+        if (board.highlightedCells.contains(this)) {
             base = icons.get(parseHighLightedImageIcon(type));
-        else if (isType(Type.WEAPON)) {
-            Weapon weapon = room.getWeapon();
-            if (weapon == null)
-                base = icons.get(parseImageIcon(Type.ROOM));
-            else {
-                base = icons.get(parseImageIcon(Type.WEAPON));
-                setToolTipText(weapon.getWeaponAlias().toString());
-                layers.add(icons.get(Weapon.parseWeaponIcon(room.getWeapon().getWeaponAlias())));
-            }
         } else base = icons.get(parseImageIcon(type));
+
+        if (hasWeapon()) {
+            layers.add(icons.get(Weapon.parseWeaponIcon(getWeapon().getWeaponAlias())));
+            setToolTipText(getWeapon().getWeaponAlias().toString());
+        } else if (isType(Type.WEAPON)) setToolTipText("EMPTY SLOT");
 
         for (Direction dir : Direction.values()) {
             if (neighbors.get(dir) == null) layers.add(icons.get(parseWallIcon(dir)));
@@ -111,7 +107,7 @@ public class Cell extends JLabel implements MouseListener {
     }
 
     static String parseWallIcon(Direction dir) {
-        return  "wall_" + dir.toString().toLowerCase() + ".png";
+        return "wall_" + dir.toString().toLowerCase() + ".png";
     }
 
     static String parseImageIcon(Cell.Type type) {
@@ -209,12 +205,16 @@ public class Cell extends JLabel implements MouseListener {
     // ------------------------
 
     public Weapon getWeapon() {
-        if (!hasRoom()) return null;
+        if (!hasRoom() || !isType(Type.WEAPON)) return null;
         return room.getWeapon();
     }
 
     public boolean isFree() {
-        return (getWeapon() == null && sprite == null);
+        return (!isType(Type.WEAPON) && sprite == null);
+    }
+
+    public boolean hasWeapon() {
+        return getWeapon() != null;
     }
 
     public boolean hasRoom() {
