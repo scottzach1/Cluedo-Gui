@@ -7,6 +7,8 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -68,7 +70,32 @@ public class UserInterface extends JPanel {
 
         for (JButton jb : userInterfaceButtons){
             jb.setBackground(null);
-            jb.setForeground();
+            jb.setForeground(Color.WHITE);
+            jb.setBorder(null);
+            jb.setFont(new Font("Arial", Font.BOLD, 20));
+            jb.addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    jb.setBackground(baseCol.brighter());
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    jb.setBackground(null);
+                }
+            });
         }
 
 //
