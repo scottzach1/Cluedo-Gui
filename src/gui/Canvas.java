@@ -172,7 +172,6 @@ public class Canvas extends JPanel {
             img = img.getScaledInstance(cardWidth, cardHeight, java.awt.Image.SCALE_SMOOTH);
             JLabel lab = new JLabel(new ImageIcon(img));
             add(lab, gc);
-            System.out.println(s.getSpriteAlias().toString() + " " + currentGridX);
             currentGridX++;
         }
         for (Weapon w : weaponCards){
@@ -181,7 +180,6 @@ public class Canvas extends JPanel {
             img = img.getScaledInstance(cardWidth, cardHeight, java.awt.Image.SCALE_SMOOTH);
             JLabel lab = new JLabel(new ImageIcon(img));
             add(lab, gc);
-            System.out.println(w.getWeaponAlias().toString() + " " + currentGridX);
             currentGridX++;
         }
         for (Room r : roomCards){
@@ -190,7 +188,6 @@ public class Canvas extends JPanel {
             img = img.getScaledInstance(cardWidth, cardHeight, java.awt.Image.SCALE_SMOOTH);
             JLabel lab = new JLabel(new ImageIcon(img));
             add(lab, gc);
-            System.out.println(r.getRoomAlias().toString() + " " + currentGridX);
             currentGridX++;
         }
 
@@ -213,21 +210,18 @@ public class Canvas extends JPanel {
             gc.gridx = currentGridX;
             gc.gridwidth = amountOfSprites;
             add(sprites, gc);
-            System.out.println("Sprite " + gc.gridx + gc.gridwidth);
             currentGridX += amountOfSprites;
         }
         if (amountOfWeapons > 0) {
             gc.gridx = currentGridX;
             gc.gridwidth = amountOfWeapons;
             add(weapons, gc);
-            System.out.println("Weapons " + gc.gridx + gc.gridwidth);
             currentGridX += amountOfWeapons;
         }
         if (amountOfRooms > 0) {
             gc.gridx = currentGridX;
             gc.gridwidth = amountOfRooms;
             add(rooms, gc);
-            System.out.println("Rooms " + gc.gridx + gc.gridwidth);
             currentGridX += amountOfRooms;
         }
 

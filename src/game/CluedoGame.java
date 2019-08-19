@@ -90,7 +90,7 @@ public class CluedoGame {
 			else if (state == State.RUN_GUI){
 				board.visitedCells.clear();
 				board.visitedRooms.clear();
-				gui.newPlayer();
+				gui.runGUI();
 			}
 	}
 
@@ -272,6 +272,7 @@ public class CluedoGame {
 				gui.skipUser(losers.get(currentUserNo.ordinal()));
 			}
 		}
+		gui.setGuiState(GUI.GUIState.GAME_MENU);
 		gameController();
 	}
 

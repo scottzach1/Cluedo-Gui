@@ -23,12 +23,13 @@ public class GUI extends JFrame implements ComponentListener {
     public static final int CONTROLS_HEIGHT = screenSize.height / 3;
     public static final int SCREEN_HEIGHT = screenSize.height;
     public static final int SCREEN_WIDTH = screenSize.width;
-    private int playerNum;
 
     // Fields: All the contents of this container
     private Canvas canvas;
     private Controls controls;
     private JMenuBar menuBar;
+    private GUIState guiState;
+    private String errorMsg;
 
     // Set up stuff
     private final CluedoGame cluedoGame;
@@ -42,7 +43,6 @@ public class GUI extends JFrame implements ComponentListener {
         super("CLUEDO GAME");
         cluedoGame = aCluedoGame;
         board = cluedoGame.getBoard();
-        playerNum = 0;
 
         // Create the frame
         setPreferredSize(screenSize.getSize());
@@ -117,13 +117,62 @@ public class GUI extends JFrame implements ComponentListener {
     }
 
     public void gameSetup() {
+        guiState = GUIState.NEW_PLAYER;
         clearComponents();
         if (controls != null)
             controls.addContainers();
         redraw();
     }
 
+    public void runGUI(){
+        switch (guiState){
+            case ACCUSE:
+                accuseOrSuggest(false);
+                break;
+            case CHOOSE_HIDDEN_PLAYER_CARD:
+                chooseHiddenPlayerCard();
+                break;
+            case CONFIRM_SHOW_HIDDEN_CONTENT:
+                confirmShowHiddenContent();
+                break;
+            case CONFIRM_SHOW_OTHER_PLAYER_CARD:
+                confirmShowOtherPlayerCard();
+                break;
+            case DISPLAY_RULES:
+                displayRules();
+                break;
+            case GAME_MENU:
+                gameMenu();
+                break;
+            case INFEASIBLE_MOVE:
+                infeasibleMove();
+                break;
+            case MAIN_MENU:
+                mainMenu();
+                break;
+            case NEW_PLAYER:
+                newPlayer();
+                break;
+            case PRINT_ERROR:
+                printError();
+                break;
+            case SHOW_DETECTIVE_CARDS:
+                showDetectiveCards();
+                break;
+            case SHOW_HAND:
+                showHand();
+                break;
+            case SHOW_USER_OTHER_PLAYER_CARD:
+                showUserOtherPlayerCard();
+                break;
+            case SUGGEST:
+                accuseOrSuggest(true);
+                break;
+        }
+    }
+
     public void newPlayer() {
+        guiState = GUIState.NEW_PLAYER;
         // Clear everything in the canvas and controls
         clearComponents();
         // Redraw everything
@@ -135,6 +184,7 @@ public class GUI extends JFrame implements ComponentListener {
     }
 
     public void gameMenu() {
+        guiState = GUIState.GAME_MENU;
         // Clear everything in the canvas and controls
         clearComponents();
         // Redraw everything
@@ -146,6 +196,7 @@ public class GUI extends JFrame implements ComponentListener {
     }
 
     public void showHand() {
+        guiState = GUIState.SHOW_HAND;
         clearComponents();
         if (canvas != null)
             canvas.showHand(cluedoGame.getCurrentUser());
@@ -155,6 +206,7 @@ public class GUI extends JFrame implements ComponentListener {
     }
 
     public void showDetectiveCards() {
+        guiState = GUIState.SHOW_DETECTIVE_CARDS;
         clearComponents();
         if (canvas != null)
             canvas.showDetectiveCards(cluedoGame.getCurrentUser());
@@ -164,6 +216,12 @@ public class GUI extends JFrame implements ComponentListener {
     }
 
     public void accuseOrSuggest(boolean suggestion) {
+        if (suggestion)
+            guiState = GUIState.SUGGEST;
+        else
+            guiState = GUIState.ACCUSE;
+
+
         clearComponents();
         if (canvas != null)
             canvas.renderBoard();
@@ -172,7 +230,8 @@ public class GUI extends JFrame implements ComponentListener {
         redraw();
     }
 
-    public void printError(String errorMsg) {
+    public void printError() {
+        guiState = GUIState.PRINT_ERROR;
         clearComponents();
         if (controls != null)
             controls.printError(errorMsg);
@@ -225,6 +284,7 @@ public class GUI extends JFrame implements ComponentListener {
     }
 
     public void confirmShowHiddenContent() {
+        guiState = GUIState.CONFIRM_SHOW_HIDDEN_CONTENT;
         clearComponents();
         controls.confirmShowHiddenContent();
         canvas.confirmShowHiddenContent(cluedoGame.getOtherPlayer());
@@ -232,6 +292,7 @@ public class GUI extends JFrame implements ComponentListener {
     }
 
     public void chooseHiddenPlayerCard() {
+        guiState = GUIState.CHOOSE_HIDDEN_PLAYER_CARD;
         clearComponents();
         controls.chooseHiddenPlayerCard(cluedoGame.getOtherPlayerHand());
         canvas.chooseHiddenPlayerCard(cluedoGame.getOtherPlayer());
@@ -239,6 +300,7 @@ public class GUI extends JFrame implements ComponentListener {
     }
 
     public void confirmShowOtherPlayerCard() {
+        guiState = GUIState.CONFIRM_SHOW_OTHER_PLAYER_CARD;
         clearComponents();
         controls.confirmShowOtherPlayerCard();
         canvas.confirmShowOtherPlayerCard();
@@ -246,6 +308,7 @@ public class GUI extends JFrame implements ComponentListener {
     }
 
     public void showUserOtherPlayerCard() {
+        guiState = GUIState.SHOW_USER_OTHER_PLAYER_CARD;
         clearComponents();
         controls.showUserOtherPlayerCard();
         canvas.showUserOtherPlayerCard();
@@ -253,6 +316,7 @@ public class GUI extends JFrame implements ComponentListener {
     }
 
     public void infeasibleMove() {
+        guiState = GUIState.INFEASIBLE_MOVE;
         clearComponents();
         controls.printError("You can not move there\nYou have " + cluedoGame.getMovesLeft() + " moves left");
         canvas.renderBoard();
@@ -362,6 +426,7 @@ public class GUI extends JFrame implements ComponentListener {
     }
 
     public void displayRules() {
+        guiState = GUIState.DISPLAY_RULES;
         clearComponents();
         canvas.displayRules();
         controls.backOption();
@@ -371,20 +436,9 @@ public class GUI extends JFrame implements ComponentListener {
     // --------------------------------------------------
     // HELPFUL METHODS
     // --------------------------------------------------
-    public Canvas getCanvas() {
-        return canvas;
-    }
 
-    public void setCanvas(Canvas canvas) {
-        this.canvas = canvas;
-    }
-
-    public Controls getControls() {
-        return controls;
-    }
-
-    public void setControls(Controls controls) {
-        this.controls = controls;
+    public void setErrorMsg(String str){
+        errorMsg = str;
     }
 
     public void redraw() {
@@ -424,7 +478,11 @@ public class GUI extends JFrame implements ComponentListener {
     }
 
 
-    private static enum GUIState{
+    public void setGuiState(GUIState g){
+        guiState = g;
+    }
+
+    public static enum GUIState{
         ACCUSE,
         CHOOSE_HIDDEN_PLAYER_CARD,
         CONFIRM_SHOW_HIDDEN_CONTENT,
@@ -438,6 +496,6 @@ public class GUI extends JFrame implements ComponentListener {
         SHOW_DETECTIVE_CARDS,
         SHOW_HAND,
         SHOW_USER_OTHER_PLAYER_CARD,
-
+        SUGGEST;
     }
 }

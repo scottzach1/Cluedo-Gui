@@ -171,7 +171,8 @@ public class UserInterface extends JPanel {
 
 		// If the player is not in a room, making a suggestion
         if (cluedoGame.getCurrentUser().getSprite().getPosition().getType() != Cell.Type.ROOM && suggestion) {
-            cluedoGame.getGui().printError("You are not currently in a room");
+            cluedoGame.getGui().setErrorMsg("You are not currently in a room");
+            cluedoGame.getGui().printError();
             return;
         }
 
@@ -327,7 +328,7 @@ public class UserInterface extends JPanel {
 		confirm.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				cluedoGame.getCurrentUser().addToObservedCards(cluedoGame.getShowOtherPlayerCard());
+				cluedoGame.getCurrentUser().addToObservedCards(cluedoGame.getOtherPlayerCard());
 				cluedoGame.nextState();
 			}
 		});
