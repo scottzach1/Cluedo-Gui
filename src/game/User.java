@@ -42,7 +42,7 @@ public class User {
 		userNum = UserNo.values()[User.USERS];
 		hand = new ArrayList<>();
 		observedCards = new HashSet<>();
-		User.USERS++; // FIXME: HARRISON DO WE WANT TO INCREMENT FIRST?
+		User.USERS++;
 	}
 
 	// ------------------------

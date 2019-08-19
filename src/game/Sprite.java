@@ -88,8 +88,6 @@ public class Sprite extends Card {
 	 * @param position Game.Cell of new position.
 	 */
 	public void setPosition(Cell position) {
-		position.setSprite(null);
-
 		this.positionCell = position;
 		if (positionCell.getSprite() == this) return;
 		position.setSprite(this);

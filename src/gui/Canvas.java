@@ -453,6 +453,26 @@ public class Canvas extends JPanel {
         revalidateComponents(1);
     }
 
+    public void noSuggestions() {
+        // Create a text instructions for the user to follow
+        JTextArea instructions = new JTextArea();
+
+        // Create the font for the text
+        Font font = new Font("Arial", Font.BOLD, 40);
+        instructions.setFont(font);
+
+        // Add the text to the instructions
+        instructions.append("Unfortunately, no other player has a card to refute this..... ;)");
+
+        // Set the preferred size such that 40pt text can fit
+        // (Only thing on screen means that it can take up everything
+        instructions.setBackground(null);
+        instructions.setEditable(false);
+
+        components.add(instructions);
+        revalidateComponents(1);
+    }
+
     private void drawBorder() {
         Border b = BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, accentCol), borderTitle,
                 TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, new Font("Serif", Font.BOLD, 18), accentCol);

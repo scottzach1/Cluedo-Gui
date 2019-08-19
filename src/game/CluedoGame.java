@@ -53,6 +53,7 @@ public class CluedoGame {
     public CluedoGame() {
         // Starting state
         state = State.MAIN_MENU;
+        User.resetUserNoCounter();
         // Construct components
         board = new Board(this);
         gui = new GUI(this);
@@ -93,42 +94,41 @@ public class CluedoGame {
         }
     }
 
-    public void checkSuggestion(Card sprite, Card weapon, Card room) {
+    public void checkSuggestion(Sprite sprite, Weapon weapon, Room room) {
         // Create an empty list of cards
         otherPlayersHand = new ArrayList<>();
 
-        Sprite s = (Sprite) sprite;
-        Weapon w = (Weapon) weapon;
-        Room r = (Room) room;
-
         // If the user is not in a room (an overlooked error somehow)
-        if (r == null) {
+        if (room == null) {
             gui.setErrorMsg("You are not in a room!");
             gui.setGuiState(GUI.GUIState.PRINT_ERROR);
             gameController();
         }
 
         //Get a list of all the cells
-        ArrayList<Cell> shuffledCells = new ArrayList<>(r.getCells());
+        ArrayList<Cell> shuffledCells = new ArrayList<>(room.getCells());
 
         // Shuffle till not on a person
         while(!shuffledCells.get(0).isFree())
         	Collections.shuffle(shuffledCells);
-        s.setPosition(shuffledCells.get(0));
+        Cell holdingCell = sprite.getPosition();
+        sprite.setPosition(shuffledCells.get(0));
+        holdingCell.setSprite(null);
 
         // Teleport the suggested Weapon to this room too
         Weapon holdingWeapon = null;
         Room holdingRoom = null;
 
         // If room A has a weapon
-        if (r.getWeapon() != null) {
+        if (room.getWeapon() != null) {
             // Temp hold the rooms weapon
-            holdingWeapon = r.getWeapon();
+            holdingWeapon = room.getWeapon();
             // Temp hold Room B (room containing weapon)
-            holdingRoom = w.getRoom();
+            holdingRoom = weapon.getRoom();
+
         }
         // Room A set weapon from Room B
-        r.setWeapon(w);
+        room.setWeapon(weapon);
         if (holdingWeapon != null) {
             // Room B set Weapon from Room A
             holdingRoom.setWeapon(holdingWeapon);
@@ -136,12 +136,12 @@ public class CluedoGame {
 
         // For every player, go through all their cards and see if they hold any the are being searched for
         for (int i = ((currentUserNo.ordinal() + 1) % playerAmount); i != currentUserNo.ordinal(); i = (i + 1) % playerAmount) {
-            if (users.get(i).getHand().contains(s))
-                otherPlayersHand.add(s);
-            if (users.get(i).getHand().contains(w))
-                otherPlayersHand.add(w);
-            if (users.get(i).getHand().contains(r))
-                otherPlayersHand.add(r);
+            if (users.get(i).getHand().contains(sprite))
+                otherPlayersHand.add(sprite);
+            if (users.get(i).getHand().contains(weapon))
+                otherPlayersHand.add(weapon);
+            if (users.get(i).getHand().contains(room))
+                otherPlayersHand.add(room);
 
             // If the player had 1 or more cards to refute the suggestion
             if (otherPlayersHand.size() > 0) {
@@ -150,13 +150,18 @@ public class CluedoGame {
                 return;
             }
         }
+
+        if (otherPlayersHand.size() == 0){
+            gui.noSuggestions();
+            return;
+        }
     }
 
     public void chooserHiddenCard() {
         gui.chooseHiddenPlayerCard();
     }
 
-    public void checkAccusation(Card sprite, Card weapon, Card room) {
+    public void checkAccusation(Sprite sprite, Weapon weapon, Room room) {
         User user = getCurrentUser();
         if (solution[0] == sprite && weapon == solution[1] && room == solution[2]) {
             gui.displayWinner(user);

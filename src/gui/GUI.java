@@ -153,6 +153,9 @@ public class GUI extends JFrame implements ComponentListener {
             case NEW_PLAYER:
                 newPlayer();
                 break;
+            case NO_SUGGESTIONS:
+                noSuggestions();
+                break;
             case PRINT_ERROR:
                 printError();
                 break;
@@ -315,6 +318,15 @@ public class GUI extends JFrame implements ComponentListener {
         redraw();
     }
 
+    public void noSuggestions(){
+        guiState = GUIState.NO_SUGGESTIONS;
+        clearComponents();
+        controls.noSuggestions();
+        canvas.noSuggestions();
+        redraw();
+
+    }
+
     public void infeasibleMove() {
         guiState = GUIState.INFEASIBLE_MOVE;
         clearComponents();
@@ -444,7 +456,6 @@ public class GUI extends JFrame implements ComponentListener {
     public void redraw() {
         revalidate();
         repaint();
-        pack();
     }
 
     public void resize() {
@@ -494,6 +505,7 @@ public class GUI extends JFrame implements ComponentListener {
         INFEASIBLE_MOVE,
         MAIN_MENU,
         NEW_PLAYER,
+        NO_SUGGESTIONS,
         PRINT_ERROR,
         SHOW_DETECTIVE_CARDS,
         SHOW_HAND,

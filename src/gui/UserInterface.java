@@ -58,6 +58,46 @@ public class UserInterface extends JPanel {
         JButton accuse = new JButton("Accuse (Solve)");
         JButton skipTurn = new JButton("Skip Turn");
 
+        ArrayList<JButton> userInterfaceButtons = new ArrayList<>();
+        userInterfaceButtons.add(showHand);
+        userInterfaceButtons.add(detectivesNotes);
+        userInterfaceButtons.add(suggest);
+        userInterfaceButtons.add(pathFinderSettings);
+        userInterfaceButtons.add(accuse);
+        userInterfaceButtons.add(skipTurn);
+
+        for (JButton jb : userInterfaceButtons){
+            jb.setBackground(null);
+            jb.setForeground();
+        }
+
+//
+//
+//        // Set the button colors
+//        showHand.setBackground(null);
+//        detectivesNotes.setBackground(null);
+//        suggest.setBackground(null);
+//        pathFinderSettings.setBackground(null);
+//        accuse.setBackground(null);
+//        skipTurn.setBackground(null);
+//
+//        // Set the font color
+//        showHand.setForeground(Color.WHITE);
+//        detectivesNotes.setForeground(Color.WHITE);
+//        suggest.setForeground(Color.WHITE);
+//        pathFinderSettings.setForeground(Color.WHITE);
+//        accuse.setForeground(Color.WHITE);
+//        skipTurn.setForeground(Color.WHITE);
+//
+//        // Set the font
+//        Font font = new Font("Arial", Font.BOLD, 20);
+//        showHand.setFont(font);
+//        detectivesNotes.setFont(font);
+//        suggest.setFont(font);
+//        pathFinderSettings.setFont(font);
+//        accuse.setFont(font);
+//        skipTurn.setFont(font);
+
         // add Show Hand action listener
         showHand.addActionListener(new ActionListener() {
             @Override
@@ -337,6 +377,24 @@ public class UserInterface extends JPanel {
 		gc.gridy = 0;
 		add(confirm, gc);
 	}
+
+	protected void noSuggestions(){
+        // Clear all previous settings
+        gc = new GridBagConstraints();
+
+        JButton confirm = new JButton("Hmmm...");
+        confirm.setPreferredSize(new Dimension(getWidth()/6, getHeight()/6));
+        confirm.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cluedoGame.nextState();
+            }
+        });
+
+        gc.gridx = 0;
+        gc.gridy = 0;
+        add(confirm, gc);
+    }
 
 
     private void drawBorder() {

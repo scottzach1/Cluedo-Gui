@@ -322,6 +322,11 @@ public class Controls extends JPanel {
         drawBorder();
     }
 
+    protected  void noSuggestions(){
+        userInterface.noSuggestions();
+        drawBorder();
+    }
+
     protected void printError(String errorMsg) {
         console.printError(errorMsg);
         userInterface.backOption();
