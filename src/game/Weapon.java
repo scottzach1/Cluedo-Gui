@@ -63,6 +63,10 @@ public class Weapon extends Card {
 		return weaponAlias;
 	}
 
+	static String parseWeaponIcon(WeaponAlias alias) {
+		return "cell_" + alias.toString().toLowerCase() + ".png";
+	}
+
 	/**
 	 * parseAliasFromOrdinalInt: Given an int, find the matching
 	 * WeaponAlias according to its ordinal position in the Enum.
