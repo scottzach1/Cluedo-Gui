@@ -73,7 +73,7 @@ public class Cell extends JLabel implements MouseListener {
         this.type = type;
         this.board = board;
         neighbors = new HashMap<>();
-        icons = Board.scaledImageIcons;
+        icons = board.getScaledImageIcons();
         this.addMouseListener(this);
     }
 
@@ -102,21 +102,57 @@ public class Cell extends JLabel implements MouseListener {
     }
 
     static String parseWallIcon(Direction dir) {
-        return  "wall_" + dir.toString().toLowerCase() + ".png";
+        switch (dir) {
+            case WEST:
+                return "wall_left.png";
+            case EAST:
+                return "wall_right.png";
+            case NORTH:
+                return "wall_top.png";
+            case SOUTH:
+                return "wall_bot.png";
+            default:
+                return "cell_void.png";
+        }
     }
 
     static String parseImageIcon(Cell.Type type) {
-        return "cell_" + type.toString().toLowerCase() + ".png";
+        switch (type) {
+            case CELLAR:
+                return "cell_green.png";
+            case HALL:
+                return "cell_grey.png";
+            case START_PAD:
+                return "cell_grey.png";
+            case ROOM:
+                return "cell_red.png";
+            case VOID:
+                return "cell_void.png";
+            default:
+                return "cell_unknown.png";
+        }
     }
 
     static String parseHighLightedImageIcon(Cell.Type type) {
-        return "cell_" + type.toString().toLowerCase() + "_highlighted.png";
+        switch (type) {
+            case HALL:
+                return "cell_grey_highlighted.png";
+            case START_PAD:
+                return "cell_grey_highlighted.png";
+            case ROOM:
+                return "cell_red_highlighted.png";
+            default:
+                return parseImageIcon(type);
+        }
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (board.pathFinder.getPath().stream().anyMatch(board.visitedCells::contains) || board.highlightedCells.isEmpty()) {
-//            System.out.println("INFEASIBLE!");
+        if (board.pathFinder.getPath().stream().anyMatch(board.visitedCells::contains)) {
+            board.cluedoGame.getGui().infeasibleMove();
+            board.cluedoGame.getGui().redrawDice();
+            return;
+        } else if (board.highlightedCells.isEmpty()) {
             board.cluedoGame.getGui().infeasibleMove();
             board.cluedoGame.getGui().redrawDice();
             return;
@@ -125,7 +161,6 @@ public class Cell extends JLabel implements MouseListener {
         board.cluedoGame.removeMovesLeft(board.pathFinder.getPath().size());
 
         board.pathFinder.getPath().forEach(cell -> {
-//            System.out.println(cell.getStringCoordinates());
 //				try {
 //					Thread.sleep(300);
 //				} catch (InterruptedException ex) {
@@ -176,14 +211,15 @@ public class Cell extends JLabel implements MouseListener {
             success = movesLeft >= pathFinder.findShortestPath(startingCell, this);
         else success = pathFinder.findExactPath(startingCell, this, movesLeft);
 
-        if (success) {
+        if (!success) {
             board.highlightedRooms.forEach(room -> board.highlightedCells.addAll(room.getCells()));
-        } else {
             board.highlightedCells.clear();
             board.highlightedRooms.clear();
+        } else {
+            board.highlightedRooms.forEach(room -> board.highlightedCells.addAll(room.getCells()));
         }
         board.getStream().forEach(Cell::render);
-        if (!success && startingCell != this) setIcon(new CombinedImageIcon(prevIcon, icons.get("cell_invalid.png")));
+        if (!success) setIcon(new CombinedImageIcon(prevIcon, icons.get("cell_invalid.png")));
     }
 
     @Override

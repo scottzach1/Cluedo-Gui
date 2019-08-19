@@ -18,8 +18,8 @@ public class Board {
 	private Map<Room.RoomAlias, Room> rooms;
 	private Map<Sprite.SpriteAlias, Sprite> sprites;
 	private Map<Weapon.WeaponAlias, Weapon> weapons;
-	public static Map<String, ImageIcon> baseImageIcons = new HashMap<>();
-	public static Map<String, ImageIcon> scaledImageIcons = new HashMap<>();
+	private Map<String, ImageIcon> baseImageIcons;
+	private Map<String, ImageIcon> scaledImageIcons;
 	public CluedoGame cluedoGame;
 	public PathFinder pathFinder;
 	private int prevCellSize;
@@ -179,8 +179,8 @@ public class Board {
 
 
 	private void setupImageIcons() {
-		baseImageIcons.clear();
-		scaledImageIcons.clear();
+		baseImageIcons = new HashMap<>();
+		scaledImageIcons = new HashMap<>();
 		// Setup ImageIcons
 		for (Sprite.SpriteAlias alias : Sprite.SpriteAlias.values()) {
 			baseImageIcons.put(Sprite.parseCell(alias), null);
@@ -193,10 +193,8 @@ public class Board {
 		for (Cell.Direction dir : Cell.Direction.values()) {
 			baseImageIcons.put(Cell.parseWallIcon(dir), null);
 		}
-
 		baseImageIcons.put("cell_invalid.png", null);
 		baseImageIcons.put("cell_visited.png", null);
-
 		for (String fname : baseImageIcons.keySet()) {
 			baseImageIcons.put(fname, new ImageIcon(fname));
 			scaledImageIcons.put(fname, new ImageIcon(fname));
