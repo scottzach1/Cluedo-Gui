@@ -54,7 +54,7 @@ public class UserInterface extends JPanel {
         JButton showHand = new JButton("Show Hand");
         JButton detectivesNotes = new JButton("Detectives Note");
         JButton suggest = new JButton("Suggest");
-        JButton pathFinderSettings = new JButton("Shortest Path");
+        JButton pathFinderSettings = new JButton(cluedoGame.shortestPath ? "Shortest Path" : "  Exact Path ");
         JButton accuse = new JButton("Accuse (Solve)");
         JButton skipTurn = new JButton("Skip Turn");
 

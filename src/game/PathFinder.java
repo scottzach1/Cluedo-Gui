@@ -52,7 +52,7 @@ public class PathFinder {
     public int findShortestPath(Cell start, Cell end) {
         // NOTE: Commenting will be nearly identical to my 261 asg.  - (Zac Scott 300447976)
 
-        if (end.getSprite() != null) return Integer.MAX_VALUE;
+        if (end.getSprite() != null || start.sameRoom(end)) return Integer.MAX_VALUE;
 
         PriorityQueue<AStarNode> priorityQueue = new PriorityQueue<>();
         HashMap<Cell, AStarNode> previousNodes = new HashMap<>();
@@ -76,8 +76,8 @@ public class PathFinder {
 
                 AStarNode newStarNode = new AStarNode(cell, neigh, distanceTravelled, heuristic);
 
-                if (visitedRooms.contains(neigh.getRoom())) continue; // Game.Room forbidden.
-                if (visitedCells.contains(neigh)) continue; // Game.Cell forbidden.
+                if (board.visitedRooms.contains(neigh.getRoom()) || visitedRooms.contains(neigh.getRoom())) continue; // Game.Room forbidden.
+                if (board.visitedCells.contains(neigh) || visitedCells.contains(neigh)) continue; // Game.Cell forbidden.
                 if (neigh.getSprite() != null) continue; // Character on cell.
 
                 if (previousNodes.containsKey(neigh)) { // Node is already visited.
@@ -105,8 +105,8 @@ public class PathFinder {
         }
 
         // Visit all rooms in the path.
-        visitedRooms.addAll(path.stream().map(Cell::getRoom).filter(Objects::nonNull).collect(Collectors.toSet()));
-        visitedCells.addAll(path);
+        board.highlightedRooms.addAll(path.stream().map(Cell::getRoom).filter(Objects::nonNull).collect(Collectors.toSet()));
+        board.highlightedCells.addAll(path);
         path.pop();
         Collections.reverse(this.path);
 
@@ -148,6 +148,7 @@ public class PathFinder {
      */
     public boolean findExactPath(Cell start, Cell end, int steps) {
         if (board == null) throw new RuntimeException("Game.PathFinder does not have a Game.Board!");
+        if (end.getSprite() != null || start.sameRoom(end)) return false;
         return findExactPathHelper(new DFSNode(start, null), end, visitedRooms, visitedCells, new ArrayDeque<>(), steps);
     }
 
@@ -193,6 +194,7 @@ public class PathFinder {
 
         for (Cell neigh : neighbours) {
             if (node.visited.contains(neigh) || visitedRooms.contains(neigh.getRoom()) || visitedCells.contains(neigh)) continue;
+            if (board.visitedCells.contains(neigh) || board.visitedRooms.contains(neigh.getRoom())) continue;
             if (neigh.getSprite() != null) continue; // Game.Sprite on Game.Cell.
 
             // Return success of child to parent.
