@@ -354,7 +354,6 @@ public class CluedoGame {
 	public static void main(String[] args) {
 		// Setup
 		CluedoGame g = new CluedoGame();
-		g.gameController();
 	}
 
 }
