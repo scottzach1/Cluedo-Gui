@@ -84,7 +84,7 @@ public class Cell extends JLabel implements MouseListener {
             base = icons.get(parseHighLightedImageIcon(type));
         else if (isType(Type.WEAPON)) {
             Weapon weapon = room.getWeapon();
-            if (weapon == null)
+            if (getWeapon() == null)
                 base = icons.get(parseImageIcon(Type.ROOM));
             else {
                 base = icons.get(parseImageIcon(Type.WEAPON));
@@ -215,6 +215,10 @@ public class Cell extends JLabel implements MouseListener {
 
     public boolean isFree() {
         return (getWeapon() == null && sprite == null);
+    }
+
+    public boolean hasWeapon() {
+        return getWeapon() != null;
     }
 
     public boolean hasRoom() {

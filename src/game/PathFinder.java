@@ -148,7 +148,7 @@ public class PathFinder {
      */
     public boolean findExactPath(Cell start, Cell end, int steps) {
         if (board == null) throw new RuntimeException("Game.PathFinder does not have a Game.Board!");
-        if (end.getSprite() != null || start.sameRoom(end)) return false;
+        if (end.isFree() || start.sameRoom(end)) return false;
         return findExactPathHelper(new DFSNode(start, null), end, visitedRooms, visitedCells, new ArrayDeque<>(), steps);
     }
 
@@ -195,7 +195,7 @@ public class PathFinder {
         for (Cell neigh : neighbours) {
             if (node.visited.contains(neigh) || visitedRooms.contains(neigh.getRoom()) || visitedCells.contains(neigh)) continue;
             if (board.visitedCells.contains(neigh) || board.visitedRooms.contains(neigh.getRoom())) continue;
-            if (neigh.getSprite() != null && neigh.getWeapon() != null) continue; // Game.Sprite on Game.Cell.
+            if (!neigh.isFree()) continue; // Game.Sprite on Game.Cell.
 
             // Return success of child to parent.
             if (findExactPathHelper(new DFSNode(neigh, node), end, visitedRooms, visitedCells, currentPath, steps)) return true;
