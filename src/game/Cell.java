@@ -122,24 +122,11 @@ public class Cell extends JLabel implements MouseListener {
     @Override
     public void mouseClicked(MouseEvent e) {
         if (board.pathFinder.getPath().stream().anyMatch(board.visitedCells::contains) || board.highlightedCells.isEmpty()) {
-//            System.out.println("INFEASIBLE!");
             board.cluedoGame.getGui().infeasibleMove();
             return;
         }
 
         board.cluedoGame.removeMovesLeft(board.pathFinder.getPath().size());
-
-        board.pathFinder.getPath().forEach(cell -> {
-//            System.out.println(cell.getStringCoordinates());
-//				try {
-//					Thread.sleep(300);
-//				} catch (InterruptedException ex) {
-//					ex.printStackTrace();
-//				}
-//				board.moveUser(board.cluedoGame.getCurrentUser(), cell);
-//				board.cluedoGame.getGui().redraw();
-//				board.getStream().forEach(Cell::render);
-        });
 
         board.visitedCells.addAll(board.highlightedCells);
 
@@ -184,6 +171,7 @@ public class Cell extends JLabel implements MouseListener {
         if (success) {
             board.highlightedRooms.forEach(room -> board.highlightedCells.addAll(room.getCells()));
         } else {
+            System.out.println("failed");
             board.highlightedCells.clear();
             board.highlightedRooms.clear();
         }

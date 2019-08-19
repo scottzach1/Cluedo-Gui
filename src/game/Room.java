@@ -166,20 +166,6 @@ public class Room extends Card {
 	}
 	
 	public String toString() {
-		StringBuilder peopleStr = new StringBuilder();
-		StringBuilder weaponStr = new StringBuilder();
-
-		Set<Sprite> inThisRoom = getInThisRoom();
-		// Append users in the room
-		for (Sprite sprite : inThisRoom) { peopleStr.append(sprite.getName() + ", ");}
-		if (inThisRoom.isEmpty()) peopleStr.append("NO_ONE");
-		
-		// Append weapons in this room 
-		if (weapon != null) weaponStr.append("THE_" + weapon.getName());
-		else weaponStr.append("no weapon");
-		
-		
-		return getName() + ": \n  -PEOPLE: " + peopleStr.toString()
-				+ "\n  -WEAPONS: " + weaponStr.toString();
+		return roomAlias.toString();
 	}
 }

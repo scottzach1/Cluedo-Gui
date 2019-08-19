@@ -1,5 +1,7 @@
 package gui;
 
+import extra.ZButton;
+import extra.ZComboBox;
 import game.Card;
 import game.CluedoGame;
 import game.Sprite;
@@ -61,18 +63,10 @@ public class Controls extends JPanel {
         gc.gridx = 0;
         gc.gridy = 0;
 
-        JButton play = new JButton("PLAY");
+        int fontSize = Math.min(Math.min(getWidth() / 5, getHeight() / 5), 20);
+        JButton play = new ZButton("PLAY", fontSize);
         play.setPreferredSize(new Dimension(getWidth() / 5, getHeight() / 5));
-        play.setFont(new Font("Arial", Font.BOLD, Math.min(Math.min(getWidth() / 5, getHeight() / 5), 20)));
-
-        play.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cluedoGame.nextState();
-            }
-
-        });
+        play.addActionListener(e -> cluedoGame.nextState());
 
         add(play, gc);
     }
@@ -124,17 +118,14 @@ public class Controls extends JPanel {
         gc.gridy = 1;
         gc.gridwidth = 4;
 
-        JButton submit = new JButton("SUBMIT");
+        JButton submit = new ZButton("SUBMIT", 20);
 
-        submit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                try {
-                    int players = Integer.parseInt(group.getSelection().getActionCommand());
-                    cluedoGame.setPlayerAmount(players);
-                    cluedoGame.nextState();
-                } catch (Exception e) {
-                }
+        submit.addActionListener(arg -> {
+            try {
+                int players = Integer.parseInt(group.getSelection().getActionCommand());
+                cluedoGame.setPlayerAmount(players);
+                cluedoGame.nextState();
+            } catch (Exception e) {
             }
         });
 
@@ -192,21 +183,17 @@ public class Controls extends JPanel {
         drawBorder();
 
         // Create drop down menu
-        JComboBox spriteOptions = new JComboBox(new Vector<Sprite.SpriteAlias>(cluedoGame.getAvailableSprites()));
+        JComboBox<Sprite.SpriteAlias> spriteOptions = new ZComboBox<>(new Vector<>(cluedoGame.getAvailableSprites()), 20);
         spriteOptions.setPreferredSize(new Dimension(getWidth() / 6, getHeight() / 6));
 
         // Create submit button
-        JButton submit = new JButton("SUBMIT");
+        JButton submit = new ZButton("SUBMIT", 20);
         submit.setPreferredSize(new Dimension(getWidth() / 6, getHeight() / 6));
 
-
-        submit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cluedoGame.setTempSprite((Sprite.SpriteAlias) spriteOptions.getSelectedItem());
-                cluedoGame.removeAvailableSprite((Sprite.SpriteAlias) spriteOptions.getSelectedItem());
-                cluedoGame.nextTempUserNum();
-            }
+        submit.addActionListener(e -> {
+            cluedoGame.setTempSprite((Sprite.SpriteAlias) spriteOptions.getSelectedItem());
+            cluedoGame.removeAvailableSprite((Sprite.SpriteAlias) spriteOptions.getSelectedItem());
+            cluedoGame.nextTempUserNum();
         });
 
         gc.weightx = 1;

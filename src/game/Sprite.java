@@ -1,6 +1,5 @@
 package game;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class Sprite extends Card {
@@ -166,21 +165,7 @@ public class Sprite extends Card {
 	}
 
 	public String toString() {
-		switch(spriteAlias) {
-			case MRS_WHITE:
-				return "W";
-			case MR_GREEN:
-				return "G";
-			case MRS_PEACOCK:
-				return "Q";
-			case PROFESSOR_PLUM:
-				return "P";
-			case MISS_SCARLETT:
-				return "S";
-			case COLONEL_MUSTARD:
-				return "M";
-		}
-		throw new RuntimeException("Game.Sprite alias not found.");
+		return spriteAlias.toString();
 	}
 
 }
