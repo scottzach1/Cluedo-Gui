@@ -3,6 +3,7 @@ package game;
 import extra.CombinedImageIcon;
 
 import javax.swing.*;
+import java.awt.*;
 
 public abstract class Card {
 
@@ -39,6 +40,18 @@ public abstract class Card {
 		ImageIcon icon = new ImageIcon("card_" + alias.toString().toLowerCase() + ".png");
 		if (!unseen) return icon;
 		else 			return new CombinedImageIcon(icon, new ImageIcon("card_unseen.png"));
+	}
+
+	public static ImageIcon getCardSetWidth(Enum alias, boolean unseen, int width) {
+		ImageIcon imageIcon = getCard(alias, unseen);
+		int height = width / imageIcon.getIconWidth() * imageIcon.getIconHeight();
+		return new ImageIcon(imageIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
+	}
+
+	public static ImageIcon getCardSetHeight(Enum alias, boolean unseen, int height) {
+		ImageIcon imageIcon = getCard(alias, unseen);
+		int width = height / imageIcon.getIconHeight() * imageIcon.getIconWidth();
+		return new ImageIcon(imageIcon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
 	}
 
 	@Override
