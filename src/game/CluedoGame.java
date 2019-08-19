@@ -112,8 +112,8 @@ public class CluedoGame {
         ArrayList<Cell> shuffledCells = new ArrayList<>(r.getCells());
 
         // Shuffle till not on a person
-        //while(shuffledCells.get(0).getSprite() != null && shuffledCells.get(0))
-        Collections.shuffle(shuffledCells);
+        while(!shuffledCells.get(0).isFree())
+        	Collections.shuffle(shuffledCells);
         s.setPosition(shuffledCells.get(0));
 
         // Teleport the suggested Weapon to this room too
