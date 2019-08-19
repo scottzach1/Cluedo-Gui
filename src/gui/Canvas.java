@@ -141,18 +141,16 @@ public class Canvas extends JPanel {
         ArrayList<Room> roomCards = new ArrayList<>();
 
         // Go through this users hand and separate all the cards
-        for (Card c : cluedoGame.getCurrentUser().getHand()){
+        for (Card c : cluedoGame.getCurrentUser().getHand()) {
             if (c instanceof Sprite) {
                 amountOfSprites++;
                 spriteCards.add((Sprite) c);
-            }
-            else if (c instanceof Weapon) {
+            } else if (c instanceof Weapon) {
                 amountOfWeapons++;
-                weaponCards.add((Weapon)c);
-            }
-            else if (c instanceof Room) {
+                weaponCards.add((Weapon) c);
+            } else if (c instanceof Room) {
                 amountOfRooms++;
-                roomCards.add((Room)c);
+                roomCards.add((Room) c);
             }
         }
 
@@ -169,7 +167,7 @@ public class Canvas extends JPanel {
         boolean useWidth = cardHeight > cardWidth;
 
 
-        for (Sprite s : spriteCards){
+        for (Sprite s : spriteCards) {
             gc.gridx = currentGridX;
             Sprite.SpriteAlias sa = s.getSpriteAlias();
             JLabel lab = new JLabel(useWidth ?
@@ -178,7 +176,7 @@ public class Canvas extends JPanel {
             add(lab, gc);
             currentGridX++;
         }
-        for (Weapon w : weaponCards){
+        for (Weapon w : weaponCards) {
             gc.gridx = currentGridX;
             Weapon.WeaponAlias wa = w.getWeaponAlias();
             JLabel lab = new JLabel(useWidth ?
@@ -187,7 +185,7 @@ public class Canvas extends JPanel {
             add(lab, gc);
             currentGridX++;
         }
-        for (Room r : roomCards){
+        for (Room r : roomCards) {
             gc.gridx = currentGridX;
             Room.RoomAlias ra = r.getRoomAlias();
             JLabel lab = new JLabel(useWidth ?
@@ -245,18 +243,16 @@ public class Canvas extends JPanel {
         HashSet<Room> knownRoomCards = new HashSet<>();
 
         // Go through this users observed cards and separate all the cards by type
-        for (Card c : cluedoGame.getCurrentUser().getObservedCards()){
+        for (Card c : cluedoGame.getCurrentUser().getObservedCards()) {
             if (c instanceof Sprite) {
                 amountOfSprites++;
                 knownSpriteCards.add((Sprite) c);
-            }
-            else if (c instanceof Weapon) {
+            } else if (c instanceof Weapon) {
                 amountOfWeapons++;
-                knownWeaponCards.add((Weapon)c);
-            }
-            else if (c instanceof Room) {
+                knownWeaponCards.add((Weapon) c);
+            } else if (c instanceof Room) {
                 amountOfRooms++;
-                knownRoomCards.add((Room)c);
+                knownRoomCards.add((Room) c);
             }
         }
 
@@ -273,7 +269,7 @@ public class Canvas extends JPanel {
         boolean useWidth = cardHeight > cardWidth;
 
 
-        for (Sprite s : cluedoGame.getBoard().getSprites().values()){
+        for (Sprite s : cluedoGame.getBoard().getSprites().values()) {
             gc.gridx = currentGridX;
             Sprite.SpriteAlias sa = s.getSpriteAlias();
             JLabel lab = new JLabel(useWidth ?
@@ -282,7 +278,7 @@ public class Canvas extends JPanel {
             add(lab, gc);
             currentGridX++;
         }
-        for (Weapon w : knownWeaponCards){
+        for (Weapon w : knownWeaponCards) {
             gc.gridx = currentGridX;
             Weapon.WeaponAlias wa = w.getWeaponAlias();
             JLabel lab = new JLabel(useWidth ?
@@ -291,7 +287,7 @@ public class Canvas extends JPanel {
             add(lab, gc);
             currentGridX++;
         }
-        for (Room r : knownRoomCards){
+        for (Room r : knownRoomCards) {
             gc.gridx = currentGridX;
             Room.RoomAlias ra = r.getRoomAlias();
             JLabel lab = new JLabel(useWidth ?
@@ -495,52 +491,4 @@ public class Canvas extends JPanel {
 
     }
 
-    public static void main(String[] args) {
-        CluedoGame cluedoGame = new CluedoGame();
-        Board b = cluedoGame.getBoard();
-
-        // Highlight some cells to test
-        b.highlightedCells.add(b.getCell("O2"));
-        b.highlightedCells.add(b.getCell("P2"));
-        b.highlightedCells.add(b.getCell("Q2"));
-        b.highlightedCells.add(b.getCell("Q3"));
-        b.highlightedCells.add(b.getCell("R3"));
-        b.highlightedCells.add(b.getCell("R4"));
-        b.highlightedCells.add(b.getCell("R5"));
-        b.highlightedCells.add(b.getCell("R6"));
-        b.highlightedCells.add(b.getCell("S6"));
-        b.highlightedCells.addAll(b.getRooms().get(Room.RoomAlias.CONSERVATORY).getCells());
-
-        Canvas c = new Canvas(cluedoGame);
-
-        c.addComponentListener(new ComponentListener() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                c.clearComponents();
-                c.renderBoard();
-            }
-
-            @Override
-            public void componentMoved(ComponentEvent e) {
-            }
-
-            @Override
-            public void componentShown(ComponentEvent e) {
-            }
-
-            @Override
-            public void componentHidden(ComponentEvent e) {
-            }
-        });
-
-        JFrame frame = new JFrame("Board Demo");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().add(c, BorderLayout.CENTER);
-
-        frame.setResizable(true);
-        frame.pack();
-        frame.setVisible(true);
-
-        c.renderBoard();
-    }
 }
