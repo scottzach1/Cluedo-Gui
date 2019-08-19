@@ -173,24 +173,27 @@ public class Canvas extends JPanel {
             JLabel lab = new JLabel(useWidth ?
                     Card.getCardSetWidth(sa, false, cardWidth) :
                     Card.getCardSetHeight(sa, false, cardHeight));
+            lab.setToolTipText(s.getSpriteAlias().toString());
             add(lab, gc);
             currentGridX++;
         }
         for (Weapon w : weaponCards) {
-            gc.gridx = currentGridX;
+            gc.gridx = currentGridX + 1;
             Weapon.WeaponAlias wa = w.getWeaponAlias();
             JLabel lab = new JLabel(useWidth ?
                     Card.getCardSetWidth(wa, false, cardWidth) :
                     Card.getCardSetHeight(wa, false, cardHeight));
+            lab.setToolTipText(w.getWeaponAlias().toString());
             add(lab, gc);
             currentGridX++;
         }
         for (Room r : roomCards) {
-            gc.gridx = currentGridX;
+            gc.gridx = currentGridX + 2;
             Room.RoomAlias ra = r.getRoomAlias();
             JLabel lab = new JLabel(useWidth ?
                     Card.getCardSetWidth(ra, false, cardWidth) :
                     Card.getCardSetHeight(ra, false, cardHeight));
+            lab.setToolTipText(r.getRoomAlias().toString());
             add(lab, gc);
             currentGridX++;
         }
@@ -208,7 +211,7 @@ public class Canvas extends JPanel {
         currentGridX = 0;
         gc.gridy = 0;
         gc.weighty = 1;
-        gc.anchor = GridBagConstraints.LINE_END;
+        gc.anchor = GridBagConstraints.CENTER;
 
         if (amountOfSprites > 0) {
             gc.gridx = currentGridX;
@@ -223,11 +226,24 @@ public class Canvas extends JPanel {
             currentGridX += amountOfWeapons;
         }
         if (amountOfRooms > 0) {
-            gc.gridx = currentGridX;
+            gc.gridx = currentGridX + 1;
             gc.gridwidth = amountOfRooms;
             add(rooms, gc);
             currentGridX += amountOfRooms;
         }
+
+        gc.fill = GridBagConstraints.VERTICAL;
+        gc.anchor = GridBagConstraints.LINE_START;
+        gc.gridx = amountOfSprites;
+        gc.gridy = 1;
+        gc.weighty = 2;
+        gc.weightx = 0.1;
+        gc.gridheight = 2;
+        JSeparator sep1 = new JSeparator(JSeparator.VERTICAL);
+        add(sep1, gc);
+        gc.gridx = amountOfSprites + amountOfWeapons + 1;
+        JSeparator sep2 = new JSeparator(JSeparator.VERTICAL);
+        add(sep2, gc);
     }
 
     public void showDetectiveCards(User user) {
@@ -270,19 +286,22 @@ public class Canvas extends JPanel {
             JLabel lab = new JLabel(useWidth ?
                     Card.getCardSetWidth(sa, !knownSpriteCards.contains(s), cardWidth) :
                     Card.getCardSetHeight(sa, !knownSpriteCards.contains(s), cardHeight));
+            lab.setToolTipText(s.getSpriteAlias().toString());
             add(lab, gc);
             currentGridX++;
         }
 
+
         // Display all the Weapon cards, highlighting those NOT in out observed cards
         currentGridX = 0;
         for (Weapon w : cluedoGame.getBoard().getWeapons().values()){
-            gc.gridx = (currentGridX % 3) + 3;
+            gc.gridx = (currentGridX % 3) + 4;
             gc.gridy = (currentGridX / 3) + 1;
             Weapon.WeaponAlias wa = w.getWeaponAlias();
             JLabel lab = new JLabel(useWidth ?
                     Card.getCardSetWidth(wa, !knownWeaponCards.contains(w), cardWidth) :
                     Card.getCardSetHeight(wa, !knownWeaponCards.contains(w), cardHeight));
+            lab.setToolTipText(w.getWeaponAlias().toString());
             add(lab, gc);
             currentGridX++;
         }
@@ -290,12 +309,13 @@ public class Canvas extends JPanel {
         // Display all the Room cards, highlighting those NOT in out observed cards
         currentGridX = 0;
         for (Room r : cluedoGame.getBoard().getRooms().values()){
-            gc.gridx = (currentGridX % 5) + 6;
+            gc.gridx = (currentGridX % 5) + 8;
             gc.gridy = (currentGridX / 5) + 1;
             Room.RoomAlias ra = r.getRoomAlias();
             JLabel lab = new JLabel(useWidth ?
                     Card.getCardSetWidth(ra, !knownRoomCards.contains(r), cardWidth) :
                     Card.getCardSetHeight(ra, !knownRoomCards.contains(r), cardHeight));
+            lab.setToolTipText(r.getRoomAlias().toString());
             add(lab, gc);
             currentGridX++;
         }
@@ -331,13 +351,27 @@ public class Canvas extends JPanel {
             currentGridX += amountOfWeapons;
         }
         if (amountOfRooms > 0) {
-            gc.gridx = currentGridX;
+            gc.gridx = currentGridX + 1;
             gc.gridwidth = amountOfRooms;
             add(rooms, gc);
             currentGridX += amountOfRooms;
         }
 
+        gc.fill = GridBagConstraints.VERTICAL;
+        gc.anchor = GridBagConstraints.LINE_START;
+        gc.gridx = (cluedoGame.getBoard().getSprites().size() / 2) + 1;
+        gc.gridy = 1;
+        gc.weighty = 2;
+        gc.weightx = 0.1;
+        gc.gridheight = 2;
+        JSeparator sep1 = new JSeparator(JSeparator.VERTICAL);
+        add(sep1, gc);
+        gc.gridx = (cluedoGame.getBoard().getSprites().size() / 2) + (cluedoGame.getBoard().getWeapons().size() / 2) + 1;
+        JSeparator sep2 = new JSeparator(JSeparator.VERTICAL);
+        add(sep2, gc);
     }
+
+
 
     public void confirmShowHiddenContent(User other) {
         // Create a text instructions for the user to follow

@@ -102,6 +102,24 @@ public class CluedoGame {
 		Weapon w = (Weapon) weapon;
 		Room r = (Room) room;
 
+		// If the user is not in a room (an overlooked error somehow)
+		if (r == null){
+			gui.setErrorMsg("You are not in a room!");
+			gui.setGuiState(GUI.GUIState.PRINT_ERROR);
+			gameController();
+		}
+
+		//Get a list of all the cells
+		ArrayList<Cell> shuffledCells = new ArrayList<>(r.getCells());
+
+		// Shuffle till not on a person
+		while(shuffledCells.get(0).getSprite() != null && shuffledCells.get(0))
+			Collections.shuffle(shuffledCells);
+		s.setPosition(shuffledCells.get(0));
+
+		// Teleport the suggested Weapon to this room too
+		if (r.)
+
 		// For every player, go through all their cards and see if they hold any the are being searched for
 		for (int i = ((currentUserNo.ordinal() + 1) % playerAmount); i != currentUserNo.ordinal(); i = (i + 1) % playerAmount){
 			if(users.get(i).getHand().contains(s))
