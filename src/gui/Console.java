@@ -103,7 +103,7 @@ public class Console extends JPanel {
 
     }
 
-    protected void printError(String errorMsg) {
+    protected void printError() {
 
         gc = new GridBagConstraints();
         gc.anchor = GridBagConstraints.CENTER;
@@ -118,7 +118,7 @@ public class Console extends JPanel {
         error.setLineWrap(true);
         error.setWrapStyleWord(true);
         error.setFont(new Font("Arial", Font.BOLD, 20));
-        error.setText(errorMsg);
+        error.setText(cluedoGame.getGui().getErrorMsg());
         error.setEditable(false);
         error.setPreferredSize(new Dimension(getWidth() / 2, getHeight() / 2));
 

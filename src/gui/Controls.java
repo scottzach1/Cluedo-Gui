@@ -133,7 +133,7 @@ public class Controls extends JPanel {
 
     }
 
-    protected void createUser(int playerNum) {
+    protected void createUser() {
         gc = new GridBagConstraints();
         drawBorder();
 
@@ -156,7 +156,7 @@ public class Controls extends JPanel {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 cluedoGame.setTempUserName(nameField.getText());
-                cluedoGame.getGui().selectCharacter(nameField.getText());
+                cluedoGame.nextState();
             }
         });
 
@@ -178,7 +178,7 @@ public class Controls extends JPanel {
 
     }
 
-    protected void selectCharacter(String userName) {
+    protected void selectCharacter() {
         gc = new GridBagConstraints();
         drawBorder();
 
@@ -314,8 +314,8 @@ public class Controls extends JPanel {
         drawBorder();
     }
 
-    protected void printError(String errorMsg) {
-        console.printError(errorMsg);
+    protected void printError() {
+        console.printError();
         userInterface.backOption();
     }
 

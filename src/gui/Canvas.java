@@ -87,7 +87,7 @@ public class Canvas extends JPanel {
     }
 
 
-    public void createUser(int playerNum) {
+    public void createUser() {
         // Create a text instructions for the user to follow
         JTextArea instructions = new JTextArea();
 
@@ -96,7 +96,7 @@ public class Canvas extends JPanel {
         instructions.setFont(font);
 
         // Add the text to the instructions
-        instructions.append("Player " + (playerNum + 1) + ", what is your preferred name?");
+        instructions.append("Player " + (cluedoGame.getTempUserNum() + 1) + ", what is your preferred name?");
 
         // Set the preferred size such that 40pt text can fit
         // (Only thing on screen means that it can take up everything
@@ -108,7 +108,7 @@ public class Canvas extends JPanel {
     }
 
 
-    public void selectCharacter(String userName) {
+    public void selectCharacter() {
         // Create a text instructions for the user to follow
         JTextArea instructions = new JTextArea();
 
@@ -117,7 +117,7 @@ public class Canvas extends JPanel {
         instructions.setFont(font);
 
         // Add the text to the instructions
-        instructions.append(userName + ", who are you playing as?");
+        instructions.append(cluedoGame.getTempUserName() + ", who are you playing as?");
 
         // Set the preferred size such that 40pt text can fit
         // (Only thing on screen means that it can take up everything
@@ -128,7 +128,7 @@ public class Canvas extends JPanel {
         revalidateComponents(1);
     }
 
-    public void showHand(User user) {
+    public void showHand() {
         // Clear previous settings
         gc = new GridBagConstraints();
         gc.fill = GridBagConstraints.HORIZONTAL;
@@ -246,7 +246,7 @@ public class Canvas extends JPanel {
         add(sep2, gc);
     }
 
-    public void showDetectiveCards(User user) {
+    public void showDetectiveCards() {
         // Clear previous settings
         gc = new GridBagConstraints();
         gc.fill = GridBagConstraints.HORIZONTAL;

@@ -270,7 +270,7 @@ public class UserInterface extends JPanel {
         // Clear all previous settings
         gc = new GridBagConstraints();
 
-        JButton confirm = new ZButton("Cool", SMALL_FONT);
+        JButton confirm = new ZButton("Cool", BIG_FONT);
         confirm.setPreferredSize(new Dimension(getWidth() / 6, getHeight() / 6));
         confirm.addActionListener(e -> {
             cluedoGame.getCurrentUser().addToObservedCards(cluedoGame.getOtherPlayerCard());

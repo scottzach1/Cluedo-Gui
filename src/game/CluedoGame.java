@@ -13,7 +13,7 @@ import java.util.*;
 public class CluedoGame {
 
     public static enum State {
-        MAIN_MENU, PLAYER_COUNT, USER_CREATION, SETUP_GAME_DESIGN, RUN_GUI;
+        MAIN_MENU, PLAYER_COUNT, USER_NAME_CREATION, USER_CHARACTER_SELECTION, SETUP_GAME_DESIGN, RUN_GUI;
     }
 
     // ------------------------
@@ -80,8 +80,11 @@ public class CluedoGame {
             gui.mainMenu();
         else if (state == State.PLAYER_COUNT)
             gui.howManyPlayers();
-        else if (state == State.USER_CREATION)
-            gui.createUser(tempUserNum);
+        else if (state == State.USER_NAME_CREATION)
+            gui.createUser();
+        else if (state == State.USER_CHARACTER_SELECTION){
+            gui.selectCharacter();
+        }
         else if (state == State.SETUP_GAME_DESIGN) {
             gui.gameSetup();
             generateSolution();
@@ -304,7 +307,7 @@ public class CluedoGame {
         } else {
             currentUserNo = User.UserNo.values()[(currentUserNo.ordinal() + 1) % playerAmount];
             if (losers.contains(users.get(currentUserNo.ordinal()))) {
-                gui.skipUser(losers.get(currentUserNo.ordinal()));
+                gui.skipUser(getCurrentUser());
             }
             gui.setGuiState(GUI.GUIState.NEW_PLAYER);
         }
@@ -333,8 +336,12 @@ public class CluedoGame {
         movesLeft -= usedMoves;
     }
 
-    public boolean hasMovesLeft() {
-        return movesLeft > 0;
+    public int getTempUserNum(){
+        return tempUserNum;
+    }
+
+    public String getTempUserName(){
+        return tempUserName;
     }
 
     public User getCurrentUser() {
@@ -383,6 +390,7 @@ public class CluedoGame {
         addNewUser();
         tempUserNum++;
         if (tempUserNum < playerAmount) {
+            state = State.USER_NAME_CREATION;
             gameController();
         } else {
             nextState();
