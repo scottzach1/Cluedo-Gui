@@ -32,6 +32,11 @@ public class Canvas extends JPanel {
     // CONSTRUCTOR
     // --------------------------------------------------
 
+    /**
+     * Creates a JPanel and sets its preferred size, also draws
+     * it's border and sets the layout to GridBagLayout
+     * @param parent
+     */
     public Canvas(CluedoGame parent) {
         borderTitle = "CLUEDO GAME";
         components = new ArrayList<>();
@@ -55,6 +60,9 @@ public class Canvas extends JPanel {
     // PUBLIC METHODS
     // --------------------------------------------------
 
+    /**
+     * Displays the title screen
+     */
     public void mainMenu() {
         Image image = (new ImageIcon("title.png")).getImage();
         image = image.getScaledInstance(getWidth() / 2, getHeight() / 2, java.awt.Image.SCALE_SMOOTH);
@@ -66,68 +74,35 @@ public class Canvas extends JPanel {
     }
 
 
+    /**
+     * Displays text that asks the user how many players there are
+     */
     public void howManyPlayers() {
-        // Create a text instructions for the user to follow
-        JTextArea instructions = new JTextArea();
-
-        // Create the font for the text
-        Font font = new Font("Arial", Font.BOLD, 40);
-        instructions.setFont(font);
-
-        // Add the text to the instructions
-        instructions.append("How many players today?");
-
-        // Set the preferred size such that 40pt text can fit
-        // (Only thing on screen means that it can take up everything
-        instructions.setBackground(null);
-        instructions.setEditable(false);
-
-        components.add(instructions);
-        revalidateComponents(1);
+        // Ask the user how many players there are
+        displayText("How many players today?");
     }
 
 
+    /**
+     * Displays the text instructing the user to create a user name
+     */
     public void createUser() {
-        // Create a text instructions for the user to follow
-        JTextArea instructions = new JTextArea();
-
-        // Create the font for the text
-        Font font = new Font("Arial", Font.BOLD, 40);
-        instructions.setFont(font);
-
-        // Add the text to the instructions
-        instructions.append("Player " + (cluedoGame.getTempUserNum() + 1) + ", what is your preferred name?");
-
-        // Set the preferred size such that 40pt text can fit
-        // (Only thing on screen means that it can take up everything
-        instructions.setBackground(null);
-        instructions.setEditable(false);
-
-        components.add(instructions);
-        revalidateComponents(1);
+        // Asks the user for a user name
+        displayText("Player " + (cluedoGame.getTempUserNum() + 1) + ", what is your preferred name?");
     }
 
 
+    /**
+     * Instructs the player to select a character
+     */
     public void selectCharacter() {
-        // Create a text instructions for the user to follow
-        JTextArea instructions = new JTextArea();
-
-        // Create the font for the text
-        Font font = new Font("Arial", Font.BOLD, 40);
-        instructions.setFont(font);
-
-        // Add the text to the instructions
-        instructions.append(cluedoGame.getTempUserName() + ", who are you playing as?");
-
-        // Set the preferred size such that 40pt text can fit
-        // (Only thing on screen means that it can take up everything
-        instructions.setBackground(null);
-        instructions.setEditable(false);
-
-        components.add(instructions);
-        revalidateComponents(1);
+        // Ask the user to pick a character
+        displayText(cluedoGame.getTempUserName() + ", who are you playing as?");
     }
 
+    /**
+     * Displays the current players hand
+     */
     public void showHand() {
         // Clear previous settings
         gc = new GridBagConstraints();
@@ -246,6 +221,10 @@ public class Canvas extends JPanel {
         add(sep2, gc);
     }
 
+    /**
+     * Displays all the cards, highlighting cards in red
+     * that the player has not seen
+     */
     public void showDetectiveCards() {
         // Clear previous settings
         gc = new GridBagConstraints();
@@ -372,68 +351,48 @@ public class Canvas extends JPanel {
     }
 
 
-
+    /**
+     * Displays text that ensures the other player is ready
+     * to pick a card from their possible cards
+     */
     public void confirmShowHiddenContent() {
-        // Create a text instructions for the user to follow
-        JTextArea instructions = new JTextArea();
-
-        // Create the font for the text
-        Font font = new Font("Arial", Font.BOLD, 40);
-        instructions.setFont(font);
-
-        // Add the text to the instructions
-        instructions.append(cluedoGame.getOtherPlayer().getUserName() + ", you must refute the suggestion");
-
-        // Set the preferred size such that 40pt text can fit
-        // (Only thing on screen means that it can take up everything
-        instructions.setBackground(null);
-        instructions.setEditable(false);
-
-        components.add(instructions);
-        revalidateComponents(1);
+        // Ensure that the other user is ready to pick a card
+        displayText(cluedoGame.getOtherPlayer().getUserName() + ", you must refute the suggestion");
     }
 
+    /**
+     * Displays text to tell the other user that they are required
+     * to select a card to show the current user
+     */
     public void chooseHiddenPlayerCard() {
-        // Create a text instructions for the user to follow
-        JTextArea instructions = new JTextArea();
-
-        // Create the font for the text
-        Font font = new Font("Arial", Font.BOLD, 40);
-        instructions.setFont(font);
-
-        // Add the text to the instructions
-        instructions.append(cluedoGame.getOtherPlayer().getUserName() + ", pick a card to show");
-
-        // Set the preferred size such that 40pt text can fit
-        // (Only thing on screen means that it can take up everything
-        instructions.setBackground(null);
-        instructions.setEditable(false);
-
-        components.add(instructions);
-        revalidateComponents(1);
+        // Instruct the player to make a choice
+        displayText(cluedoGame.getOtherPlayer().getUserName() + ", pick a card to show");
     }
 
+    /**
+     * Displays text to inform the user that they are in control of
+     * the computer again
+     */
     public void confirmShowOtherPlayerCard() {
-        // Create a text instructions for the user to follow
-        JTextArea instructions = new JTextArea();
-
-        // Create the font for the text
-        Font font = new Font("Arial", Font.BOLD, 40);
-        instructions.setFont(font);
-
-        // Add the text to the instructions
-        instructions.append(cluedoGame.getCurrentUser().getUserName() + ", are you ready to have your suggestion debunked?");
-
-        // Set the preferred size such that 40pt text can fit
-        // (Only thing on screen means that it can take up everything
-        instructions.setBackground(null);
-        instructions.setEditable(false);
-
-        components.add(instructions);
-        revalidateComponents(1);
+        // Ensure that the current user is ready to continue
+        displayText(cluedoGame.getCurrentUser().getUserName() + ", are you ready to have your suggestion debunked?");
     }
 
+    /**
+     * Displays text to show the user what card the other user
+     * has shown them to refute their suggestion
+     */
     public void showUserOtherPlayerCard() {
+        // Display the user and the card being shown
+        displayText(cluedoGame.getOtherPlayer().getUserName() + " has shown you " + cluedoGame.getOtherPlayerCard().getName());
+    }
+
+    /**
+     * A Generic text display method that uses similar code to
+     * display text to this panel
+     * @param text
+     */
+    private void displayText(String text){
         // Create a text instructions for the user to follow
         JTextArea instructions = new JTextArea();
 
@@ -442,7 +401,7 @@ public class Canvas extends JPanel {
         instructions.setFont(font);
 
         // Add the text to the instructions
-        instructions.append(cluedoGame.getOtherPlayer().getUserName() + " has shown you " + cluedoGame.getOtherPlayerCard().getName());
+        instructions.append(text);
 
         // Set the preferred size such that 40pt text can fit
         // (Only thing on screen means that it can take up everything
@@ -451,8 +410,13 @@ public class Canvas extends JPanel {
 
         components.add(instructions);
         revalidateComponents(1);
+
     }
 
+    /**
+     * Displays text to inform the user there was no user that
+     * could refute their suggestion
+     */
     public void noSuggestions() {
         // Create a text instructions for the user to follow
         JTextArea instructions = new JTextArea();
@@ -474,6 +438,9 @@ public class Canvas extends JPanel {
     }
 
 
+    /**
+     * Draws the title border using the border title field
+     */
     private void drawBorder() {
         Border b = BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, accentCol), borderTitle,
                 TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, new Font("Serif", Font.BOLD, 18), accentCol);
