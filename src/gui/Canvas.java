@@ -473,6 +473,7 @@ public class Canvas extends JPanel {
         revalidateComponents(1);
     }
 
+
     private void drawBorder() {
         Border b = BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, accentCol), borderTitle,
                 TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, new Font("Serif", Font.BOLD, 18), accentCol);
@@ -486,15 +487,26 @@ public class Canvas extends JPanel {
     // --------------------------------------------------
 
 
+    /**
+     * Sets title Text of the Canvas.
+     * @param borderTitle new Title
+     */
     public void setBorderTitle(String borderTitle) {
         this.borderTitle = borderTitle;
     }
 
+    /**
+     * Clears all components wihtin the Canvas.
+     */
     public void clearComponents() {
         components.clear();
         removeAll();
     }
 
+    /**
+     * Renders all cells within the board.
+     * Scales board Icons if change in window size is detected.
+     */
     public void renderBoard() {
         int newCellSize = -1 + (Math.min(getWidth() / board.getCols(), getHeight() / board.getRows()));
         board.scaleIcons(newCellSize);
@@ -518,6 +530,10 @@ public class Canvas extends JPanel {
         }
     }
 
+    /**
+     * Displays the rules of the game for the user.
+     * Can be accessed from the GUI in the Menu Bar.
+     */
     protected void displayRules() {
         // Create a text instructions for the user to follow
         JTextArea instructions = new JTextArea();
