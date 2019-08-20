@@ -9,7 +9,7 @@ public class PathFinder {
     // Needed for checkValidFromString
     private Board board;
     private Set<Cell> visitedCells;
-    private Stack<Cell> path;
+    private Queue<Cell> path;
     private Set<Room> visitedRooms;
 
     /**
@@ -18,12 +18,13 @@ public class PathFinder {
      */
     public PathFinder(Board board) {
         this.board = board;
-        this.path = board.path;
+        this.path = new ArrayDeque<>() {
+        };
         this.visitedCells = board.highlightedCells;
         this.visitedRooms = board.highlightedRooms;
     }
 
-    public Stack<Cell> getPath() {
+    public Queue<Cell> getPath() {
         return path;
     }
 
@@ -97,22 +98,25 @@ public class PathFinder {
 
         if (!node.current.sameCell(end)) return Integer.MAX_VALUE; // Path was unable to be found. End was unreachable.
 
-        path = new Stack<>(); // Stack of path. NOTE: I could just remember n steps. This was helpful for debugging too!
+        Stack<Cell> backwardsPath = new Stack<>(); // Stack of path. NOTE: I could just remember n steps. This was helpful for debugging too!
 
         while (node != null) { // Work our way back through the nodes.
-            path.push(node.current);
+            backwardsPath.add(node.current);
             node = previousNodes.get(node.previous);
         }
+
+        backwardsPath.pop();
+
+        // Apparently .addAll() will add stack elements in reverse?
+        while (!backwardsPath.isEmpty())
+            path.add(backwardsPath.pop());
 
         // Visit all rooms in the path.
         board.highlightedRooms.addAll(path.stream().map(Cell::getRoom).filter(Objects::nonNull).collect(Collectors.toSet()));
         board.highlightedCells.addAll(path);
-        path.pop();
-        Collections.reverse(this.path);
 
         // Path Can Be Used here if needed.
-
-        return this.path.size(); // -1 as first node is start.
+        return this.path.size();
     }
 
     /**

@@ -28,8 +28,9 @@ public class Cell extends JLabel implements MouseListener {
 
     /**
      * Get corresponding cell on Board in direction.
+     *
      * @param cells Cell array of board.
-     * @param dir Direction of Cell to go.
+     * @param dir   Direction of Cell to go.
      * @return Cell in direction dir.
      */
     Cell go(Cell[][] cells, Direction dir) {
@@ -89,6 +90,7 @@ public class Cell extends JLabel implements MouseListener {
      * - Shows Player marker overlay if sprite on Cell.
      * - Shows Player active cell if active sprite on Cell.
      * - Shows Weapon if Weapon cell and weapon in Room.
+     *
      * @return Rendered Cell.
      */
     public Cell render() {
@@ -100,28 +102,30 @@ public class Cell extends JLabel implements MouseListener {
             base = icons.get(parseHighLightedImageIcon(type));
         } else base = icons.get(parseImageIcon(type));
 
+        // Add walls to layers.
+        for (Direction dir : Direction.values()) {
+            if (neighbors.get(dir) == null) layers.add(icons.get(parseWallIcon(dir)));
+        }
+
+        Sprite.SpriteAlias currentAlias = board.cluedoGame.getCurrentUser().getSprite().getSpriteAlias();
+
+        // Add sprite if on Cell. (maker if active, whole cell active).
+        if (sprite != null) {
+            if (sprite.matchesType(currentAlias))
+                base = icons.get(sprite.getCell());
+            else layers.add(icons.get(sprite.getMarker()));
+            setToolTipText(sprite.getSpriteAlias().toString());
+        }
+
         // Add weapon to layers.
         if (hasWeapon()) {
             layers.add(icons.get(Weapon.parseWeaponIcon(getWeapon().getWeaponAlias())));
             setToolTipText(getWeapon().getWeaponAlias().toString());
         } else if (isType(Type.WEAPON)) setToolTipText("EMPTY_SLOT");
 
-        // Add walls to layers.
-        for (Direction dir : Direction.values()) {
-            if (neighbors.get(dir) == null) layers.add(icons.get(parseWallIcon(dir)));
-        }
-
         // Add visited overlay if visited.
-        if (board.visitedCells.contains(this) && sprite == null)
+        if (board.visitedCells.contains(this) && (sprite == null || !sprite.matchesType(currentAlias)))
             layers.add(icons.get("cell_visited.png"));
-
-        // Add sprite if on Cell. (maker unactive, whole cell active).
-        if (sprite != null) {
-            if (sprite.matchesType(board.cluedoGame.getCurrentUser().getSprite().getSpriteAlias()))
-                base = icons.get(sprite.getCell());
-            else layers.add(icons.get(sprite.getMarker()));
-            setToolTipText(sprite.getSpriteAlias().toString());
-        }
 
         // Calculate and set new Icon.
         setIcon(prevIcon = new CombinedImageIcon(base, layers));
@@ -130,6 +134,7 @@ public class Cell extends JLabel implements MouseListener {
 
     /**
      * Get filename of Wall in Direction dir.
+     *
      * @param dir Direction wall to obtain.
      * @return String filename.
      */
@@ -139,6 +144,7 @@ public class Cell extends JLabel implements MouseListener {
 
     /**
      * Get filename of Cell based on Type.
+     *
      * @param type Type of Cell.
      * @return String filename.
      */
@@ -148,6 +154,7 @@ public class Cell extends JLabel implements MouseListener {
 
     /**
      * Get filename of highlighted Cell based on type.
+     *
      * @param type Type of Cell.
      * @return String filename.
      */
@@ -156,52 +163,101 @@ public class Cell extends JLabel implements MouseListener {
         return "cell_" + type.toString().toLowerCase() + "_highlighted.png";
     }
 
+    // Useful to help other Cells to know not to respond to user input until cell is free.
+    private static boolean currentlyMoving = false;
+
     /**
      * Mouse was clicked on the Cell:
      * Apply move to Board if Valid, otherwise prompt user invalid move.
+     *
      * @param e Mouse Event.
      */
     @Override
     public void mouseClicked(MouseEvent e) {
+        // Reject input if currently moving
+        if (currentlyMoving) return;
+
         // If Invalid Move.
         if (board.pathFinder.getPath().stream().anyMatch(board.visitedCells::contains) || board.highlightedCells.isEmpty()) {
             board.cluedoGame.getGui().infeasibleMove();
             return;
         }
 
-        // Else Valid Move.
+        // Store path.
+        Queue<Cell> path = new ArrayDeque<>(board.pathFinder.getPath());
 
-        // Update Dice number.
-        board.cluedoGame.removeMovesLeft(board.pathFinder.getPath().size());
+        // Create Timer for animation.
+        javax.swing.Timer t = new javax.swing.Timer(50, null);
+        t.setRepeats(false); // Stop timer from forever repeating.
+        t.addActionListener(e1 -> {
+            currentlyMoving = true;
 
-        // Remember Cells.
-        board.visitedCells.addAll(board.highlightedCells);
+            // Grab Variables
+            User user = board.cluedoGame.getCurrentUser();
+            Cell from = user.getSprite().getPosition();
+            Cell to = path.poll();
+            if (to == null) throw new Error("Cell should not be null");
 
-        // Clear Highlighted for next Movement.
-        board.highlightedCells.clear();
-        board.highlightedRooms.clear();
-        board.pathFinder.getPath().clear();
+            // Update collections
+            board.visitedCells.add(from);
+            board.highlightedCells.remove(to);
+            if (from.hasRoom()) {
+                from.getRoom().getCells().forEach(cell -> {
+                    board.highlightedCells.remove(cell);
+                    board.visitedCells.add(cell);
+                });
+            }
+            if (to.hasRoom()) {
+                to.getRoom().getCells().forEach(cell -> {
+                    board.highlightedCells.remove(cell);
+                    board.visitedCells.add(cell);
+                });
+            }
 
-        // Move player.
-        board.moveUser(board.cluedoGame.getCurrentUser(), this);
+            // Move player
+            board.moveUser(user, to);
+            board.cluedoGame.removeMovesLeft(1);
 
-        // Rerender Updated components.
-        board.getStream().forEach(Cell::render);
-        board.cluedoGame.getGui().redraw();
-        board.cluedoGame.getGui().redrawDice();
+            // Render changes
+            board.render();
 
+            // Restart timer for next movement.
+            if (!path.isEmpty()) t.restart();
+            // Clear memory
+            else {
+                // Remember Cells.
+                board.visitedCells.addAll(board.highlightedCells);
+
+                // Clear Highlighted for next Movement.
+                board.highlightedCells.clear();
+                board.highlightedRooms.clear();
+                board.pathFinder.getPath().clear();
+
+                if (to != this)
+                    board.moveUser(board.cluedoGame.getCurrentUser(), this);
+
+                // Render changes
+                board.render();
+            }
+            currentlyMoving = false;
+        });
+
+        t.start();
     }
-
 
     /**
      * Mouse Hover over Cell:
      * Calculate Path to Cell, based on CluedoGames path finding mode.
      * - Calculate Path
      * - Add all Cells in path to highlighted Cells.
+     *
      * @param e Mouse Event.
      */
     @Override
     public void mouseEntered(MouseEvent e) {
+        // Reject input if currently moving
+        if (currentlyMoving) return;
+
         // Don't find path if Cell not on board.
         if (isType(Type.VOID)) return;
 
@@ -221,7 +277,7 @@ public class Cell extends JLabel implements MouseListener {
         // Use Shortest Path
         if (CluedoGame.shortestPath)
             success = movesLeft >= pathFinder.findShortestPath(startingCell, this);
-        // Else Use Exact Path.
+            // Else Use Exact Path.
         else success = pathFinder.findExactPath(startingCell, this, movesLeft);
 
         // Success, also Highlight cells in rooms visited by pathfinder.
@@ -231,7 +287,7 @@ public class Cell extends JLabel implements MouseListener {
             board.highlightedRooms.clear();
         }
         // Render board.
-        board.getStream().forEach(Cell::render);
+        board.render();
         // If no path to cell, render 'X' on Cell.
         if (!success && startingCell != this) setIcon(new CombinedImageIcon(prevIcon, icons.get("cell_invalid.png")));
     }
@@ -240,21 +296,32 @@ public class Cell extends JLabel implements MouseListener {
      * Mouse Left Cell:
      * - Clear all highlighted Cells
      * - Rerender Board.
-     * @param e
+     * @param e Mouse event.
      */
     @Override
     public void mouseExited(MouseEvent e) {
+        // Reject input if currently moving
+        if (currentlyMoving) return;
+
         board.highlightedRooms.clear();
         board.highlightedCells.clear();
-        board.getStream().forEach(Cell::render);
-        render();
-        repaint();
+
+        board.render();
     }
 
+    /**
+     * Implemented but ignored
+     * @param e Mouse event.
+     */
     @Override
     public void mousePressed(MouseEvent e) {
+
     }
 
+    /**
+     * Implemented but ignored
+     * @param e Mouse event.
+     */
     @Override
     public void mouseReleased(MouseEvent e) {
     }
@@ -302,6 +369,7 @@ public class Cell extends JLabel implements MouseListener {
 
     /**
      * Checks whether Cell matches a corresponding type.
+     *
      * @param type Type to compare.
      * @return True of Cell shared type with param.
      */

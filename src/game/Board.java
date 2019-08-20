@@ -22,15 +22,14 @@ public class Board {
 
     static Map<String, ImageIcon> baseImageIcons = new HashMap<>();
     static Map<String, ImageIcon> scaledImageIcons = new HashMap<>();
-    public CluedoGame cluedoGame;
     PathFinder pathFinder;
 
     private Cell[][] cells;
     private int rows, cols;
 
-    public Set<Cell> visitedCells, highlightedCells;
-    public Set<Room> visitedRooms, highlightedRooms;
-    public Stack<Cell> path = new Stack<>();
+    CluedoGame cluedoGame;
+    Set<Cell> visitedCells, highlightedCells;
+    Set<Room> visitedRooms, highlightedRooms;
 
     // ------------------------
     // CONSTRUCTOR
@@ -88,6 +87,14 @@ public class Board {
         }
     }
 
+    /**
+     * Renders all cells, and the dice.
+     */
+    public void render() {
+        getStream().forEach(Cell::render);
+        cluedoGame.getGui().redrawDice();
+        cluedoGame.getGui().redraw();
+    }
 
     /**
      * Generates Board from Map.txt.

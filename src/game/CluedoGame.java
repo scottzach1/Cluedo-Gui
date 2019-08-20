@@ -356,7 +356,7 @@ public class CluedoGame {
     }
 
     /**
-     * Returns the state of this CLuedoGame
+     * Returns the state of this CluedoGame
      * @return - this.state
      */
     public State getState() {
