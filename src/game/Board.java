@@ -92,7 +92,6 @@ public class Board {
      */
     public void render() {
         getStream().forEach(Cell::render);
-        cluedoGame.getGui().redrawDice();
         cluedoGame.getGui().redraw();
     }
 
