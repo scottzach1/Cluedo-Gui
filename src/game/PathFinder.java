@@ -18,7 +18,7 @@ public class PathFinder {
      */
     public PathFinder(Board board) {
         this.board = board;
-        this.path = new ArrayDeque<>() {
+        this.path = new ArrayDeque<Cell>() {
         };
         this.visitedCells = board.highlightedCells;
         this.visitedRooms = board.highlightedRooms;
@@ -153,7 +153,7 @@ public class PathFinder {
     public boolean findExactPath(Cell start, Cell end, int steps) {
         if (board == null) throw new RuntimeException("Game.PathFinder does not have a Game.Board!");
         if (!end.isFree() || start.sameRoom(end)) return false;
-        return findExactPathHelper(new DFSNode(start, null), end, visitedRooms, visitedCells, new ArrayDeque<>(), steps);
+        return findExactPathHelper(new DFSNode(start, null), end, visitedRooms, visitedCells, new ArrayDeque<Cell>(), steps);
     }
 
     /**
@@ -167,7 +167,7 @@ public class PathFinder {
     private boolean findExactPathHelper(DFSNode node, Cell end, Set<Room> parentVisitedRooms, Set<Cell> parentVisitedCells, Queue<Cell> parentPath, int steps) {
         Set<Room> visitedRooms = new HashSet<>(parentVisitedRooms);
         Set<Cell> visitedCells = new HashSet<>(parentVisitedCells);
-        Queue<Cell> currentPath = new ArrayDeque<>(parentPath);
+        Queue<Cell> currentPath = new ArrayDeque<Cell>(parentPath);
 
         Cell current = node.current;
         visitedCells.add(current);

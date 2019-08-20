@@ -185,7 +185,7 @@ public class Cell extends JLabel implements MouseListener {
         }
 
         // Store path.
-        Queue<Cell> path = new ArrayDeque<>(board.pathFinder.getPath());
+        Queue<Cell> path = new ArrayDeque<Cell>(board.pathFinder.getPath());
 
         // Create Timer for animation.
         javax.swing.Timer t = new javax.swing.Timer(50, null);
