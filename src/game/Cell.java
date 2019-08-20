@@ -217,6 +217,7 @@ public class Cell extends JLabel implements MouseListener {
             // Move player
             board.moveUser(user, to);
             board.cluedoGame.removeMovesLeft(1);
+            board.cluedoGame.getGui().redrawDice();
 
             // Render changes
             board.render();
