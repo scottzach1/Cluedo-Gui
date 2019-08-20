@@ -226,9 +226,16 @@ public class Board {
         baseImageIcons.put("cell_visited.png", null);
         baseImageIcons.put("marker_unknown.png", null);
 
-        for (String fname : baseImageIcons.keySet()) {
-            baseImageIcons.put(fname, new ImageIcon(fname));
-            scaledImageIcons.put(fname, new ImageIcon(fname));
+        for (String key : baseImageIcons.keySet()) {
+            String fname = key;
+            ImageIcon testIcon = new ImageIcon(fname);
+            if (testIcon.getIconWidth() <= 0 || testIcon.getIconHeight() <= 0) {
+                if (key.startsWith("cell_")) fname = "cell_unknown.png";
+                if (key.startsWith("wall_")) fname = "wall_unknown.png";
+                if (key.startsWith("marker_")) fname = "marker_unknown.png";
+             }
+            baseImageIcons.put(key, new ImageIcon(fname));
+            scaledImageIcons.put(key, new ImageIcon(fname));
         }
     }
 

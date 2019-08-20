@@ -1,0 +1,84 @@
+associationClass CluedoGame {
+  1 -- 1 Board controls;
+  3..6 User enables;
+  1 GUI;
+  List sprites;
+  List weapons;
+  List rooms;
+  List solutions;
+}
+
+class User {
+  1..6 -- 3..6 Card;
+  1 -- 1 Sprite;
+
+  Integer userNo;
+  String userName;
+  List hand;
+  List knownCards;
+}
+
+class Board {
+  1 -- 1 PathFinder utilises;
+  600 -- 1 Cell;
+  9 -- 1 Room;
+  List rooms;
+  List cells;
+}
+
+class Cell {
+  0..1 -- 1 Sprite;
+  0..1 --  * Room;
+}
+
+class Card {
+  String name;
+}
+
+class Room {
+  isA Card;
+  String name;
+  Set cells;
+  Set doors;
+   0..1 -- 1 Weapon;
+}
+
+class PathFinder {
+}
+
+class Room {
+  isA Card;
+}
+
+class Sprite {
+  isA Card;
+}
+
+class Weapon {
+  isA Card;
+}
+
+class GUI {
+  1 -- 1 Canvas;
+  1 -- 1 Controls;
+  1 -- 1 MenuOptions;
+}
+
+class Canvas {
+  Board board;
+}
+
+class Console {
+}
+
+class Controls {
+  1 -- 1 UserInterface;
+  1 -- 1 Console;
+}
+
+class MenuOptions {
+
+}
+
+class UserInterface {
+}
