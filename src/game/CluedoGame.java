@@ -408,55 +408,101 @@ public class CluedoGame {
     }
 
     /**
-     * Get the temporary user name, used during the setup
-     * @return
+     * Get the temporary user name, used during the setup of the game
+     * to ensure that the GUI displays the correct player name
+     * @return this.tempUserName
      */
     public String getTempUserName(){
         return tempUserName;
     }
 
+    /**
+     * Returns the player who's turn it is
+     * @return the current user
+     */
     public User getCurrentUser() {
         return users.get(currentUserNo.ordinal());
     }
 
+    /**
+     * Sets the card to show another player when a suggestion has been refuted
+     * @param c - The card to show
+     */
     public void setShowOtherPlayerCard(Card c) {
         otherPlayerCard = c;
     }
 
+    /**
+     * Gets the player making a refute
+     * @return - USER refuting player
+     */
     public User getOtherPlayer() {
         return otherPlayer;
     }
 
+    /**
+     * Gets the card that the other player is using to refute a suggestion
+     * @return - this.otherPlayerCard
+     */
     public Card getOtherPlayerCard() {
         return otherPlayerCard;
     }
 
+    /**
+     * Gets the refuting players hand so that they can choose which card to refute with
+     * @return - this.otherPlayerHand
+     */
     public ArrayList<Card> getOtherPlayerHand() {
         return otherPlayersHand;
     }
 
-
-    // Setup getters, and setters
+    /**
+     * Sets the amount of players in this game
+     * @param playerAmount
+     */
     public void setPlayerAmount(int playerAmount) {
         this.playerAmount = playerAmount;
     }
 
+    /**
+     * Returns a list of all the available sprites
+     * @return - Set<Sprite.SpriteAlias>
+     */
     public Set<Sprite.SpriteAlias> getAvailableSprites() {
         return availableSprites;
     }
 
+    /**
+     * Removes a sprite from being available, used
+     * after another character has selected their character
+     * @param s - Sprite alias to be removed
+     */
     public void removeAvailableSprite(Sprite.SpriteAlias s) {
         availableSprites.remove(s);
     }
 
+    /**
+     * Sets the temporary user name, used when inbetween states of
+     * creating the character
+     * @param un - The users name
+     */
     public void setTempUserName(String un) {
         this.tempUserName = un;
     }
 
+    /**
+     * Sets the temporary sprite alias that the temporary user is
+     * going to be, used in between states when creating a character
+     * @param sa - The sprite alias
+     */
     public void setTempSprite(Sprite.SpriteAlias sa) {
         tempSpriteChoice = sa;
     }
 
+    /**
+     * Gets the next user to create
+     * if there are no more users to create it runs onto the next state
+     */
     public void nextTempUserNum() {
         addNewUser();
         tempUserNum++;
