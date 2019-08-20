@@ -37,8 +37,8 @@ public class UserInterface extends JPanel {
     /**
      * Sets up the user interface and it's JPanel settings
      *
-     * @param aCluedoGame -
-     * @param aControls
+     * @param aCluedoGame - game
+     * @param aControls - controls
      */
     public UserInterface(CluedoGame aCluedoGame, Controls aControls) {
         cluedoGame = aCluedoGame;

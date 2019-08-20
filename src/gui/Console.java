@@ -28,7 +28,7 @@ public class Console extends JPanel {
 
     /**
      * Sets this JPanel objects preferred size and draws on the border
-     * @param parent
+     * @param parent game
      */
     public Console(CluedoGame parent) {
         cluedoGame = parent;
@@ -48,8 +48,8 @@ public class Console extends JPanel {
      * Draws the dice with two Image Icons from the assets.
      * Uses the integers passed into the method to find the correct image
      * to display
-     * @param dieOne
-     * @param dieTwo
+     * @param dieOne first dice
+     * @param dieTwo second dice
      */
     protected void drawDice(int dieOne, int dieTwo) {
 

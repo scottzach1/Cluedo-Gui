@@ -26,7 +26,7 @@ public class MenuOptions extends JMenuBar {
 	/**
 	 * Constructs a new JMenuBar and sets up the menu options
 	 * along with adding action listeners to each button
-	 * @param aCluedoGame
+	 * @param aCluedoGame game
 	 */
 	public MenuOptions(CluedoGame aCluedoGame) {
 		cluedoGame = aCluedoGame;

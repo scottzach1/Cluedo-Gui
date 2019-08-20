@@ -66,7 +66,7 @@ public class Room extends Card {
 
 	/**
 	 * getDoors: Returns a set of all the doors of the room.
-	 * @return
+	 * @return Set of cells in room
 	 */
 	public Set<Cell> getDoorSteps() {
 		return doors;

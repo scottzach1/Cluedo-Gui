@@ -320,6 +320,7 @@ public class Controls extends JPanel {
     /**
      * Calls the userInterface's accuseOrSuggest method
      * Console is blank
+     * @param suggestion suggestion true / false
      */
     protected void accuseOrSuggest(boolean suggestion) {
         userInterface.accuseOrSuggest(suggestion);
@@ -395,6 +396,7 @@ public class Controls extends JPanel {
 
     /**
      * Sets the text represented up the top of the border
+     * @param borderTitle Title of border
      */
     public void setBorderTitle(String borderTitle) {
         this.borderTitle = borderTitle;

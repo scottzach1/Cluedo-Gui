@@ -41,6 +41,7 @@ public class Board {
      * - Initialises ImageIcons for Cells
      * - Generates sprites and places at corresponding starting positions.
      * - Generates Weapons and randomly allocates them to Rooms.
+     * @param cluedoGame game
      */
     public Board(CluedoGame cluedoGame) {
         this.cluedoGame = cluedoGame;
@@ -379,7 +380,7 @@ public class Board {
 
 	/**
 	 * Gets stream of all Cells, left to right, top to bottom.
-	 * @return Stream of all cells, left -> right, top -> bottom.
+	 * @return Stream of all cells, left to right, top to bottom.
 	 */
 	public Stream<Cell> getStream() {
         List<Cell> cellList = new ArrayList<>();

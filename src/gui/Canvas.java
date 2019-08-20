@@ -35,7 +35,7 @@ public class Canvas extends JPanel {
     /**
      * Creates a JPanel and sets its preferred size, also draws
      * it's border and sets the layout to GridBagLayout
-     * @param parent
+     * @param parent game
      */
     public Canvas(CluedoGame parent) {
         borderTitle = "CLUEDO GAME";

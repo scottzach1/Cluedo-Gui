@@ -449,7 +449,7 @@ public class CluedoGame {
     /**
      * Sets the amount of players in this game
      *
-     * @param playerAmount
+     * @param playerAmount number of players
      */
     public void setPlayerAmount(int playerAmount) {
         this.playerAmount = playerAmount;
@@ -457,8 +457,7 @@ public class CluedoGame {
 
     /**
      * Returns a list of all the available sprites
-     *
-     * @return - Set<Sprite.SpriteAlias>
+     * @return Set of Sprite.SpriteAlias
      */
     public Set<Sprite.SpriteAlias> getAvailableSprites() {
         return availableSprites;

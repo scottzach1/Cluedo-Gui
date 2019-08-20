@@ -73,6 +73,7 @@ public class Cell extends JLabel implements MouseListener {
      * @param row  Row of the Game.Cell.
      * @param col  Column of the Game.Cell.
      * @param type The type of Game.Cell. Ie, Type.Wall
+     * @param board The board
      */
     public Cell(int row, int col, Cell.Type type, Board board) {
         this.row = row;
@@ -333,6 +334,7 @@ public class Cell extends JLabel implements MouseListener {
 
     /**
      * If Cell's type is Room, get Rooms weapon.
+     * @return weapon
      */
     public Weapon getWeapon() {
         if (!hasRoom() || !isType(Type.WEAPON)) return null;

@@ -11,7 +11,7 @@ import java.util.Vector;
 
 /**
  * Stylised JComboBox.
- * @param <T>
+ * @param <T> generic component
  */
 public class ZComboBox<T> extends JComboBox<T> implements MouseListener {
 
