@@ -204,19 +204,6 @@ public class CluedoGame {
     }
 
     /**
-     * tryMove: Uses the Game.PathFinder test is a suggested path is feasible
-     *
-     * @param end      - Target Game.Cell
-     * @param moveType - Move type a player is making
-     * @param user     - Who is attempting the move
-     * @return String - "8" allowing for the next player to take their turn if
-     * successful
-     */
-    private String tryMove(Cell end, User user, String moveType) {
-        return "";
-    }
-
-    /**
      * generateSolution: Randomly selects 3 cards, 1 Player, 1 Game.Weapon, 1 Game.Room, and
      * places in the field array 'solution'
      */

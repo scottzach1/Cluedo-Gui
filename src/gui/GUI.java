@@ -6,6 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 
 /**
@@ -14,9 +16,24 @@ import java.awt.event.ComponentListener;
  * - The GUI controls the flow and state of the in-game mechanics.
  * - CluedoGame controls setup as user info and player numbers are needed there.
  */
-public class GUI extends JFrame implements ComponentListener {
+public class GUI extends JFrame implements ComponentListener, KeyListener {
     // Nothing important
     private static final long serialVersionUID = 1L;
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
 
     /**
      * GUIState:
