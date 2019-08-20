@@ -12,6 +12,10 @@ import java.util.*;
  */
 public class CluedoGame {
 
+    /**
+     * State:
+     * - An enum to hold track of the current game status
+     */
     public static enum State {
         MAIN_MENU, PLAYER_COUNT, USER_NAME_CREATION, USER_CHARACTER_SELECTION, SETUP_GAME_DESIGN, RUN_GUI;
     }
@@ -58,6 +62,7 @@ public class CluedoGame {
         board = new Board(this);
         gui = new GUI(this);
         gui.addLayoutComponents();
+        gui.setGuiState(GUI.GUIState.MAIN_MENU);
 
         // Set up start menu options
         availableSprites = new HashSet<>(board.getSprites().keySet());
@@ -66,6 +71,7 @@ public class CluedoGame {
         movesThisTurn = 0;
         movesLeft = 0;
         currentUserNo = User.UserNo.PLAYER_0;
+        gameController();
     }
 
     // ------------------------
@@ -97,6 +103,13 @@ public class CluedoGame {
         }
     }
 
+    /**
+     * Runs through all the cards in other players hands and
+     * determines who is able to refute the claim first, if any.
+     * @param sprite - the suggested sprite card
+     * @param weapon - the suggested weapon card
+     * @param room - the suggested room card
+     */
     public void checkSuggestion(Sprite sprite, Weapon weapon, Room room) {
         // Create an empty list of cards
         otherPlayersHand = new ArrayList<>();
@@ -161,33 +174,43 @@ public class CluedoGame {
         }
     }
 
-    public void chooserHiddenCard() {
-        gui.chooseHiddenPlayerCard();
-    }
-
+    /**
+     * checks the accused sprite weapon and room against the solution cards
+     * if the suggestion is wrong then the current player is out of the game
+     * if it is right the current player wins the game
+     * @param sprite - the accused sprite card
+     * @param weapon - the accused weapon card
+     * @param room - the accused room card
+     */
     public void checkAccusation(Sprite sprite, Weapon weapon, Room room) {
-        User user = getCurrentUser();
+        // If the player guessed correctly
         if (solution[0] == sprite && weapon == solution[1] && room == solution[2]) {
-            gui.displayWinner(user);
-        } else {
-            losers.add(user);
-            gui.displayLoser(user);
+            gui.displayWinner();
+        }
+        // If the players guess was incorrect
+        else {
+            losers.add(getCurrentUser());
+            gui.displayLoser();
         }
     }
 
+    /**
+     * If the players have confirmed to restart the game, the restart the game
+     * else exit the game.
+     */
     public void confirmRestartGame() {
         if (gui.restartGame()) {
             restartGame();
-        } else {
-            System.exit(0);
         }
     }
 
+    /**
+     * Dispose of the GUI and recreate the cludeoGame as this will restart
+     * the entire process
+     */
     public void restartGame() {
         gui.dispose();
         CluedoGame g = new CluedoGame();
-        g.gameController();
-
     }
 
     /**
@@ -286,14 +309,27 @@ public class CluedoGame {
 
     }
 
+    /**
+     * Returns the board in the CluedoGame object
+     * @return - this.board
+     */
     public Board getBoard() {
         return board;
     }
 
+    /**
+     * Returns the GUI object from the CluedoGame object
+     * @return - this.gui
+     */
     public GUI getGui() {
         return gui;
     }
 
+    /**
+     * Creates a user and sets the name and sprite based on preset fields
+     * then
+     * Adds a new user to the list of users
+     */
     public void addNewUser() {
         User u = new User();
         u.setUserName(tempUserName);
@@ -302,6 +338,10 @@ public class CluedoGame {
         users.add(u);
     }
 
+    /**
+     * Goes to the next state of the CluedoGame, or Runs the GUI which will determine its
+     * own state
+     */
     public void nextState() {
         if (state != State.RUN_GUI) {
             state = State.values()[state.ordinal() + 1];
@@ -315,32 +355,62 @@ public class CluedoGame {
         gameController();
     }
 
+    /**
+     * Returns the state of this CLuedoGame
+     * @return - this.state
+     */
     public State getState() {
         return state;
     }
 
+    /**
+     * Returns a randomly generated number between 1 and 6.
+     * @return - random number between 1 and 6
+     */
     public int rollDie() {
         Random dice = new Random();
         return dice.nextInt(6) + 1;
     }
 
+    /**
+     * Sets the amount of moves the user can use this turn,
+     * and resets the amount of moves the user has left this turn
+     * @param moves - amount of moves the player has for their turn
+     */
     public void setMovesThisTurn(int moves) {
         movesThisTurn = moves;
         movesLeft = moves;
     }
 
+    /**
+     * Returns the amount of moves the player has left in their turn
+     * @return - this.movesLeft
+     */
     public int getMovesLeft() {
         return movesLeft;
     }
 
+    /**
+     * Removes move that the player has left
+     * @param usedMoves - how many moves to remove
+     */
     public void removeMovesLeft(int usedMoves) {
         movesLeft -= usedMoves;
     }
 
+    /**
+     * Get the temporary user, used during the setup of the game to
+     * ensure that the GUI displays the correct player number
+     * @return this.tempUserNum
+     */
     public int getTempUserNum(){
         return tempUserNum;
     }
 
+    /**
+     * Get the temporary user name, used during the setup
+     * @return
+     */
     public String getTempUserName(){
         return tempUserName;
     }

@@ -213,7 +213,7 @@ public class UserInterface extends JPanel {
         confirm.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                cluedoGame.chooserHiddenCard();
+                cluedoGame.getGui().chooseHiddenPlayerCard();
             }
         });
 
