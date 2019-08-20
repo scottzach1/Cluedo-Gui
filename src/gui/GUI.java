@@ -20,21 +20,6 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     // Nothing important
     private static final long serialVersionUID = 1L;
 
-    @Override
-    public void keyTyped(KeyEvent e) {
-        
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-
-    }
-
     /**
      * GUIState:
      * - Enum defining the states this GUI can be in.
@@ -92,6 +77,8 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         addComponentListener(this);
+        addKeyListener(this);
+        setFocusable(true);
 
         // Set to visible and resizable
         setResizable(true);
@@ -797,6 +784,68 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
 
     @Override
     public void componentHidden(ComponentEvent e) {
+    }
+
+
+    // ----------------------------------------
+    // Key Listener
+    // ----------------------------------------
+
+
+    @Override
+    public void keyTyped(KeyEvent keyEvent) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+    }
+
+    @Override
+    public void keyReleased(KeyEvent keyEvent) {
+
+        if (cluedoGame.getState() != CluedoGame.State.RUN_GUI)
+            return;
+
+        switch (keyEvent.getKeyChar()){
+
+            case 'q':
+                exitGame();
+                break;
+            case 'w':
+                restartGame();
+                break;
+            case 'r':
+                displayRules();
+                break;
+
+        }
+
+
+        if (guiState != GUIState.GAME_MENU && guiState != GUIState.NEW_PLAYER)
+            return;
+
+        switch (keyEvent.getKeyChar()) {
+
+            case 'a':
+                accuseOrSuggest(false);
+                break;
+            case 'h':
+                showHand();
+                break;
+            case 'n':
+                showDetectiveCards();
+                break;
+            case 's':
+                accuseOrSuggest(true);
+                break;
+            case 't':
+                cluedoGame.nextState();
+                break;
+            case 'p':
+                CluedoGame.shortestPath = !CluedoGame.shortestPath;
+                gameMenu();
+        }
+
     }
 
 

@@ -41,9 +41,9 @@ public class MenuOptions extends JMenuBar {
 		
 		// Create the file menu
 		JMenu file = new JMenu("File");
-		restartItem = new JMenuItem("Restart");
-		closeItem = new JMenuItem("Close");
-		rulesItem = new JMenuItem("Rules");
+		restartItem = new JMenuItem("Restart (q)");
+		closeItem = new JMenuItem("Close (w)");
+		rulesItem = new JMenuItem("Rules (r)");
 
 		
 		// Add buttons to directories
