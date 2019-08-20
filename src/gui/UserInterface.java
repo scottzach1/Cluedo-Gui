@@ -56,7 +56,12 @@ public class UserInterface extends JPanel {
 
     /**
      * Creates all the buttons for the game menu for each different player
-     *
+     * - Show Hand
+     * - Detective Cards
+     * - Suggest
+     * - Which PathFinder to use
+     * - Accuse
+     * - Skip Turn
      */
     protected void mainPlayerMenu() {
         gc = new GridBagConstraints();

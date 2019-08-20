@@ -2,7 +2,6 @@ package gui;
 
 import extra.ZButton;
 import extra.ZComboBox;
-import game.Card;
 import game.CluedoGame;
 import game.Sprite;
 
@@ -12,7 +11,6 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Vector;
 
 public class Controls extends JPanel {
@@ -35,6 +33,11 @@ public class Controls extends JPanel {
     // CONSTRUCTOR
     // --------------------------------------------------
 
+    /**
+     * Sets up this JPanel with it's preferred size and
+     * draws its own border
+     * @param parent - The cluedo game object that creates this
+     */
     public Controls(CluedoGame parent) {
         borderTitle = "CONTROLS";
         cluedoGame = parent;
@@ -54,7 +57,7 @@ public class Controls extends JPanel {
     // --------------------------------------------------
 
     /**
-     * mainMenu:
+     * Creates a button to continue to start the game
      */
     protected void mainMenu() {
         gc = new GridBagConstraints();
@@ -72,7 +75,9 @@ public class Controls extends JPanel {
     }
 
     /**
-     * howManyPlayers:
+     * Creates a custom JCheckBox with our own icons for
+     * normal and selected boxes. These boxes are placed in a
+     * Button group as only one can be selected.
      */
     protected void howManyPlayers() {
         gc = new GridBagConstraints();
@@ -133,6 +138,11 @@ public class Controls extends JPanel {
 
     }
 
+    /**
+     * Creates a text field such that the current user can
+     * generate their own name. A JLabel is added to
+     * show the user they are meant to add their name there
+     */
     protected void createUser() {
         gc = new GridBagConstraints();
         drawBorder();
@@ -178,6 +188,10 @@ public class Controls extends JPanel {
 
     }
 
+    /**
+     * Create a radio button to select a sprite from and
+     * a confirmation button so that the current user can set their character
+     */
     protected void selectCharacter() {
         gc = new GridBagConstraints();
         drawBorder();
@@ -213,7 +227,7 @@ public class Controls extends JPanel {
     }
 
     /**
-     * addContainers:
+     * Adds the console and user interface to the controls panel
      */
     protected void addContainers() {
         gc = new GridBagConstraints();
@@ -241,24 +255,33 @@ public class Controls extends JPanel {
     }
 
     /**
-     *
+     * Rerolls the die, sets the moves for the user this turn,
+     * calls the gameMenu to display the players main menu
      */
     protected void nextPlayer() {
         dieOne = cluedoGame.rollDie();
         dieTwo = cluedoGame.rollDie();
         cluedoGame.setMovesThisTurn(dieOne + dieTwo);
-        console.drawDice(dieOne, dieTwo);
-        userInterface.mainPlayerMenu();
-        drawBorder();
-
+        gameMenu();
     }
 
+    /**
+     * Calls the console and userInterface to setup
+     * their own game menu. The Console, draws the dice
+     * and the userInterface displays the buttons for the players
+     * main menu
+     */
     protected void gameMenu() {
         console.drawDice(dieOne, dieTwo);
         userInterface.mainPlayerMenu();
         drawBorder();
     }
 
+    /**
+     * Calls the userInterface's backOption,
+     * If the user interface is not created or being used,
+     * Creates a button that resumes the current state of the game
+     */
     protected void backOption() {
         if (userInterface != null)
             userInterface.backOption();
@@ -271,12 +294,9 @@ public class Controls extends JPanel {
             back.setPreferredSize(new Dimension(getWidth() / 10, getHeight() / 5));
             back.setFont(new Font("Arial", Font.BOLD, Math.min(Math.min(getWidth() / 2, getHeight() / 2), 20)));
 
-            back.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    cluedoGame.getGui().mainMenu();
-                    MenuOptions.setExitRulesFalse();
-                }
+            back.addActionListener(arg0 -> {
+                cluedoGame.gameController();
+                MenuOptions.setExitRulesFalse();
             });
 
             add(back, gc);
@@ -284,41 +304,73 @@ public class Controls extends JPanel {
         drawBorder();
     }
 
+    /**
+     * Calls the userInterface's accuseOrSuggest method
+     * Console is blank
+     */
     protected void accuseOrSuggest(boolean suggestion) {
         userInterface.accuseOrSuggest(suggestion);
         drawBorder();
     }
 
+    /**
+     * Calls the userInterface's confirmShowHiddenContent method
+     * Console is blank
+     */
     protected void confirmShowHiddenContent() {
         userInterface.confirmShowHiddenContent();
         drawBorder();
     }
 
+    /**
+     * Calls the userInterface's chooseHiddenPlayerCard method
+     * Console is blank
+     */
     protected void chooseHiddenPlayerCard() {
         userInterface.chooseHiddenPlayerCard();
         drawBorder();
     }
 
+    /**
+     * Calls the userInterface's confirmShowOtherPlayerCard method
+     * Console is blank
+     */
     protected void confirmShowOtherPlayerCard() {
         userInterface.confirmShowOtherPlayerCard();
         drawBorder();
     }
 
+    /**
+     * Calls the userInterface's showUserOtherPlayerCard method
+     * Console is blank
+     */
     protected void showUserOtherPlayerCard() {
         userInterface.showUserOtherPlayerCard();
         drawBorder();
     }
 
-    protected  void noSuggestions(){
+    /**
+     * Calls the user interface's no suggestion method set up.
+     * Console is blank here
+     */
+    protected void noSuggestions() {
         userInterface.noSuggestions();
         drawBorder();
     }
 
+    /**
+     * Calls the user interface and console to
+     * their print error set ups
+     */
     protected void printError() {
         console.printError();
         userInterface.backOption();
     }
 
+    /**
+     * Redraws the dice on the console panel
+     * No need to roll the dice again
+     */
     protected void redrawDice() {
         console.clear();
         console.drawDice(dieOne, dieTwo);
@@ -329,20 +381,34 @@ public class Controls extends JPanel {
     // --------------------------------------------------
 
     /**
-     * setBorderTitle:
+     * Sets the text represented up the top of the border
      */
     public void setBorderTitle(String borderTitle) {
         this.borderTitle = borderTitle;
     }
 
+    /**
+     * sets the base color (the background color of the controls panel)
+     *
+     * @param c - The color to set the background color to
+     */
     public void setBaseCol(Color c) {
         baseCol = c;
     }
 
+    /**
+     * sets the controls accent color (the color of the bar and title
+     * up the top)
+     *
+     * @param c - The color to set the accent color
+     */
     public void setAccentCol(Color c) {
         accentCol = c;
     }
 
+    /**
+     * Draws the border for this JPanel, it also sets it's title
+     */
     private void drawBorder() {
         // Create the boarder
         Border border = BorderFactory.createTitledBorder(BorderFactory.createMatteBorder(2, 0, 0, 0, accentCol), borderTitle,
@@ -352,7 +418,8 @@ public class Controls extends JPanel {
     }
 
     /**
-     * clear:
+     * clears the components from the the Canvas and Controls if they exist
+     * else remove all the components from this JPanel.
      */
     public void clearComponents() {
         if (console != null)

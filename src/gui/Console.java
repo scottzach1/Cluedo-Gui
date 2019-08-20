@@ -26,11 +26,10 @@ public class Console extends JPanel {
             new ImageIcon("dice6.png")
     };
 
-
-    // --------------------------------------------------
-    // CONSTRUCTOR
-    // --------------------------------------------------
-
+    /**
+     * Sets this JPanel objects preferred size and draws on the border
+     * @param parent
+     */
     public Console(CluedoGame parent) {
         cluedoGame = parent;
 
@@ -45,6 +44,13 @@ public class Console extends JPanel {
         gc = new GridBagConstraints();
     }
 
+    /**
+     * Draws the dice with two Image Icons from the assets.
+     * Uses the integers passed into the method to find the correct image
+     * to display
+     * @param dieOne
+     * @param dieTwo
+     */
     protected void drawDice(int dieOne, int dieTwo) {
 
         gc = new GridBagConstraints();
@@ -103,6 +109,12 @@ public class Console extends JPanel {
 
     }
 
+    /**
+     * Creates a text area and sets that text area to
+     * present the error message set in the GUI.
+     * Any part of the game can set an error message
+     * however, only the Console can print the error.
+     */
     protected void printError() {
 
         gc = new GridBagConstraints();
@@ -128,6 +140,9 @@ public class Console extends JPanel {
     }
 
 
+    /**
+     * Draws the border for the JPanel
+     */
     private void drawBorder() {
         Border b1 = BorderFactory.createRaisedBevelBorder();
         Border b2 = BorderFactory.createLoweredBevelBorder();
@@ -135,10 +150,6 @@ public class Console extends JPanel {
         setBorder(b3);
         setBackground(baseCol);
     }
-
-    // --------------------------------------------------
-    // PUBLIC METHODS
-    // --------------------------------------------------
 
 
     public void clear() {
