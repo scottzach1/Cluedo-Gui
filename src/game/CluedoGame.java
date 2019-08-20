@@ -132,6 +132,7 @@ public class CluedoGame {
         }
         // Room A set weapon from Room B
         room.setWeapon(weapon);
+        holdingRoom.setWeapon(null);
         if (holdingWeapon != null) {
             // Room B set Weapon from Room A
             holdingRoom.setWeapon(holdingWeapon);

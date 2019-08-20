@@ -249,8 +249,8 @@ public class GUI extends JFrame implements ComponentListener {
         // Clears anything on the components, canvas and controls
         clearComponents();
         // Invokes the same methods down the chain of components
-            controls.nextPlayer();
-            canvas.renderBoard();
+        controls.nextPlayer();
+        canvas.renderBoard();
         // Redraws the new state
         redraw();
     }
@@ -267,8 +267,8 @@ public class GUI extends JFrame implements ComponentListener {
         // Clears anything on the components, canvas and controls
         clearComponents();
         // Invokes the same methods down the chain of components
-            controls.gameMenu();
-            canvas.renderBoard();
+        controls.gameMenu();
+        canvas.renderBoard();
         // Redraws the new state
         redraw();
     }
@@ -285,8 +285,8 @@ public class GUI extends JFrame implements ComponentListener {
         // Clears anything on the components, canvas and controls
         clearComponents();
         // Invokes the same methods down the chain of components
-            canvas.showHand();
-            controls.backOption();
+        canvas.showHand();
+        controls.backOption();
         // Redraws the new state
         redraw();
     }
@@ -302,8 +302,8 @@ public class GUI extends JFrame implements ComponentListener {
         // Clears anything on the components, canvas and controls
         clearComponents();
         // Invokes the same methods down the chain of components
-            canvas.showDetectiveCards();
-            controls.backOption();
+        canvas.showDetectiveCards();
+        controls.backOption();
         // Redraws the new state
         redraw();
     }
@@ -326,8 +326,8 @@ public class GUI extends JFrame implements ComponentListener {
         // Clears anything on the components, canvas and controls
         clearComponents();
         // Invokes the same methods down the chain of components
-            canvas.renderBoard();
-            controls.accuseOrSuggest(suggestion);
+        canvas.renderBoard();
+        controls.accuseOrSuggest(suggestion);
         // Redraws the new state
         redraw();
     }
@@ -343,8 +343,8 @@ public class GUI extends JFrame implements ComponentListener {
         // Clears anything on the components, canvas and controls
         clearComponents();
         // Invokes the same methods down the chain of components
-            controls.printError();
-            canvas.renderBoard();
+        controls.printError();
+        canvas.renderBoard();
         // Redraws the new state
         redraw();
     }
@@ -356,7 +356,7 @@ public class GUI extends JFrame implements ComponentListener {
      */
     public void redrawDice() {
         // Invokes the same methods down the chain of components
-            controls.redrawDice();
+        controls.redrawDice();
         // Redraws the new state
         redraw();
     }
@@ -489,9 +489,10 @@ public class GUI extends JFrame implements ComponentListener {
     /**
      * checkAccusationOrSuggestion:
      * - Creates a popup dialog that confirms the players suggestion
-     * @param s - The Sprite's Alias being accused
-     * @param w - The Weapons's Alias being accused
-     * @param r - The Rooms's Alias being accused
+     *
+     * @param s          - The Sprite's Alias being accused
+     * @param w          - The Weapons's Alias being accused
+     * @param r          - The Rooms's Alias being accused
      * @param suggestion - (True) a suggestion, (False) an accusation
      */
     public void checkAccusationOrSuggestion(Sprite.SpriteAlias s, Weapon.WeaponAlias w, Room.RoomAlias r, boolean suggestion) {
@@ -506,7 +507,7 @@ public class GUI extends JFrame implements ComponentListener {
         // If a suggestion, simply say they're making a suggestion
         if (suggestion)
             text.append(" suggestion\n");
-        // Else if it is an accusation, print a warning that if they are wrong they will lose.
+            // Else if it is an accusation, print a warning that if they are wrong they will lose.
         else
             text.append(" accusation\n(WARNING: an incorrect guess will mean you lose)\n");
 
@@ -531,8 +532,8 @@ public class GUI extends JFrame implements ComponentListener {
         // If they close the window or select no, send them back to their game menu
         if (choice == JOptionPane.CLOSED_OPTION || choice == 1)
             cluedoGame.getGui().gameMenu();
-        // If we get here they want to make their claim, check if it is a
-        // Suggestion or a Accusation and make the correct steps to invoke the method.
+            // If we get here they want to make their claim, check if it is a
+            // Suggestion or a Accusation and make the correct steps to invoke the method.
         else if (suggestion) {
             cluedoGame.checkSuggestion(guessedSprite, guessedWeapon, guessedRoom);
         } else {
@@ -544,6 +545,7 @@ public class GUI extends JFrame implements ComponentListener {
      * skipUser:
      * - When a player has lost the game, upon their turn, display
      * via a pop up dialog that their turn has been skipped.
+     *
      * @param user - The user who's turn is skipped
      */
     public void skipUser(User user) {
@@ -571,6 +573,7 @@ public class GUI extends JFrame implements ComponentListener {
     /**
      * displayWinner:
      * - Displays a pop up window when a user has won the game.
+     *
      * @param user - The winning user of the game
      */
     public void displayWinner(User user) {
@@ -598,6 +601,7 @@ public class GUI extends JFrame implements ComponentListener {
      * displayLoser:
      * - Invoke when a player incorrectly makes an accusation.
      * Creates a pop up window to inform that user they have lost
+     *
      * @param user - the losing user
      */
     public void displayLoser(User user) {
@@ -620,16 +624,19 @@ public class GUI extends JFrame implements ComponentListener {
     }
 
     /**
-     *
+     * restartGame:
+     * - Invokes a pop up menu to confirm restarting the game
      * @return boolean - whether to restart the
      */
     public boolean restartGame() {
-
+        // Button options
         String[] options = {"Heck Yeah!", "Nah, that's enough for me."};
 
+        // Build the text for the JOptionPane
         StringBuilder text = new StringBuilder();
         text.append("Would you like to restart the game?");
 
+        // Create and display the JOptionPane
         int choice = JOptionPane.showOptionDialog(null,
                 text.toString(),
                 "RESTART?",
@@ -639,6 +646,7 @@ public class GUI extends JFrame implements ComponentListener {
                 options,
                 options[0]);
 
+        // Return false if they choose not to exit the game, else return true
         if (choice == JOptionPane.CLOSED_OPTION || choice == 1) {
             return false;
         }
@@ -646,8 +654,14 @@ public class GUI extends JFrame implements ComponentListener {
     }
 
 
+    /**
+     * exitGame:
+     * - Invokes a pop up menu to confirm the player wants to exit the game.
+     * @return boolean - whether to exit or not
+     */
     public boolean exitGame() {
 
+        // Button
         String[] options = {"Yes please", "Opps, wrong button"};
 
         StringBuilder text = new StringBuilder();
@@ -676,7 +690,9 @@ public class GUI extends JFrame implements ComponentListener {
         errorMsg = str;
     }
 
-    public String getErrorMsg() {return errorMsg;}
+    public String getErrorMsg() {
+        return errorMsg;
+    }
 
     public void redraw() {
         revalidate();
@@ -685,7 +701,7 @@ public class GUI extends JFrame implements ComponentListener {
 
     private void resize() {
         clearComponents();
-        if (canvas != null && controls != null)
+        if (cluedoGame.getState().ordinal() > CluedoGame.State.SETUP_GAME_DESIGN.ordinal())
             cluedoGame.gameController();
         // Redraws the new state
         redraw();
