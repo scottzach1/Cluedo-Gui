@@ -1,7 +1,7 @@
 package gui;
 
 import extra.ZButton;
-import extra.ZComboBox;
+import extra.ZRadioButton;
 import game.CluedoGame;
 import game.Sprite;
 
@@ -11,7 +11,6 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Vector;
 
 public class Controls extends JPanel {
 
@@ -20,7 +19,7 @@ public class Controls extends JPanel {
     // --------------------------------------------------
 
     private Color accentCol = Color.WHITE;
-    private Color baseCol = Color.DARK_GRAY;
+    private static Color baseCol = Color.DARK_GRAY;
 
     private String borderTitle;
     private Console console;
@@ -36,6 +35,7 @@ public class Controls extends JPanel {
     /**
      * Sets up this JPanel with it's preferred size and
      * draws its own border
+     *
      * @param parent - The cluedo game object that creates this
      */
     public Controls(CluedoGame parent) {
@@ -123,7 +123,7 @@ public class Controls extends JPanel {
         gc.gridy = 1;
         gc.gridwidth = 4;
 
-        JButton submit = new ZButton("SUBMIT", 20);
+        ZButton submit = new ZButton("SUBMIT", UserInterface.BIG_FONT);
 
         submit.addActionListener(arg -> {
             try {
@@ -165,7 +165,7 @@ public class Controls extends JPanel {
         nameField.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                cluedoGame.setTempUserName(nameField.getText());
+                cluedoGame.setTempUserName(nameField.getText().length() > 0 ? nameField.getText() : "Player " + (cluedoGame.getTempUserNum() + 1));
                 cluedoGame.nextState();
             }
         });
@@ -196,32 +196,45 @@ public class Controls extends JPanel {
         gc = new GridBagConstraints();
         drawBorder();
 
-        // Create drop down menu
-        JComboBox<Sprite.SpriteAlias> spriteOptions = new ZComboBox<>(new Vector<>(cluedoGame.getAvailableSprites()), 20);
-        spriteOptions.setPreferredSize(new Dimension(getWidth() / 6, getHeight() / 6));
+        // Set up the button group and placement
+        ButtonGroup group = new ButtonGroup();
+        gc.weightx = 2;
+        gc.weighty = 2;
+        gc.gridy = 0;
+        gc.gridx = 0;
+        int xPos = 0;
 
-        // Create submit button
-        JButton submit = new ZButton("SUBMIT", 20);
-        submit.setPreferredSize(new Dimension(getWidth() / 6, getHeight() / 6));
+        for (Sprite s : cluedoGame.getBoard().getSprites().values()) {
+            Sprite.SpriteAlias sa = s.getSpriteAlias();
+            ZRadioButton b = new ZRadioButton(s, UserInterface.BIG_FONT, cluedoGame.getAvailableSprites().contains(sa));
 
-        submit.addActionListener(e -> {
-            cluedoGame.setTempSprite((Sprite.SpriteAlias) spriteOptions.getSelectedItem());
-            cluedoGame.removeAvailableSprite((Sprite.SpriteAlias) spriteOptions.getSelectedItem());
-            cluedoGame.nextTempUserNum();
+            group.add(b);
+
+            gc.gridx = xPos;
+            gc.anchor = GridBagConstraints.CENTER;
+            add(b, gc);
+            xPos++;
+        }
+
+        // Create the submit button
+        gc.fill = GridBagConstraints.BOTH;
+        gc.weighty = 1;
+        gc.gridx = 0;
+        gc.gridy = 1;
+        gc.gridwidth = 6;
+
+        ZButton submit = new ZButton("SUBMIT", UserInterface.BIG_FONT);
+
+        submit.addActionListener(arg -> {
+            try {
+                Sprite.SpriteAlias sa = Sprite.SpriteAlias.valueOf(group.getSelection().getActionCommand());
+                cluedoGame.setTempSprite(sa);
+                cluedoGame.removeAvailableSprite(sa);
+                cluedoGame.nextTempUserNum();
+            } catch (Exception e) {
+            }
         });
 
-        gc.weightx = 1;
-        gc.weighty = 1;
-        // add the components to their locations
-        gc.gridx = 0;
-        gc.gridy = 0;
-        gc.insets = new Insets(0, 0, 0, 10);
-        gc.anchor = GridBagConstraints.LINE_END;
-        add(spriteOptions, gc);
-        gc.gridx = 1;
-        gc.gridy = 0;
-        gc.insets = new Insets(0, 10, 0, 0);
-        gc.anchor = GridBagConstraints.LINE_START;
         add(submit, gc);
 
     }
@@ -429,5 +442,10 @@ public class Controls extends JPanel {
         if (console == null && userInterface == null)
             removeAll();
     }
+
+    public static Color getBaseCol() {
+        return baseCol;
+    }
+
 
 }

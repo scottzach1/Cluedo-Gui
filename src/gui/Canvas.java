@@ -136,7 +136,7 @@ public class Canvas extends JPanel {
         gc.weightx = 1;
         gc.weighty = 2;
         gc.gridwidth = 1;
-        gc.gridx = 0;
+        gc.gridx = 1;
         int cardHeight = getHeight() / 2;
         int cardWidth = getWidth() / 6;
         boolean useWidth = cardHeight > cardWidth;
@@ -183,7 +183,7 @@ public class Canvas extends JPanel {
         rooms.setFont(font);
 
         // Place the label if there is any cards for it
-        currentGridX = 0;
+        currentGridX = 1;
         gc.gridy = 0;
         gc.weighty = 1;
         gc.anchor = GridBagConstraints.CENTER;

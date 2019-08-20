@@ -88,10 +88,9 @@ public class CluedoGame {
             gui.howManyPlayers();
         else if (state == State.USER_NAME_CREATION)
             gui.createUser();
-        else if (state == State.USER_CHARACTER_SELECTION){
+        else if (state == State.USER_CHARACTER_SELECTION) {
             gui.selectCharacter();
-        }
-        else if (state == State.SETUP_GAME_DESIGN) {
+        } else if (state == State.SETUP_GAME_DESIGN) {
             gui.gameSetup();
             generateSolution();
             generateHands();
@@ -106,9 +105,10 @@ public class CluedoGame {
     /**
      * Runs through all the cards in other players hands and
      * determines who is able to refute the claim first, if any.
+     *
      * @param sprite - the suggested sprite card
      * @param weapon - the suggested weapon card
-     * @param room - the suggested room card
+     * @param room   - the suggested room card
      */
     public void checkSuggestion(Sprite sprite, Weapon weapon, Room room) {
         // Create an empty list of cards
@@ -125,28 +125,17 @@ public class CluedoGame {
         ArrayList<Cell> shuffledCells = new ArrayList<>(room.getCells());
 
         // Shuffle till not on a person
-        while(!shuffledCells.get(0).isFree())
-        	Collections.shuffle(shuffledCells);
+        while (!shuffledCells.get(0).isFree())
+            Collections.shuffle(shuffledCells);
         Cell holdingCell = sprite.getPosition();
         sprite.setPosition(shuffledCells.get(0));
         holdingCell.setSprite(null);
 
         // Teleport the suggested Weapon to this room too
-        Weapon holdingWeapon = null;
-        Room holdingRoom = null;
-
-        // If room A has a weapon
-        if (room.getWeapon() != null) {
-            // Temp hold the rooms weapon
-            holdingWeapon = room.getWeapon();
-            // Temp hold Room B (room containing weapon)
-            holdingRoom = weapon.getRoom();
-
-        }
-        // Room A set weapon from Room B
+        Weapon holdingWeapon = room.getWeapon();
+        Room holdingRoom = weapon.getRoom();
         room.setWeapon(weapon);
-        holdingRoom.setWeapon(null);
-        if (holdingWeapon != null) {
+        if (holdingRoom != null) {
             // Room B set Weapon from Room A
             holdingRoom.setWeapon(holdingWeapon);
         }
@@ -168,7 +157,7 @@ public class CluedoGame {
             }
         }
 
-        if (otherPlayersHand.size() == 0){
+        if (otherPlayersHand.size() == 0) {
             gui.noSuggestions();
             return;
         }
@@ -178,9 +167,10 @@ public class CluedoGame {
      * checks the accused sprite weapon and room against the solution cards
      * if the suggestion is wrong then the current player is out of the game
      * if it is right the current player wins the game
+     *
      * @param sprite - the accused sprite card
      * @param weapon - the accused weapon card
-     * @param room - the accused room card
+     * @param room   - the accused room card
      */
     public void checkAccusation(Sprite sprite, Weapon weapon, Room room) {
         // If the player guessed correctly
@@ -311,6 +301,7 @@ public class CluedoGame {
 
     /**
      * Returns the board in the CluedoGame object
+     *
      * @return - this.board
      */
     public Board getBoard() {
@@ -319,6 +310,7 @@ public class CluedoGame {
 
     /**
      * Returns the GUI object from the CluedoGame object
+     *
      * @return - this.gui
      */
     public GUI getGui() {
@@ -365,6 +357,7 @@ public class CluedoGame {
 
     /**
      * Returns a randomly generated number between 1 and 6.
+     *
      * @return - random number between 1 and 6
      */
     public int rollDie() {
@@ -375,6 +368,7 @@ public class CluedoGame {
     /**
      * Sets the amount of moves the user can use this turn,
      * and resets the amount of moves the user has left this turn
+     *
      * @param moves - amount of moves the player has for their turn
      */
     public void setMovesThisTurn(int moves) {
@@ -384,6 +378,7 @@ public class CluedoGame {
 
     /**
      * Returns the amount of moves the player has left in their turn
+     *
      * @return - this.movesLeft
      */
     public int getMovesLeft() {
@@ -392,6 +387,7 @@ public class CluedoGame {
 
     /**
      * Removes move that the player has left
+     *
      * @param usedMoves - how many moves to remove
      */
     public void removeMovesLeft(int usedMoves) {
@@ -401,23 +397,26 @@ public class CluedoGame {
     /**
      * Get the temporary user, used during the setup of the game to
      * ensure that the GUI displays the correct player number
+     *
      * @return this.tempUserNum
      */
-    public int getTempUserNum(){
+    public int getTempUserNum() {
         return tempUserNum;
     }
 
     /**
      * Get the temporary user name, used during the setup of the game
      * to ensure that the GUI displays the correct player name
+     *
      * @return this.tempUserName
      */
-    public String getTempUserName(){
+    public String getTempUserName() {
         return tempUserName;
     }
 
     /**
      * Returns the player who's turn it is
+     *
      * @return the current user
      */
     public User getCurrentUser() {
@@ -426,6 +425,7 @@ public class CluedoGame {
 
     /**
      * Sets the card to show another player when a suggestion has been refuted
+     *
      * @param c - The card to show
      */
     public void setShowOtherPlayerCard(Card c) {
@@ -434,6 +434,7 @@ public class CluedoGame {
 
     /**
      * Gets the player making a refute
+     *
      * @return - USER refuting player
      */
     public User getOtherPlayer() {
@@ -442,6 +443,7 @@ public class CluedoGame {
 
     /**
      * Gets the card that the other player is using to refute a suggestion
+     *
      * @return - this.otherPlayerCard
      */
     public Card getOtherPlayerCard() {
@@ -450,6 +452,7 @@ public class CluedoGame {
 
     /**
      * Gets the refuting players hand so that they can choose which card to refute with
+     *
      * @return - this.otherPlayerHand
      */
     public ArrayList<Card> getOtherPlayerHand() {
@@ -458,6 +461,7 @@ public class CluedoGame {
 
     /**
      * Sets the amount of players in this game
+     *
      * @param playerAmount
      */
     public void setPlayerAmount(int playerAmount) {
@@ -466,6 +470,7 @@ public class CluedoGame {
 
     /**
      * Returns a list of all the available sprites
+     *
      * @return - Set<Sprite.SpriteAlias>
      */
     public Set<Sprite.SpriteAlias> getAvailableSprites() {
@@ -475,6 +480,7 @@ public class CluedoGame {
     /**
      * Removes a sprite from being available, used
      * after another character has selected their character
+     *
      * @param s - Sprite alias to be removed
      */
     public void removeAvailableSprite(Sprite.SpriteAlias s) {
@@ -484,6 +490,7 @@ public class CluedoGame {
     /**
      * Sets the temporary user name, used when inbetween states of
      * creating the character
+     *
      * @param un - The users name
      */
     public void setTempUserName(String un) {
@@ -493,6 +500,7 @@ public class CluedoGame {
     /**
      * Sets the temporary sprite alias that the temporary user is
      * going to be, used in between states when creating a character
+     *
      * @param sa - The sprite alias
      */
     public void setTempSprite(Sprite.SpriteAlias sa) {
