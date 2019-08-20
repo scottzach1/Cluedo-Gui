@@ -67,6 +67,7 @@ public class MenuOptions extends JMenuBar {
 
 		// Rules
 		rulesItem.addActionListener(e -> {
+		    // As long as you are not setting up the game
 			if (cluedoGame.getState() != CluedoGame.State.PLAYER_COUNT && cluedoGame.getState() != CluedoGame.State.USER_NAME_CREATION &&
 			cluedoGame.getState() != CluedoGame.State.USER_CHARACTER_SELECTION) {
 				rulesItem.setText((exitRules = !exitRules) ? "Exit Rules" : "Rules");

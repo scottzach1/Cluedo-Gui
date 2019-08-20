@@ -9,8 +9,6 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Vector;
 
 public class UserInterface extends JPanel {
@@ -29,16 +27,22 @@ public class UserInterface extends JPanel {
     private GridBagConstraints gc;
     private Dimension size;
     private final CluedoGame cluedoGame;
-    private final Controls parent;
+    private final Controls controls;
 
 
     // --------------------------------------------------
     // CONSTRUCTOR
     // --------------------------------------------------
 
-    public UserInterface(CluedoGame aCluedoGame, Controls aParent) {
+    /**
+     * Sets up the user interface and it's JPanel settings
+     *
+     * @param aCluedoGame -
+     * @param aControls
+     */
+    public UserInterface(CluedoGame aCluedoGame, Controls aControls) {
         cluedoGame = aCluedoGame;
-        parent = aParent;
+        controls = aControls;
         // Set the Size of the Control panel
         setPreferredSize(new Dimension((cluedoGame.getGui().getWidth() * 2 / 3) - 3, (cluedoGame.getGui().getHeight())));
 
@@ -50,6 +54,10 @@ public class UserInterface extends JPanel {
         gc = new GridBagConstraints();
     }
 
+    /**
+     * Creates all the buttons for the game menu for each different player
+     *
+     */
     protected void mainPlayerMenu() {
         gc = new GridBagConstraints();
 
@@ -120,6 +128,10 @@ public class UserInterface extends JPanel {
 
     }
 
+    /**
+     * Create a general button that allows the user to go back to
+     * the game menu. Used when looking at their cards to go back.
+     */
     void backOption() {
         // Clear all previous settings
         gc = new GridBagConstraints();
@@ -143,6 +155,11 @@ public class UserInterface extends JPanel {
 
     }
 
+    /**
+     * Creates three JComboBoxes to make a suggestion from. Set those Combo boxes
+     * up with their respective cards. A JButton is also added to confirm their selection
+     * @param suggestion
+     */
     void accuseOrSuggest(boolean suggestion) {
         // Clear all previous settings
         gc = new GridBagConstraints();
@@ -204,6 +221,10 @@ public class UserInterface extends JPanel {
 
     }
 
+    /**
+     * Creates a button to confirm that the other user
+     * is ready to select and show their cards
+     */
     protected void confirmShowHiddenContent() {
         // Clear all previous settings
         gc = new GridBagConstraints();
@@ -222,7 +243,12 @@ public class UserInterface extends JPanel {
         add(confirm, gc);
     }
 
-    protected void chooseHiddenPlayerCard(ArrayList<Card> cards) {
+    /**
+     * Creates a JComboBox with all the other players cards
+     * and a JButton to confirm which card they wish to show the current
+     * player
+     */
+    protected void chooseHiddenPlayerCard() {
         // Clear all previous settings
         gc = new GridBagConstraints();
 
@@ -230,7 +256,7 @@ public class UserInterface extends JPanel {
         // and a button to confirm the selection
         JComboBox<Card> cardsToChooseFrom = new ZComboBox<Card>(MEDIUM_FONT);
         cardsToChooseFrom.setPreferredSize(new Dimension(getWidth() / 6, getHeight() / 6));
-        cards.forEach(cardsToChooseFrom::addItem);
+        cluedoGame.getOtherPlayerHand().forEach(cardsToChooseFrom::addItem);
 
         JButton confirm = new ZButton("Confirm", BIG_FONT);
         confirm.setPreferredSize(new Dimension(getWidth() / 6, getHeight() / 6));
@@ -253,6 +279,10 @@ public class UserInterface extends JPanel {
 
     }
 
+    /**
+     * Creates a JButton to continue to show the current player
+     * the card the other player is showing them
+     */
     protected void confirmShowOtherPlayerCard() {
         // Clear all previous settings
         gc = new GridBagConstraints();
@@ -266,6 +296,10 @@ public class UserInterface extends JPanel {
         add(confirm, gc);
     }
 
+    /**
+     * Creates a JButton to go to the next user after a successful suggest
+     * and also add to their observed cards
+     */
     protected void showUserOtherPlayerCard() {
         // Clear all previous settings
         gc = new GridBagConstraints();
@@ -282,11 +316,15 @@ public class UserInterface extends JPanel {
         add(confirm, gc);
     }
 
+    /**
+     * Creates a JButton to go back to the game menu with
+     * after a suggestion has returned no results
+     */
     protected void noSuggestions() {
         // Clear all previous settings
         gc = new GridBagConstraints();
 
-        JButton confirm = new ZButton("Hmmm...", SMALL_FONT);
+        JButton confirm = new ZButton("Hmmm...", BIG_FONT);
         confirm.setPreferredSize(new Dimension(getWidth() / 6, getHeight() / 6));
         confirm.addActionListener(e -> cluedoGame.nextState());
 
@@ -296,6 +334,9 @@ public class UserInterface extends JPanel {
     }
 
 
+    /**
+     * Draws the JPanels border and sets it's color
+     */
     private void drawBorder() {
         Border b1 = BorderFactory.createRaisedBevelBorder();
         Border b2 = BorderFactory.createLoweredBevelBorder();
@@ -304,11 +345,14 @@ public class UserInterface extends JPanel {
         setBackground(BASE_COL);
     }
 
+    /**
+     * Sets the controls title, and colors based on the current player
+     */
     private void setParentTitle() {
         User currentUser = cluedoGame.getCurrentUser();
-        parent.setBorderTitle(currentUser.getUserName() + "'s turn");
-        parent.setBaseCol(currentUser.getSprite().getSpriteColor());
-        parent.setAccentCol(currentUser.getSprite().getOpposingColor());
+        controls.setBorderTitle(currentUser.getUserName() + "'s turn");
+        controls.setBaseCol(currentUser.getSprite().getSpriteColor());
+        controls.setAccentCol(currentUser.getSprite().getOpposingColor());
     }
 
     // --------------------------------------------------

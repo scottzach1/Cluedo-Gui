@@ -387,7 +387,7 @@ public class GUI extends JFrame implements ComponentListener {
         clearComponents();
         // Invokes the same methods down the chain of components
         controls.confirmShowHiddenContent();
-        canvas.confirmShowHiddenContent(cluedoGame.getOtherPlayer());
+        canvas.confirmShowHiddenContent();
         // Redraws the new state
         redraw();
     }
@@ -403,8 +403,8 @@ public class GUI extends JFrame implements ComponentListener {
         // Clears anything on the components, canvas and controls
         clearComponents();
         // Invokes the same methods down the chain of components
-        controls.chooseHiddenPlayerCard(cluedoGame.getOtherPlayerHand());
-        canvas.chooseHiddenPlayerCard(cluedoGame.getOtherPlayer());
+        controls.chooseHiddenPlayerCard();
+        canvas.chooseHiddenPlayerCard();
         // Redraws the new state
         redraw();
     }
