@@ -22,6 +22,12 @@ public class MenuOptions extends JMenuBar {
 	// --------------------------------------------------
 	// CONSTRUCTOR
 	// --------------------------------------------------
+
+	/**
+	 * Constructs a new JMenuBar and sets up the menu options
+	 * along with adding action listeners to each button
+	 * @param aCluedoGame
+	 */
 	public MenuOptions(CluedoGame aCluedoGame) {
 		cluedoGame = aCluedoGame;
 		exitRules = false;
@@ -53,41 +59,38 @@ public class MenuOptions extends JMenuBar {
 		
 		// Button actions:
 		// Restart
-		restartItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if (cluedoGame.getGui().restartGame()){
-					cluedoGame.restartGame();
-				}
+		restartItem.addActionListener(arg0 -> {
+			if (cluedoGame.getGui().restartGame()){
+				cluedoGame.restartGame();
 			}
 		});
 
 		// Rules
-		rulesItem.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (cluedoGame.getState() != CluedoGame.State.PLAYER_COUNT && cluedoGame.getState() != CluedoGame.State.USER_NAME_CREATION &&
-				cluedoGame.getState() != CluedoGame.State.USER_CHARACTER_SELECTION) {
-					rulesItem.setText((exitRules = !exitRules) ? "Exit Rules" : "Rules");
-					if (!exitRules) {
-						cluedoGame.gameController();
-					} else {
-						cluedoGame.getGui().displayRules();
-					}
+		rulesItem.addActionListener(e -> {
+			if (cluedoGame.getState() != CluedoGame.State.PLAYER_COUNT && cluedoGame.getState() != CluedoGame.State.USER_NAME_CREATION &&
+			cluedoGame.getState() != CluedoGame.State.USER_CHARACTER_SELECTION) {
+				rulesItem.setText((exitRules = !exitRules) ? "Exit Rules" : "Rules");
+				if (!exitRules) {
+					cluedoGame.gameController();
+				} else {
+					cluedoGame.getGui().displayRules();
 				}
 			}
 		});
 		
 		// Close
-		closeItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if (cluedoGame.getGui().exitGame()){
-					System.exit(0);
-				}
-			}			
+		closeItem.addActionListener(arg0 -> {
+			if (cluedoGame.getGui().exitGame()){
+				System.exit(0);
+			}
 		});
 		
 	}
 
+	/**
+	 * There are multiple ways of exiting the rules menu, in either case,
+	 * the text for the button needs to return to the state of "Rules"
+	 */
 	public static void setExitRulesFalse(){
 		exitRules = false;
 		rulesItem.setText("Rules");
