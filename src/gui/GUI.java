@@ -18,6 +18,17 @@ public class GUI extends JFrame implements ComponentListener {
     // Nothing important
     private static final long serialVersionUID = 1L;
 
+    /**
+     * GUIState:
+     * - Enum defining the states this GUI can be in.
+     * Allows for the frame to be resized and redisplay its current state
+     */
+    public static enum GUIState {
+        ACCUSE, CHOOSE_HIDDEN_PLAYER_CARD, CONFIRM_SHOW_HIDDEN_CONTENT, CONFIRM_SHOW_OTHER_PLAYER_CARD,
+        DISPLAY_RULES, GAME_MENU, INFEASIBLE_MOVE, MAIN_MENU, NEW_PLAYER, NO_SUGGESTIONS,
+        PRINT_ERROR, SHOW_DETECTIVE_CARDS, SHOW_HAND, SHOW_USER_OTHER_PLAYER_CARD, SUGGEST;
+    }
+
 
     // --------------------------------------------------
     // FIELDS
@@ -57,6 +68,8 @@ public class GUI extends JFrame implements ComponentListener {
         super("CLUEDO GAME");
         cluedoGame = aCluedoGame;
 
+        //addLayoutComponents();
+
         // Create the frame
         setPreferredSize(screenSize.getSize());
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -90,7 +103,7 @@ public class GUI extends JFrame implements ComponentListener {
         // Canvas and Controls are updated on screen resize
         // Thus, we need to pack them in before adding anything to the frame, else
         // upon adding, they will refresh and be unable to display.
-        pack();
+        //pack();
 
         // Add panels and menu to frame
         setJMenuBar(menuBar);
@@ -573,16 +586,14 @@ public class GUI extends JFrame implements ComponentListener {
     /**
      * displayWinner:
      * - Displays a pop up window when a user has won the game.
-     *
-     * @param user - The winning user of the game
      */
-    public void displayWinner(User user) {
+    public void displayWinner() {
         // Button options
         String[] options = {"WOOOOO!!!"};
 
         // Build the string to be put in the window
         StringBuilder text = new StringBuilder();
-        text.append(user.getUserName() + " is the best detective." +
+        text.append(cluedoGame.getCurrentUser().getUserName() + " is the best detective." +
                 "\n They have won the game!");
 
         // Create and display a JOptionPane window with the users name who won
@@ -601,14 +612,12 @@ public class GUI extends JFrame implements ComponentListener {
      * displayLoser:
      * - Invoke when a player incorrectly makes an accusation.
      * Creates a pop up window to inform that user they have lost
-     *
-     * @param user - the losing user
      */
-    public void displayLoser(User user) {
+    public void displayLoser() {
         String[] options = {"WHAT! No way!"};
 
         StringBuilder text = new StringBuilder();
-        text.append(user.getUserName() + " did NOT guess correctly." +
+        text.append(cluedoGame.getCurrentUser().getUserName() + " did NOT guess correctly." +
                 "\n They are now unable to win." +
                 "\n However, they can still show their cards");
 
@@ -626,6 +635,7 @@ public class GUI extends JFrame implements ComponentListener {
     /**
      * restartGame:
      * - Invokes a pop up menu to confirm restarting the game
+     *
      * @return boolean - whether to restart the
      */
     public boolean restartGame() {
@@ -657,16 +667,19 @@ public class GUI extends JFrame implements ComponentListener {
     /**
      * exitGame:
      * - Invokes a pop up menu to confirm the player wants to exit the game.
+     *
      * @return boolean - whether to exit or not
      */
     public boolean exitGame() {
 
-        // Button
+        // Button options
         String[] options = {"Yes please", "Opps, wrong button"};
 
+        // Build the text to be displayed
         StringBuilder text = new StringBuilder();
         text.append("Would you like to exit the game?");
 
+        // Create and display the JOptionPane
         int choice = JOptionPane.showOptionDialog(null,
                 text.toString(),
                 "QUIT?",
@@ -676,6 +689,7 @@ public class GUI extends JFrame implements ComponentListener {
                 options,
                 options[0]);
 
+        // (True) = Exit Game, (False) = Don't Exit Game
         if (choice == JOptionPane.CLOSED_OPTION || choice == 1) {
             return false;
         }
@@ -686,27 +700,52 @@ public class GUI extends JFrame implements ComponentListener {
     // HELPFUL METHODS
     // --------------------------------------------------
 
+    /**
+     * setErrorMsg:
+     * - Sets the error message to be displayed
+     *
+     * @param str - The message
+     */
     public void setErrorMsg(String str) {
         errorMsg = str;
     }
 
+    /**
+     * getErrorMsg:
+     * - Gets the string saved in the errorMsg
+     *
+     * @return String - errorMsg
+     */
     public String getErrorMsg() {
         return errorMsg;
     }
 
+    /**
+     * setGuiState:
+     * - Sets what state the GUI is in
+     *
+     * @param g - what state to set this GUI to
+     */
+    public void setGuiState(GUIState g) {
+        guiState = g;
+    }
+
+    /**
+     * redraw():
+     * - Invokes Revalidate and repaint
+     */
     public void redraw() {
         revalidate();
         repaint();
     }
 
-    private void resize() {
-        clearComponents();
-        if (cluedoGame.getState().ordinal() > CluedoGame.State.SETUP_GAME_DESIGN.ordinal())
-            cluedoGame.gameController();
-        // Redraws the new state
-        redraw();
-    }
-
+    /**
+     * clearComponents:
+     * - If the canvas and controls are not nul, then call their
+     * respective clearComponents methods, we dont ever want to
+     * removeAll() here as canvas and controls are crucial to the
+     * games ability to run and never disappear
+     */
     private void clearComponents() {
         if (canvas != null)
             canvas.clearComponents();
@@ -714,10 +753,21 @@ public class GUI extends JFrame implements ComponentListener {
             controls.clearComponents();
     }
 
+    /**
+     * componentResized:
+     * - Invokes clearComponents(), redraw(), and as long as the game is not in
+     * the state SETUP_GAME_DESIGN (where adding components to this) cludeoGame.gameController()
+     *
+     * @param e - The ComponentEvent
+     */
     @Override
     public void componentResized(ComponentEvent e) {
-        if (cluedoGame != null && cluedoGame.getGui() != null)
-            resize();
+        clearComponents();
+        if (guiState != null) {
+            cluedoGame.gameController();
+        }
+        // Redraws the new state
+        redraw();
     }
 
     @Override
@@ -733,25 +783,4 @@ public class GUI extends JFrame implements ComponentListener {
     }
 
 
-    public void setGuiState(GUIState g) {
-        guiState = g;
-    }
-
-    public static enum GUIState {
-        ACCUSE,
-        CHOOSE_HIDDEN_PLAYER_CARD,
-        CONFIRM_SHOW_HIDDEN_CONTENT,
-        CONFIRM_SHOW_OTHER_PLAYER_CARD,
-        DISPLAY_RULES,
-        GAME_MENU,
-        INFEASIBLE_MOVE,
-        MAIN_MENU,
-        NEW_PLAYER,
-        NO_SUGGESTIONS,
-        PRINT_ERROR,
-        SHOW_DETECTIVE_CARDS,
-        SHOW_HAND,
-        SHOW_USER_OTHER_PLAYER_CARD,
-        SUGGEST;
-    }
 }
