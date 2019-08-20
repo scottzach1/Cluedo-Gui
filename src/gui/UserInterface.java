@@ -70,12 +70,12 @@ public class UserInterface extends JPanel {
         setParentTitle();
 
         // Create all the possible buttons
-        JButton showHand = new ZButton("Show Hand", BIG_FONT);
-        JButton detectivesNotes = new ZButton("Detectives Note", BIG_FONT);
-        JButton suggest = new ZButton("Suggest", BIG_FONT);
-        JButton pathFinderSettings = new ZButton(CluedoGame.shortestPath ? "Shortest Path" : "  Exact Path ", BIG_FONT);
-        JButton accuse = new ZButton("Accuse (Solve)", BIG_FONT);
-        JButton skipTurn = new ZButton("Skip Turn", BIG_FONT);
+        JButton showHand = new ZButton("Show Hand (h)", BIG_FONT);
+        JButton detectivesNotes = new ZButton("Detectives Note (n)", BIG_FONT);
+        JButton suggest = new ZButton("Suggest (s)", BIG_FONT);
+        JButton pathFinderSettings = new ZButton(CluedoGame.shortestPath ? "Shortest Path (p)" : "  Exact Path (p)", BIG_FONT);
+        JButton accuse = new ZButton("Accuse (a)", BIG_FONT);
+        JButton skipTurn = new ZButton("Skip Turn (t)", BIG_FONT);
 
         // add Show Hand action listener
         showHand.addActionListener(e -> cluedoGame.getGui().showHand());
@@ -83,7 +83,7 @@ public class UserInterface extends JPanel {
         detectivesNotes.addActionListener(e -> cluedoGame.getGui().showDetectiveCards());
         // Add pathFinderSettings action listener
         pathFinderSettings.addActionListener(e ->
-                pathFinderSettings.setText((CluedoGame.shortestPath = !CluedoGame.shortestPath) ? "Shortest Path" : "  Exact Path "));
+                pathFinderSettings.setText((CluedoGame.shortestPath = !CluedoGame.shortestPath) ? "Shortest Path (p)" : "  Exact Path (p)"));
         // Add action listener for accuse and suggest
         suggest.addActionListener(e -> cluedoGame.getGui().accuseOrSuggest(true));
         accuse.addActionListener(e -> cluedoGame.getGui().accuseOrSuggest(false));
