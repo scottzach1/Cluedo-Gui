@@ -5,6 +5,9 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Room in the game.
+ */
 public class Room extends Card {
 
 	/**

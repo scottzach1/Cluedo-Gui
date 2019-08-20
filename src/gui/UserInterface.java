@@ -11,6 +11,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
 
+/**
+ * Displays buttons for the user to interact with the game.
+ */
 public class UserInterface extends JPanel {
 
 

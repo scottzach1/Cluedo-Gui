@@ -6,6 +6,9 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 
+/**
+ * Displays errors and Dice in Console
+ */
 public class Console extends JPanel {
 
     // --------------------------------------------------

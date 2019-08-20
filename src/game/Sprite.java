@@ -2,6 +2,9 @@ package game;
 
 import java.awt.*;
 
+/**
+ * Sprite / Character in the game.
+ */
 public class Sprite extends Card {
 
 	/**

@@ -2,6 +2,9 @@ package game;
 
 import java.util.*;
 
+/**
+ * User playing the game.
+ */
 public class User {
 
 	private static int USERS = 0;

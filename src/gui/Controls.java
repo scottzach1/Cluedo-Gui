@@ -12,6 +12,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Displays thi controls for the user on the GUI.
+ */
 public class Controls extends JPanel {
 
     // --------------------------------------------------

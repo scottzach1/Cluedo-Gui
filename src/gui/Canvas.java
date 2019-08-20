@@ -11,6 +11,10 @@ import java.awt.event.ComponentListener;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+/**
+ * Canvas displays information on the screen.
+ * Board, Title etc.
+ */
 public class Canvas extends JPanel {
 
     // --------------------------------------------------

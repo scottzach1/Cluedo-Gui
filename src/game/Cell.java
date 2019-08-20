@@ -8,6 +8,9 @@ import java.util.*;
 import java.util.List;
 import java.util.regex.Pattern;
 
+/**
+ * A cell on the board.
+ */
 public class Cell extends JLabel implements MouseListener {
 
     /**

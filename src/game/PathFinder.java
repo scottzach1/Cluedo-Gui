@@ -4,6 +4,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Finds path for the board.
+ */
 public class PathFinder {
 
     // Needed for checkValidFromString

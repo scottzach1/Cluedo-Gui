@@ -1,5 +1,8 @@
 package game;
 
+/**
+ * Weapon in the game.
+ */
 public class Weapon extends Card {
 
 	/**
