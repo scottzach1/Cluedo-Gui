@@ -243,6 +243,7 @@ public class Cell extends JLabel implements MouseListener {
 
                 // Render changes
                 board.render();
+                board.cluedoGame.getGui().redrawDice();
             }
             currentlyMoving = false;
         });
