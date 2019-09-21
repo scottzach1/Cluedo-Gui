@@ -81,7 +81,7 @@ public class Weapon extends Card {
 	 * @param i int corresponding to a WeaponAlias' enum position.
 	 * @return WeaponAlias declared at that enum ordinal.
 	 */
-	public static WeaponAlias parseAliasFromOrdinalInt(int i) {
+	static WeaponAlias parseAliasFromOrdinalInt(int i) {
 		int sizeOfCharacterValues = WeaponAlias.values().length;
 		if (i >= 0 && i < sizeOfCharacterValues)
 			return WeaponAlias.values()[i];

@@ -61,7 +61,7 @@ public class Sprite extends Card {
 	 * Get filename of corresponding Cell marker.
 	 * @return String filename of corresponding Cell marker.
 	 */
-	public String getMarker() { return parseMarker(spriteAlias); }
+	String getMarker() { return parseMarker(spriteAlias); }
 
 	/**
 	 * Get filename of corresponding active Cell.
@@ -134,7 +134,7 @@ public class Sprite extends Card {
 	 * @param c The digit char corresponding to a SpriteAlias' enum position.
 	 * @return The SpriteAlias declared at that enum ordinal.
 	 */
-	public static SpriteAlias parseAliasFromOrdinalChar(char c) {
+	static SpriteAlias parseAliasFromOrdinalChar(char c) {
 		int i = Integer.parseInt(c + "");
 		for (SpriteAlias alias : SpriteAlias.values()) {
 			if (alias.ordinal() == i)
@@ -149,7 +149,7 @@ public class Sprite extends Card {
 	 * @param i int corresponding to a SpriteAlias' enum position.
 	 * @return SpriteAlias declared at that enum ordinal.
 	 */
-	public static SpriteAlias parseAliasFromOrdinalInt(int i) {
+	static SpriteAlias parseAliasFromOrdinalInt(int i) {
 		int sizeOfCharacterValues = SpriteAlias.values().length;
 		if (i >= 0 && i < sizeOfCharacterValues)
 			return SpriteAlias.values()[i];

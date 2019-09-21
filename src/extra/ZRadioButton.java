@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Stylized JRadioButton
+ * Stylized JRadioButton.
  */
 public class ZRadioButton extends JRadioButton {
 

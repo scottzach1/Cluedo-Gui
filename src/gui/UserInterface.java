@@ -22,9 +22,9 @@ public class UserInterface extends JPanel {
     // --------------------------------------------------
 
     public static final Color BASE_COL = new Color(76, 74, 75);
-    public static final int SMALL_FONT = 10;
-    public static final int MEDIUM_FONT = 15;
-    public static final int BIG_FONT = 20;
+    private static final int SMALL_FONT = 10;
+    private static final int MEDIUM_FONT = 15;
+    static final int BIG_FONT = 20;
 
     private String borderTitle = "UI";
     private GridBagConstraints gc;
@@ -66,7 +66,7 @@ public class UserInterface extends JPanel {
      * - Accuse
      * - Skip Turn
      */
-    protected void mainPlayerMenu() {
+    void mainPlayerMenu() {
         gc = new GridBagConstraints();
 
         // Make sure the players name is represented
@@ -166,7 +166,7 @@ public class UserInterface extends JPanel {
     /**
      * Creates three JComboBoxes to make a suggestion from. Set those Combo boxes
      * up with their respective cards. A JButton is also added to confirm their selection
-     * @param suggestion
+     * @param suggestion true, accuse false.
      */
     void accuseOrSuggest(boolean suggestion) {
         // Clear all previous settings

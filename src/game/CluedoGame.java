@@ -180,7 +180,8 @@ public class CluedoGame {
         // If the players guess was incorrect
         else {
             losers.add(getCurrentUser());
-            gui.displayLoser();
+            if (losers.containsAll(users)) gui.displayAllLosers();
+            else gui.displayLoser();
         }
     }
 
@@ -200,7 +201,7 @@ public class CluedoGame {
      */
     public void restartGame() {
         gui.dispose();
-        CluedoGame g = new CluedoGame();
+        new CluedoGame();
     }
 
     /**
@@ -327,7 +328,8 @@ public class CluedoGame {
         } else {
             currentUserNo = User.UserNo.values()[(currentUserNo.ordinal() + 1) % playerAmount];
             if (losers.contains(users.get(currentUserNo.ordinal()))) {
-                gui.skipUser(getCurrentUser());
+                if (losers.containsAll(users)) gui.displayAllLosers();
+                else gui.skipUser(getCurrentUser());
             }
             gui.setGuiState(GUI.GUIState.NEW_PLAYER);
         }
@@ -511,7 +513,7 @@ public class CluedoGame {
 
     public static void main(String[] args) {
         // Setup
-        CluedoGame g = new CluedoGame();
+        new CluedoGame();
     }
 
 }

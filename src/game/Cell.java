@@ -454,7 +454,7 @@ public class Cell extends JLabel implements MouseListener {
      *
      * @return Map of Neighbours.
      */
-    public HashMap<Direction, Cell> getNeighbors() {
+    HashMap<Direction, Cell> getNeighbors() {
         return neighbors;
     }
 
@@ -501,7 +501,7 @@ public class Cell extends JLabel implements MouseListener {
      * @param other second cell to compare.
      * @return boolean true if same, false otherwise.
      */
-    public boolean sameCell(Cell other) {
+    boolean sameCell(Cell other) {
         return sameRoom(other) || this == other;
     }
 
@@ -511,7 +511,7 @@ public class Cell extends JLabel implements MouseListener {
      * @param other second cell to compare.
      * @return true if non null room shared, false other wise.
      */
-    public boolean sameRoom(Cell other) {
+    boolean sameRoom(Cell other) {
         return (hasRoom() && this.getRoom() == other.getRoom());
     }
 }

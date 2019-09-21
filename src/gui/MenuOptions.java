@@ -15,8 +15,6 @@ public class MenuOptions extends JMenuBar {
 
 	private final CluedoGame cluedoGame;
 	private static boolean exitRules;
-	private static JMenuItem restartItem;
-	private static JMenuItem closeItem;
 	private static JMenuItem rulesItem;
 
 	// --------------------------------------------------
@@ -41,8 +39,8 @@ public class MenuOptions extends JMenuBar {
 		
 		// Create the file menu
 		JMenu file = new JMenu("File");
-		restartItem = new JMenuItem("Restart (q)");
-		closeItem = new JMenuItem("Close (w)");
+		JMenuItem restartItem = new JMenuItem("Restart (q)");
+		JMenuItem closeItem = new JMenuItem("Close (w)");
 		rulesItem = new JMenuItem("Rules (r)");
 
 		
@@ -92,7 +90,7 @@ public class MenuOptions extends JMenuBar {
 	 * There are multiple ways of exiting the rules menu, in either case,
 	 * the text for the button needs to return to the state of "Rules"
 	 */
-	public static void setExitRulesFalse(){
+	static void setExitRulesFalse(){
 		exitRules = false;
 		rulesItem.setText("Rules");
 	}

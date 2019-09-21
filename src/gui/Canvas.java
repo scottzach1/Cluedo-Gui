@@ -67,7 +67,7 @@ public class Canvas extends JPanel {
     /**
      * Displays the title screen
      */
-    public void mainMenu() {
+    void mainMenu() {
         Image image = (new ImageIcon("title.png")).getImage();
         image = image.getScaledInstance(getWidth() / 2, getHeight() / 2, java.awt.Image.SCALE_SMOOTH);
         JLabel titleImg = new JLabel(new ImageIcon(image));
@@ -81,7 +81,7 @@ public class Canvas extends JPanel {
     /**
      * Displays text that asks the user how many players there are
      */
-    public void howManyPlayers() {
+    void howManyPlayers() {
         // Ask the user how many players there are
         displayText("How many players today?");
     }
@@ -99,7 +99,7 @@ public class Canvas extends JPanel {
     /**
      * Instructs the player to select a character
      */
-    public void selectCharacter() {
+    void selectCharacter() {
         // Ask the user to pick a character
         displayText(cluedoGame.getTempUserName() + ", who are you playing as?");
     }
@@ -107,7 +107,7 @@ public class Canvas extends JPanel {
     /**
      * Displays the current players hand
      */
-    public void showHand() {
+    void showHand() {
         // Clear previous settings
         gc = new GridBagConstraints();
         gc.fill = GridBagConstraints.HORIZONTAL;
@@ -229,7 +229,7 @@ public class Canvas extends JPanel {
      * Displays all the cards, highlighting cards in red
      * that the player has not seen
      */
-    public void showDetectiveCards() {
+    void showDetectiveCards() {
         // Clear previous settings
         gc = new GridBagConstraints();
         gc.fill = GridBagConstraints.HORIZONTAL;
@@ -321,24 +321,20 @@ public class Canvas extends JPanel {
         int amountOfWeapons = 3;
         int amountOfRooms = 5;
 
-        if (amountOfSprites > 0) {
-            gc.gridx = currentGridX;
-            gc.gridwidth = amountOfSprites;
-            add(sprites, gc);
-            currentGridX += amountOfSprites;
-        }
-        if (amountOfWeapons > 0) {
-            gc.gridx = currentGridX;
-            gc.gridwidth = amountOfWeapons;
-            add(weapons, gc);
-            currentGridX += amountOfWeapons;
-        }
-        if (amountOfRooms > 0) {
-            gc.gridx = currentGridX + 1;
-            gc.gridwidth = amountOfRooms;
-            add(rooms, gc);
-            currentGridX += amountOfRooms;
-        }
+        gc.gridx = currentGridX;
+        gc.gridwidth = amountOfSprites;
+        add(sprites, gc);
+        currentGridX += amountOfSprites;
+
+        gc.gridx = currentGridX;
+        gc.gridwidth = amountOfWeapons;
+        add(weapons, gc);
+        currentGridX += amountOfWeapons;
+
+        gc.gridx = currentGridX + 1;
+        gc.gridwidth = amountOfRooms;
+        add(rooms, gc);
+        currentGridX += amountOfRooms;
 
         gc.fill = GridBagConstraints.VERTICAL;
         gc.anchor = GridBagConstraints.LINE_START;
@@ -394,7 +390,7 @@ public class Canvas extends JPanel {
     /**
      * A Generic text display method that uses similar code to
      * display text to this panel
-     * @param text
+     * @param text to display.
      */
     private void displayText(String text){
         // Create a text instructions for the user to follow
@@ -469,7 +465,7 @@ public class Canvas extends JPanel {
     /**
      * Clears all components wihtin the Canvas.
      */
-    public void clearComponents() {
+    void clearComponents() {
         components.clear();
         removeAll();
     }
@@ -478,7 +474,7 @@ public class Canvas extends JPanel {
      * Renders all cells within the board.
      * Scales board Icons if change in window size is detected.
      */
-    public void renderBoard() {
+    void renderBoard() {
         int newCellSize = -1 + (Math.min(getWidth() / board.getCols(), getHeight() / board.getRows()));
         board.scaleIcons(newCellSize);
         board.getStream().forEach(cell -> components.add(cell.render()));
@@ -505,7 +501,7 @@ public class Canvas extends JPanel {
      * Displays the rules of the game for the user.
      * Can be accessed from the GUI in the Menu Bar.
      */
-    protected void displayRules() {
+    void displayRules() {
         // Create a text instructions for the user to follow
         JTextArea instructions = new JTextArea();
 

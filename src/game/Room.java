@@ -56,7 +56,7 @@ public class Room extends Card {
 	 * If any cell in room has a neighbour that is not in this room.
 	 * Then add that neighbour to the doors. (no door should be in the room).
 	 */
-	public void calculateDoorSteps() {
+	void calculateDoorSteps() {
 		doors = new HashSet<>();
 
 		for (Cell cell : cells) {
@@ -90,7 +90,7 @@ public class Room extends Card {
 	 * Also sets the cells Game.Room to this.
 	 * @param cell Game.Cell to add to the room.
 	 */
-	public void addCell(Cell cell) {
+	void addCell(Cell cell) {
 		this.cells.add(cell);
 		if (cell == null || cell.getRoom() == this) return;
 		cell.setRoom(this);

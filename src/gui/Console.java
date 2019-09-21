@@ -118,7 +118,7 @@ public class Console extends JPanel {
      * Any part of the game can set an error message
      * however, only the Console can print the error.
      */
-    protected void printError() {
+    void printError() {
 
         gc = new GridBagConstraints();
         gc.anchor = GridBagConstraints.CENTER;

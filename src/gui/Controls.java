@@ -45,6 +45,8 @@ public class Controls extends JPanel {
         borderTitle = "CONTROLS";
         cluedoGame = parent;
 
+        baseCol = Color.DARK_GRAY;
+
         // Set the Size of the Control panel
         setPreferredSize(new Dimension(GUI.SCREEN_WIDTH, GUI.CONTROLS_HEIGHT));
 
@@ -62,7 +64,7 @@ public class Controls extends JPanel {
     /**
      * Creates a button to continue to start the game
      */
-    protected void mainMenu() {
+    void mainMenu() {
         gc = new GridBagConstraints();
         drawBorder();
 
@@ -82,7 +84,7 @@ public class Controls extends JPanel {
      * normal and selected boxes. These boxes are placed in a
      * Button group as only one can be selected.
      */
-    protected void howManyPlayers() {
+    void howManyPlayers() {
         gc = new GridBagConstraints();
         drawBorder();
 
@@ -195,7 +197,7 @@ public class Controls extends JPanel {
      * Create a radio button to select a sprite from and
      * a confirmation button so that the current user can set their character
      */
-    protected void selectCharacter() {
+    void selectCharacter() {
         gc = new GridBagConstraints();
         drawBorder();
 
@@ -245,7 +247,7 @@ public class Controls extends JPanel {
     /**
      * Adds the console and user interface to the controls panel
      */
-    protected void addContainers() {
+    void addContainers() {
         gc = new GridBagConstraints();
         drawBorder();
 
@@ -274,7 +276,7 @@ public class Controls extends JPanel {
      * Rerolls the die, sets the moves for the user this turn,
      * calls the gameMenu to display the players main menu
      */
-    protected void nextPlayer() {
+    void nextPlayer() {
         dieOne = cluedoGame.rollDie();
         dieTwo = cluedoGame.rollDie();
         cluedoGame.setMovesThisTurn(dieOne + dieTwo);
@@ -287,7 +289,7 @@ public class Controls extends JPanel {
      * and the userInterface displays the buttons for the players
      * main menu
      */
-    protected void gameMenu() {
+    void gameMenu() {
         console.drawDice(dieOne, dieTwo);
         userInterface.mainPlayerMenu();
         drawBorder();
@@ -298,7 +300,7 @@ public class Controls extends JPanel {
      * If the user interface is not created or being used,
      * Creates a button that resumes the current state of the game
      */
-    protected void backOption() {
+    void backOption() {
         if (userInterface != null)
             userInterface.backOption();
         else {
@@ -325,7 +327,7 @@ public class Controls extends JPanel {
      * Console is blank
      * @param suggestion suggestion true / false
      */
-    protected void accuseOrSuggest(boolean suggestion) {
+    void accuseOrSuggest(boolean suggestion) {
         userInterface.accuseOrSuggest(suggestion);
         drawBorder();
     }
@@ -379,7 +381,7 @@ public class Controls extends JPanel {
      * Calls the user interface and console to
      * their print error set ups
      */
-    protected void printError() {
+    void printError() {
         console.printError();
         userInterface.backOption();
     }
@@ -388,7 +390,7 @@ public class Controls extends JPanel {
      * Redraws the dice on the console panel
      * No need to roll the dice again
      */
-    protected void redrawDice() {
+    void redrawDice() {
         console.clear();
         console.drawDice(dieOne, dieTwo);
     }
@@ -401,7 +403,7 @@ public class Controls extends JPanel {
      * Sets the text represented up the top of the border
      * @param borderTitle Title of border
      */
-    public void setBorderTitle(String borderTitle) {
+    void setBorderTitle(String borderTitle) {
         this.borderTitle = borderTitle;
     }
 
@@ -410,7 +412,7 @@ public class Controls extends JPanel {
      *
      * @param c - The color to set the background color to
      */
-    public void setBaseCol(Color c) {
+    void setBaseCol(Color c) {
         baseCol = c;
     }
 
@@ -420,7 +422,7 @@ public class Controls extends JPanel {
      *
      * @param c - The color to set the accent color
      */
-    public void setAccentCol(Color c) {
+    void setAccentCol(Color c) {
         accentCol = c;
     }
 
@@ -439,7 +441,7 @@ public class Controls extends JPanel {
      * clears the components from the the Canvas and Controls if they exist
      * else remove all the components from this JPanel.
      */
-    public void clearComponents() {
+    void clearComponents() {
         if (console != null)
             console.clear();
         if (userInterface != null)

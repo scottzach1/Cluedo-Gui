@@ -23,7 +23,7 @@ public class Board {
     private Map<Weapon.WeaponAlias, Weapon> weapons;
     private int prevCellSize;
 
-    static Map<String, ImageIcon> baseImageIcons = new HashMap<>();
+    private static Map<String, ImageIcon> baseImageIcons = new HashMap<>();
     static Map<String, ImageIcon> scaledImageIcons = new HashMap<>();
     PathFinder pathFinder;
 
@@ -94,7 +94,7 @@ public class Board {
     /**
      * Renders all cells, and the dice.
      */
-    public void render() {
+    void render() {
         getStream().forEach(Cell::render);
         cluedoGame.getGui().redraw();
     }
@@ -331,7 +331,7 @@ public class Board {
      * @param user   Game.User to move.
      * @param target Game.Cell to move to.
      */
-    public void moveUser(User user, Cell target) {
+    void moveUser(User user, Cell target) {
         if (target == null || user == null)
             throw new InvalidParameterException("Cannot pass a null parameter!");
 
@@ -354,7 +354,7 @@ public class Board {
      * @param col Col of the cell to return.
      * @return Game.Cell at the provided row/col.
      */
-    public Cell getCell(int row, int col) {
+    private Cell getCell(int row, int col) {
         if ((row < 0 || row >= rows - 1) || (col < 0 || col >= cols - 1))
             return null;
 
@@ -368,7 +368,7 @@ public class Board {
      * @param cord String of coordinate. Ie, H13
      * @return Game.Cell at cord.
      */
-    public Cell getCell(String cord) {
+    Cell getCell(String cord) {
 
         int col, row;
         try {

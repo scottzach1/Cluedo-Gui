@@ -153,7 +153,7 @@ public class PathFinder {
      * @param steps the number of steps that have to be taken.
      * @return true path was found meeting parameters, false otherwise.
      */
-    public boolean findExactPath(Cell start, Cell end, int steps) {
+    boolean findExactPath(Cell start, Cell end, int steps) {
         if (board == null) throw new RuntimeException("Game.PathFinder does not have a Game.Board!");
         if (!end.isFree() || start.sameRoom(end)) return false;
         return findExactPathHelper(new DFSNode(start, null), end, visitedRooms, visitedCells, new ArrayDeque<Cell>(), steps);

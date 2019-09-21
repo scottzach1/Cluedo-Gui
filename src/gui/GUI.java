@@ -38,10 +38,10 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
 
     // Dimension of the frame, based on screen size
     private static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    public static final int CANVAS_HEIGHT = screenSize.height * 2 / 3;
-    public static final int CONTROLS_HEIGHT = screenSize.height / 3;
-    public static final int SCREEN_HEIGHT = screenSize.height;
-    public static final int SCREEN_WIDTH = screenSize.width;
+    static final int CANVAS_HEIGHT = screenSize.height * 2 / 3;
+    static final int CONTROLS_HEIGHT = screenSize.height / 3;
+    static final int SCREEN_HEIGHT = screenSize.height;
+    static final int SCREEN_WIDTH = screenSize.width;
 
     // Fields: All the contents of this container
     private Canvas canvas;
@@ -260,7 +260,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
      * - Called when a players turn has ended, will refresh the screen
      * so that the next player can start their turn.
      */
-    public void newPlayer() {
+    private void newPlayer() {
         // Set the state to this method
         guiState = GUIState.NEW_PLAYER;
         // Clears anything on the components, canvas and controls
@@ -278,7 +278,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
      * to their game menu. Similar to the gui.newPlayer method, however
      * this maintains the current player
      */
-    public void gameMenu() {
+    void gameMenu() {
         // Set the state to this method
         guiState = GUIState.GAME_MENU;
         // Clears anything on the components, canvas and controls
@@ -296,7 +296,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
      * Will call the controls backOption to give the user a chance to go back
      * to their game menu.
      */
-    public void showHand() {
+    void showHand() {
         // Set the state to this method
         guiState = GUIState.SHOW_HAND;
         // Clears anything on the components, canvas and controls
@@ -313,7 +313,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
      * - Invokes the canvas to represent a view of all the cards, and highlights the
      * which cards the player has seen.
      */
-    public void showDetectiveCards() {
+    void showDetectiveCards() {
         // Set the state to this method
         guiState = GUIState.SHOW_DETECTIVE_CARDS;
         // Clears anything on the components, canvas and controls
@@ -332,7 +332,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
      *
      * @param suggestion - boolean to determine if a suggestion of accusation.
      */
-    public void accuseOrSuggest(boolean suggestion) {
+    void accuseOrSuggest(boolean suggestion) {
         // Set the state to this method
         if (suggestion)
             guiState = GUIState.SUGGEST;
@@ -354,7 +354,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
      * Prints an error that the user has made,
      * i.e trying to move to a place they can not.
      */
-    public void printError() {
+    void printError() {
         // Set the state to this method
         guiState = GUIState.PRINT_ERROR;
         // Clears anything on the components, canvas and controls
@@ -491,7 +491,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
      * displayRules:
      * - Invoked when a user selects 'Rules' from the menu bar.
      */
-    public void displayRules() {
+    void displayRules() {
         // Set the state to this method
         guiState = GUIState.DISPLAY_RULES;
         // Clears anything on the components, canvas and controls
@@ -512,7 +512,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
      * @param r          - The Rooms's Alias being accused
      * @param suggestion - (True) a suggestion, (False) an accusation
      */
-    public void checkAccusationOrSuggestion(Sprite.SpriteAlias s, Weapon.WeaponAlias w, Room.RoomAlias r, boolean suggestion) {
+    void checkAccusationOrSuggestion(Sprite.SpriteAlias s, Weapon.WeaponAlias w, Room.RoomAlias r, boolean suggestion) {
         // Get the sprite, weapon and room
         Sprite guessedSprite = cluedoGame.getBoard().getSprites().get(s);
         Weapon guessedWeapon = cluedoGame.getBoard().getWeapons().get(w);
@@ -529,10 +529,11 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
             text.append(" accusation\n(WARNING: an incorrect guess will mean you lose)\n");
 
         // Combine the text with the accusation
-        text.append(guessedSprite.getSpriteAlias().toString()
-                + " used the " + guessedWeapon.getWeaponAlias().toString()
-                + " in the " + guessedRoom.getRoomAlias().toString());
-
+        text.append(guessedSprite.getSpriteAlias().toString())
+                .append(" used the ")
+                .append(guessedWeapon.getWeaponAlias().toString())
+                .append(" in the ")
+                .append(guessedRoom.getRoomAlias().toString());
 
         // Button text
         String[] options = {"Yes, Im sure", "No, Go Back"};
@@ -613,6 +614,32 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
     }
 
     /**
+     * displayAllLosers:
+     * - Notify the players they all lost.
+     * - Creates a pop up window to notify game is over,
+     * - Then will offer a new game or quit.
+     */
+    public void displayAllLosers() {
+        // Button options
+        String[] options = {"YOU ALL LOSE!"};
+
+        // Build the string to be put in the window.
+        StringBuilder text = new StringBuilder();
+        text.append("Nobody was able to crack the case. Therefore there are no winners.");
+
+        // Create and display a JOptionPane window that tells the users they suck.
+        int choice = JOptionPane.showOptionDialog(null,
+                text.toString(),
+                "WINNER!",
+                JOptionPane.OK_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                options,
+                options[0]);
+        cluedoGame.confirmRestartGame();
+    }
+
+    /**
      * displayLoser:
      * - Invoke when a player incorrectly makes an accusation.
      * Creates a pop up window to inform that user they have lost
@@ -679,13 +706,11 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
         // Button options
         String[] options = {"Yes please", "Opps, wrong button"};
 
-        // Build the text to be displayed
-        StringBuilder text = new StringBuilder();
-        text.append("Would you like to exit the game?");
-
         // Create and display the JOptionPane
         int choice = JOptionPane.showOptionDialog(null,
-                text.toString(),
+                "Would you like to exit the game?"
+                // Create and display the JOptionPane
+                ,
                 "QUIT?",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
@@ -694,10 +719,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
                 options[0]);
 
         // (True) = Exit Game, (False) = Don't Exit Game
-        if (choice == JOptionPane.CLOSED_OPTION || choice == 1) {
-            return false;
-        }
-        return true;
+        return choice != JOptionPane.CLOSED_OPTION && choice != 1;
     }
 
     // --------------------------------------------------
@@ -720,7 +742,7 @@ public class GUI extends JFrame implements ComponentListener, KeyListener {
      *
      * @return String - errorMsg
      */
-    public String getErrorMsg() {
+    String getErrorMsg() {
         return errorMsg;
     }
 

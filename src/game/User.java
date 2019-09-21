@@ -145,7 +145,7 @@ public class User {
 	/**
 	 * resetUserNoCounter: Resets the UserNo static counter. Useful for testing and new games.
 	 */
-	public static void resetUserNoCounter() { USERS = 0; }
+	static void resetUserNoCounter() { USERS = 0; }
 
 	/**
 	 * getUserNoCounter: Gets the number of Users created since last reset.
