@@ -155,7 +155,7 @@ public class Board {
                             // Continue as normal as if it were blank.
                         }
                     } else if (type == Cell.Type.ROOM) {
-						// Assign Room
+                        // Assign Room
                         Room room = rooms.get(Room.parseAliasFromChar(c));
                         room.addCell(cell);
                         cell.setRoom(room);
@@ -354,7 +354,7 @@ public class Board {
      * @param col Col of the cell to return.
      * @return Game.Cell at the provided row/col.
      */
-    private Cell getCell(int row, int col) {
+    public Cell getCell(int row, int col) {
         if ((row < 0 || row >= rows - 1) || (col < 0 || col >= cols - 1))
             return null;
 
@@ -368,7 +368,7 @@ public class Board {
      * @param cord String of coordinate. Ie, H13
      * @return Game.Cell at cord.
      */
-    Cell getCell(String cord) {
+    public Cell getCell(String cord) {
 
         int col, row;
         try {

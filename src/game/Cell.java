@@ -36,7 +36,7 @@ public class Cell extends JLabel implements MouseListener {
      * @param dir   Direction of Cell to go.
      * @return Cell in direction dir.
      */
-    Cell go(Cell[][] cells, Direction dir) {
+    public Cell go(Cell[][] cells, Direction dir) {
         switch (dir) {
             case NORTH:
                 return (row > 0) ? cells[row - 1][col] : null;
@@ -82,6 +82,7 @@ public class Cell extends JLabel implements MouseListener {
         this.row = row;
         this.col = col;
         this.type = type;
+        this.sprite = null;
         this.board = board;
         neighbors = new HashMap<>();
         icons = Board.scaledImageIcons;
@@ -350,7 +351,7 @@ public class Cell extends JLabel implements MouseListener {
      * (True if a hall or room, and no sprite on it.
      */
     public boolean isFree() {
-        return ((isType(Type.ROOM) || isType(Type.HALL)) && sprite == null);
+        return (hasRoom() || (isType(Type.HALL) && sprite == null));
     }
 
     /**
@@ -407,7 +408,7 @@ public class Cell extends JLabel implements MouseListener {
      *
      * @param sprite Game.Sprite to place on Game.Cell.
      */
-    void setSprite(Sprite sprite) {
+    public void setSprite(Sprite sprite) {
         this.sprite = sprite;
     }
 
@@ -425,7 +426,7 @@ public class Cell extends JLabel implements MouseListener {
      *
      * @param room The Game.Room to set for this Game.Cell.
      */
-    void setRoom(Room room) {
+    public void setRoom(Room room) {
         this.room = room;
         if (room == null || room.getCells().contains(this)) return;
         room.addCell(this);
@@ -454,7 +455,7 @@ public class Cell extends JLabel implements MouseListener {
      *
      * @return Map of Neighbours.
      */
-    HashMap<Direction, Cell> getNeighbors() {
+    public HashMap<Direction, Cell> getNeighbors() {
         return neighbors;
     }
 
@@ -464,7 +465,7 @@ public class Cell extends JLabel implements MouseListener {
      * @param dir  Direction to add neighbour.
      * @param cell Game.Cell to add as neighbour.
      */
-    void setNeighbor(Direction dir, Cell cell) {
+    public void setNeighbor(Direction dir, Cell cell) {
         neighbors.put(dir, cell);
     }
 
@@ -474,7 +475,7 @@ public class Cell extends JLabel implements MouseListener {
      * @param c char of Game.Cell.
      * @return Type of Game.Cell.
      */
-    static Type getType(char c) {
+    public static Type getType(char c) {
         if (c == 'M') return Type.CELLAR;
         if (c == 'W') return Type.WEAPON;
         if (c == ' ') return Type.VOID;
@@ -501,7 +502,7 @@ public class Cell extends JLabel implements MouseListener {
      * @param other second cell to compare.
      * @return boolean true if same, false otherwise.
      */
-    boolean sameCell(Cell other) {
+    public boolean sameCell(Cell other) {
         return sameRoom(other) || this == other;
     }
 
@@ -511,7 +512,7 @@ public class Cell extends JLabel implements MouseListener {
      * @param other second cell to compare.
      * @return true if non null room shared, false other wise.
      */
-    boolean sameRoom(Cell other) {
+    public boolean sameRoom(Cell other) {
         return (hasRoom() && this.getRoom() == other.getRoom());
     }
 }

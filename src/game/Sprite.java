@@ -67,7 +67,7 @@ public class Sprite extends Card {
 	 * Get filename of corresponding active Cell.
 	 * @return String filename of corresponding active Cell.
 	 */
-	public String getCell() { return  parseCell(spriteAlias); }
+	public String getCell() { return parseCell(spriteAlias); }
 
 	/**
 	 * Get filename of corresponding Cell marker.
@@ -177,27 +177,34 @@ public class Sprite extends Card {
 	 */
 	private void setColors(SpriteAlias s){
 		switch (s) {
-		case MRS_WHITE:			spriteColor = new Color(184, 184, 184);
-								opposingColor = Color.BLACK;
-								break;
-		case COLONEL_MUSTARD:	spriteColor = new Color(190, 157, 0);
-								opposingColor = Color.BLACK;
-								break;
-		case MR_GREEN:			spriteColor = new Color(67, 133, 1);
-								opposingColor = Color.WHITE;
-								break;
-		case MRS_PEACOCK:		spriteColor = new Color(42, 85, 120);
-								opposingColor = Color.WHITE;
-								break;
-		case MISS_SCARLETT: 	spriteColor = new Color(139, 5, 4);
-								opposingColor = Color.WHITE;
-								break;
-		case PROFESSOR_PLUM:	spriteColor = new Color(125, 15, 205);
-								opposingColor = Color.WHITE;
-								break;
-		default:                spriteColor = new Color(64, 255, 0, 255);
-		                        opposingColor = new Color(255, 90, 0);
-	}
+			case MRS_WHITE:
+				spriteColor = new Color(184, 184, 184);
+				opposingColor = Color.BLACK;
+				break;
+			case COLONEL_MUSTARD:
+				spriteColor = new Color(190, 157, 0);
+				opposingColor = Color.BLACK;
+				break;
+			case MR_GREEN:
+				spriteColor = new Color(67, 133, 1);
+				opposingColor = Color.WHITE;
+				break;
+			case MRS_PEACOCK:
+				spriteColor = new Color(42, 85, 120);
+				opposingColor = Color.WHITE;
+				break;
+			case MISS_SCARLETT:
+				spriteColor = new Color(139, 5, 4);
+				opposingColor = Color.WHITE;
+				break;
+			case PROFESSOR_PLUM:
+				spriteColor = new Color(125, 15, 205);
+				opposingColor = Color.WHITE;
+				break;
+			default:
+				spriteColor = new Color(64, 255, 0, 255);
+				opposingColor = new Color(255, 90, 0);
+		}
 
 	}
 

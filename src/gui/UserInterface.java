@@ -341,7 +341,6 @@ public class UserInterface extends JPanel {
         add(confirm, gc);
     }
 
-
     /**
      * Draws the JPanels border and sets it's color
      */
